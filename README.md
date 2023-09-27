@@ -7,8 +7,8 @@
 ## Developers
 * Kyle Walker
 * Ryan Pecha
-* a
-* B
+* Patrick Comden
+* Nam Do
 
 ---
 
