@@ -1,9 +1,5 @@
 # CSC436 - Git Visualizer
 
-* TODO - description
-
----
-
 ## Developers
 * Kyle Walker
 * Ryan Pecha
@@ -13,16 +9,25 @@
 ---
 
 ## User Installation
+
 * TODO
 
 ---
 
 ## Dev Setup
+
 * TODO
 
 ---
 
+## Release
+
+* TODO - release process
+
+---
+
 ## Dependencies
+
 * https://github.com/git/git
 
 ---
