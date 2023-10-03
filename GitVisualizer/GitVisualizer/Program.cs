@@ -1,15 +1,28 @@
+<<<<<<< HEAD
 using SkiaSharp;
+=======
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+>>>>>>> 5b7001cf9240c16d0aeb9ab404f504318e89d4c5
 
 namespace GitVisualizer
 {
     internal static class Program
     {
         /// <summary>
+<<<<<<< HEAD
         ///  The main entry point for the application.
+=======
+        /// The main entry point for the application.
+>>>>>>> 5b7001cf9240c16d0aeb9ab404f504318e89d4c5
         /// </summary>
         [STAThread]
         static void Main()
         {
+<<<<<<< HEAD
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             //ApplicationConfiguration.Initialize();
@@ -34,3 +47,11 @@ namespace GitVisualizer
         }
     }
 }
+=======
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
+        }
+    }
+}
+>>>>>>> 5b7001cf9240c16d0aeb9ab404f504318e89d4c5
