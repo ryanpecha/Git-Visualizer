@@ -1,4 +1,5 @@
 using SkiaSharp;
+using System.Diagnostics;
 
 namespace GitVisualizer
 {
@@ -21,15 +22,21 @@ namespace GitVisualizer
 
             Random rand = new(0);
             SKPaint p1 = new() { Color = SKColors.FloralWhite };
+            SKPaint p2 = new() { Color = SKColors.Aqua };
 
-            for (int i = 0; i < 10000; i++)
+            SKPoint prev = new(0,0);
+            for (int i = 0; i < 100; i++)
             {
                 SKPoint pot = new(rand.Next(bmp.Width), rand.Next(bmp.Height));
-                canvas.DrawPoint(pot, p1);
+                canvas.DrawCircle(pot, 5, p1);
+                canvas.DrawLine(prev, pot, p2);
+                prev = pot;
             }
 
             SKFileWStream fs = new("points.jpg");
             bmp.Encode(fs, SKEncodedImageFormat.Jpeg, quality: 100);
+
+            Debug.WriteLine("This is how we debug!");
         }
     }
 }
