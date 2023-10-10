@@ -4,8 +4,9 @@ using SkiaSharp;
 namespace GitVisualizer
 {
     /// <summary>
-    /// Login page for app, which handles logging into Github, granting user codes, and linking to Github site
-    /// before allowing manipulation of Repos.
+    /// Login page Designer code for app, which handles logging into Github, granting user codes, and linking to Github site
+    /// before allowing manipulation of Repos. Stores all components for the window form, and includes functionality for
+    /// directly modifying page components such as color theme.
     /// </summary>
     partial class GitHelperLogin
     {
@@ -45,6 +46,8 @@ namespace GitVisualizer
             radioButton3 = new RadioButton();
             localWorkspaceButton = new Button();
             notifyIcon1 = new NotifyIcon(components);
+            label3 = new Label();
+            label4 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -56,14 +59,13 @@ namespace GitVisualizer
             label1.Size = new Size(365, 59);
             label1.TabIndex = 0;
             label1.Text = "Workspace Setup";
-            label1.Click += label1_Click;
             // 
             // label2
             // 
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(26, 78);
+            label2.Location = new Point(26, 86);
             label2.Name = "label2";
-            label2.Size = new Size(515, 122);
+            label2.Size = new Size(459, 122);
             label2.TabIndex = 1;
             label2.Text = resources.GetString("label2.Text");
             // 
@@ -81,41 +83,44 @@ namespace GitVisualizer
             // radioButton1
             // 
             radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(12, 370);
+            radioButton1.Location = new Point(26, 434);
             radioButton1.Name = "radioButton1";
             radioButton1.Size = new Size(296, 19);
             radioButton1.TabIndex = 3;
             radioButton1.TabStop = true;
             radioButton1.Text = "Joining or hosting a collaborative project on Github";
             radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.Click += HighlightLoginButton;
             // 
             // radioButton2
             // 
             radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(12, 395);
+            radioButton2.Location = new Point(26, 459);
             radioButton2.Name = "radioButton2";
             radioButton2.Size = new Size(285, 19);
             radioButton2.TabIndex = 4;
             radioButton2.TabStop = true;
             radioButton2.Text = "Creating or cloning a project on the Github cloud";
             radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.Click += HighlightLoginButton;
             // 
             // radioButton3
             // 
             radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(12, 420);
+            radioButton3.Location = new Point(26, 484);
             radioButton3.Name = "radioButton3";
             radioButton3.Size = new Size(361, 19);
             radioButton3.TabIndex = 5;
             radioButton3.TabStop = true;
             radioButton3.Text = "Using a local folder to handle version control on my own device\r\n";
             radioButton3.UseVisualStyleBackColor = true;
+            radioButton3.Click += HighlightLocalButton;
             // 
             // localWorkspaceButton
             // 
             localWorkspaceButton.FlatStyle = FlatStyle.Flat;
             localWorkspaceButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            localWorkspaceButton.Location = new Point(26, 290);
+            localWorkspaceButton.Location = new Point(268, 226);
             localWorkspaceButton.Name = "localWorkspaceButton";
             localWorkspaceButton.Size = new Size(217, 41);
             localWorkspaceButton.TabIndex = 6;
@@ -127,10 +132,31 @@ namespace GitVisualizer
             notifyIcon1.Text = "This will send you to an external site, proceed?";
             notifyIcon1.Visible = true;
             // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point);
+            label3.Location = new Point(12, 329);
+            label3.Name = "label3";
+            label3.Size = new Size(189, 45);
+            label3.TabIndex = 7;
+            label3.Text = "Need Help?";
+            // 
+            // label4
+            // 
+            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.Location = new Point(26, 383);
+            label4.Name = "label4";
+            label4.Size = new Size(459, 48);
+            label4.TabIndex = 8;
+            label4.Text = "Select the use case that applies to you, and the appropriate button will be highlighted.";
+            // 
             // GitHelperLogin
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
-            ClientSize = new Size(624, 601);
+            ClientSize = new Size(516, 525);
+            Controls.Add(label4);
+            Controls.Add(label3);
             Controls.Add(localWorkspaceButton);
             Controls.Add(radioButton3);
             Controls.Add(radioButton2);
@@ -145,6 +171,7 @@ namespace GitVisualizer
             PerformLayout();
         }
 
+        #endregion
         private void ApplyColorTheme(UITheme.AppTheme theme)
         {
             BackColor = theme.AppBackground;
@@ -161,13 +188,13 @@ namespace GitVisualizer
                 button.BackColor = theme.ElementBackground;
                 button.ForeColor = theme.TextSelectable;
             }
-
-
-            
-
+            /// Apply themes to all radio buttons
+            IEnumerable<Control> radios = this.Controls.OfType<RadioButton>().Where(x => x is RadioButton);
+            foreach (RadioButton radio in radios)
+            {
+                radio.ForeColor = theme.TextNormal;
+            }
         }
-
-        #endregion
 
         private Label label1;
         private Label label2;
@@ -177,5 +204,7 @@ namespace GitVisualizer
         private RadioButton radioButton3;
         private Button localWorkspaceButton;
         private NotifyIcon notifyIcon1;
+        private Label label3;
+        private Label label4;
     }
 }
