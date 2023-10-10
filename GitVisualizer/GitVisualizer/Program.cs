@@ -13,9 +13,16 @@ namespace GitVisualizer
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            // ApplicationConfiguration.Initialize();
-            // Application.Run(new Form1());
+            ApplicationConfiguration.Initialize();
+            Application.Run(new Form1());
 
+            
+
+            Debug.WriteLine("This is how we debug!");
+        }
+
+        private static void DrawSkiaWeb()
+        {
             SKBitmap bmp = new(640, 480);
             using SKCanvas canvas = new(bmp);
             canvas.Clear(SKColor.Parse("#003366"));
@@ -24,7 +31,7 @@ namespace GitVisualizer
             SKPaint p1 = new() { Color = SKColors.FloralWhite };
             SKPaint p2 = new() { Color = SKColors.Aqua };
 
-            SKPoint prev = new(0,0);
+            SKPoint prev = new(0, 0);
             for (int i = 0; i < 100; i++)
             {
                 SKPoint pot = new(rand.Next(bmp.Width), rand.Next(bmp.Height));
@@ -35,8 +42,6 @@ namespace GitVisualizer
 
             SKFileWStream fs = new("points.jpg");
             bmp.Encode(fs, SKEncodedImageFormat.Jpeg, quality: 100);
-
-            Debug.WriteLine("This is how we debug!");
         }
     }
 }
