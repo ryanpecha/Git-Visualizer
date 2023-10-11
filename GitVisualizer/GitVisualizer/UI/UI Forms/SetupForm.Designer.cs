@@ -4,11 +4,11 @@ using SkiaSharp;
 namespace GitVisualizer
 {
     /// <summary>
-    /// Login page Designer code for app, which handles logging into Github, granting user codes, and linking to Github site
+    /// Setup page Designer code for app, which handles logging into Github, granting user codes, and linking to Github site
     /// before allowing manipulation of Repos. Stores all components for the window form, and includes functionality for
     /// directly modifying page components such as color theme.
     /// </summary>
-    partial class GitHelperLogin
+    partial class SetupForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -37,7 +37,7 @@ namespace GitVisualizer
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GitHelperLogin));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupForm));
             label1 = new Label();
             label2 = new Label();
             githubLoginButton = new Button();
@@ -79,6 +79,7 @@ namespace GitVisualizer
             githubLoginButton.TabIndex = 2;
             githubLoginButton.Text = "Login Using Github.com";
             githubLoginButton.UseVisualStyleBackColor = true;
+            githubLoginButton.Click += LoadMainAppFormRemote;
             // 
             // radioButton1
             // 
@@ -126,6 +127,7 @@ namespace GitVisualizer
             localWorkspaceButton.TabIndex = 6;
             localWorkspaceButton.Text = "Use Local Workspace";
             localWorkspaceButton.UseVisualStyleBackColor = true;
+            localWorkspaceButton.Click += LoadMainAppFormLocal;
             // 
             // notifyIcon1
             // 
@@ -151,7 +153,7 @@ namespace GitVisualizer
             label4.TabIndex = 8;
             label4.Text = "Select the use case that applies to you, and the appropriate button will be highlighted.";
             // 
-            // GitHelperLogin
+            // SetupForm
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(516, 525);
@@ -164,7 +166,8 @@ namespace GitVisualizer
             Controls.Add(githubLoginButton);
             Controls.Add(label2);
             Controls.Add(label1);
-            Name = "GitHelperLogin";
+            Name = "SetupForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "GitHelper Login";
             Load += Form1_Load;
             ResumeLayout(false);

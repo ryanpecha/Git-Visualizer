@@ -1,3 +1,4 @@
+using GitVisualizer.UI.UI_Forms;
 using SkiaSharp;
 using System.Diagnostics;
 
@@ -14,10 +15,12 @@ namespace GitVisualizer
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new GitHelperLogin());
+            MainForm mainForm = new MainForm();
+            Application.Run(mainForm);
 
             Debug.WriteLine("This is how we debug!");
         }
+
 
         private static void DrawSkiaWeb()
         {

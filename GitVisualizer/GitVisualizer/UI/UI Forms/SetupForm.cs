@@ -1,15 +1,19 @@
 using GitVisualizer.UI;
+using GitVisualizer.UI.UI_Forms;
+using System.Diagnostics;
 
 namespace GitVisualizer
 {
     /// <summary>
     /// Code for the Workspace Form Window, including event handlers, color theme settings, and component initialization
     /// </summary>
-    public partial class GitHelperLogin : Form
+    public partial class SetupForm : Form
     {
         public UITheme.AppTheme AppTheme = UITheme.DarkTheme;
-        public GitHelperLogin()
+        private MainForm mainForm;
+        public SetupForm(MainForm mainForm)
         {
+            this.mainForm = mainForm;
             InitializeComponent();
             ApplyColorTheme(AppTheme);
         }
@@ -33,6 +37,31 @@ namespace GitVisualizer
         private void HighlightLocalButton(object sender, EventArgs e)
         {
             localWorkspaceButton.Select();
+        }
+
+        /// <summary>
+        /// Loads main page routed from Remote login button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadMainAppFormRemote(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Loading Main App...");
+            this.Hide();
+            mainForm.ReOpenWindow();
+            this.Close();
+        }
+        /// <summary>
+        /// Loads main page routed from local repository button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoadMainAppFormLocal(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Loading Main App...");
+            this.Hide();
+            mainForm.ReOpenWindow();
+            this.Close();
         }
     }
 }
