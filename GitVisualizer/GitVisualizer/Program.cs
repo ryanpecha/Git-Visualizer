@@ -16,7 +16,8 @@ namespace GitVisualizer
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             MainForm mainForm = new MainForm();
-            Application.Run(mainForm);
+            // removing this because closing setupform loads mainform again lol
+            //Application.Run(mainForm);
 
             Debug.WriteLine("This is how we debug!");
         }

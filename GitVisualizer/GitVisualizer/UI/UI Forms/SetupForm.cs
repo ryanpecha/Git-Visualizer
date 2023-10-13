@@ -16,12 +16,18 @@ namespace GitVisualizer
             this.mainForm = mainForm;
             InitializeComponent();
             ApplyColorTheme(AppTheme);
+            this.FormClosing += new FormClosingEventHandler(Form1_Close);
         }
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_Close(object sender, FormClosingEventArgs e)
+        {
+           // mainForm.Dispose();
         }
 
         /// <summary>

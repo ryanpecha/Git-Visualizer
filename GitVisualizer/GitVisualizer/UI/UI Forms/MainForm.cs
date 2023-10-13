@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,9 @@ namespace GitVisualizer.UI.UI_Forms
         public UITheme.AppTheme AppTheme = UITheme.DarkTheme;
         public MainForm()
         {
-            CheckValidation();
             InitializeComponent();
             ApplyColorTheme(AppTheme);
+            CheckValidation();
         }
 
         /// <summary>
@@ -26,6 +27,7 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         private void CheckValidation()
         {
+            Debug.WriteLine("HERE");
             if (!hasCredentials)
             {
                 SetupForm setup = new SetupForm(this);
@@ -40,6 +42,7 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         public void ReOpenWindow()
         {
+            Debug.WriteLine("REOPEN");
             this.Show();
             this.SetVisibleCore(true);
             this.MaximizeBox = true;

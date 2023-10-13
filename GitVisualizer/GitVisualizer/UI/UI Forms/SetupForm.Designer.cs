@@ -56,14 +56,14 @@ namespace GitVisualizer
             label1.Font = new Font("Segoe UI Semibold", 32.25F, FontStyle.Bold, GraphicsUnit.Point);
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(365, 59);
+            label1.Size = new Size(912, 145);
             label1.TabIndex = 0;
             label1.Text = "Workspace Setup";
             // 
             // label2
             // 
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(26, 86);
+            label2.Location = new Point(22, 180);
             label2.Name = "label2";
             label2.Size = new Size(459, 122);
             label2.TabIndex = 1;
@@ -73,9 +73,9 @@ namespace GitVisualizer
             // 
             githubLoginButton.FlatStyle = FlatStyle.Flat;
             githubLoginButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            githubLoginButton.Location = new Point(26, 226);
+            githubLoginButton.Location = new Point(22, 305);
             githubLoginButton.Name = "githubLoginButton";
-            githubLoginButton.Size = new Size(217, 41);
+            githubLoginButton.Size = new Size(236, 74);
             githubLoginButton.TabIndex = 2;
             githubLoginButton.Text = "Login Using Github.com";
             githubLoginButton.UseVisualStyleBackColor = true;
@@ -84,9 +84,9 @@ namespace GitVisualizer
             // radioButton1
             // 
             radioButton1.AutoSize = true;
-            radioButton1.Location = new Point(26, 434);
+            radioButton1.Location = new Point(26, 580);
             radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(296, 19);
+            radioButton1.Size = new Size(736, 45);
             radioButton1.TabIndex = 3;
             radioButton1.TabStop = true;
             radioButton1.Text = "Joining or hosting a collaborative project on Github";
@@ -96,9 +96,9 @@ namespace GitVisualizer
             // radioButton2
             // 
             radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(26, 459);
+            radioButton2.Location = new Point(26, 643);
             radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(285, 19);
+            radioButton2.Size = new Size(707, 45);
             radioButton2.TabIndex = 4;
             radioButton2.TabStop = true;
             radioButton2.Text = "Creating or cloning a project on the Github cloud";
@@ -108,9 +108,9 @@ namespace GitVisualizer
             // radioButton3
             // 
             radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(26, 484);
+            radioButton3.Location = new Point(26, 710);
             radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(361, 19);
+            radioButton3.Size = new Size(898, 45);
             radioButton3.TabIndex = 5;
             radioButton3.TabStop = true;
             radioButton3.Text = "Using a local folder to handle version control on my own device\r\n";
@@ -121,9 +121,9 @@ namespace GitVisualizer
             // 
             localWorkspaceButton.FlatStyle = FlatStyle.Flat;
             localWorkspaceButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            localWorkspaceButton.Location = new Point(268, 226);
+            localWorkspaceButton.Location = new Point(264, 305);
             localWorkspaceButton.Name = "localWorkspaceButton";
-            localWorkspaceButton.Size = new Size(217, 41);
+            localWorkspaceButton.Size = new Size(251, 74);
             localWorkspaceButton.TabIndex = 6;
             localWorkspaceButton.Text = "Use Local Workspace";
             localWorkspaceButton.UseVisualStyleBackColor = true;
@@ -138,16 +138,16 @@ namespace GitVisualizer
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point);
-            label3.Location = new Point(12, 329);
+            label3.Location = new Point(12, 395);
             label3.Name = "label3";
-            label3.Size = new Size(189, 45);
+            label3.Size = new Size(469, 106);
             label3.TabIndex = 7;
             label3.Text = "Need Help?";
             // 
             // label4
             // 
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(26, 383);
+            label4.Location = new Point(22, 501);
             label4.Name = "label4";
             label4.Size = new Size(459, 48);
             label4.TabIndex = 8;
@@ -156,7 +156,7 @@ namespace GitVisualizer
             // SetupForm
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
-            ClientSize = new Size(516, 525);
+            ClientSize = new Size(1224, 810);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(localWorkspaceButton);
