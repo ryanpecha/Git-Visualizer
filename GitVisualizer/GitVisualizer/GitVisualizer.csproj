@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.3.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SkiaSharp" Version="2.88.6" />
   </ItemGroup>
@@ -27,6 +28,12 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="backend\git\Platforms\BitBucket\" />
+    <Folder Include="backend\git\Platforms\GitHub\" />
+    <Folder Include="backend\git\Platforms\GitLab\" />
   </ItemGroup>
 
 </Project>
