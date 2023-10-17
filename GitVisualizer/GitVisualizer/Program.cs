@@ -16,6 +16,8 @@ namespace GitVisualizer
             // ApplicationConfiguration.Initialize();
             // Application.Run(new Form1());
 
+            GitAPI.Actions.LocalActions.scanRepositories("test", false);
+
             SKBitmap bmp = new(640, 480);
             using SKCanvas canvas = new(bmp);
             canvas.Clear(SKColor.Parse("#003366"));

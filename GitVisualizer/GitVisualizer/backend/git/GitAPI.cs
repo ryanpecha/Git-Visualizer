@@ -14,14 +14,17 @@ public static class GitAPI
 
     static GitAPI()
     {
+        Debug.WriteLine("TESTING GITAPI");
+
         // TODO load most repo from config file
         liveCommit = null;
         liveRepository = null;
         shell = PowerShell.Create();
+
     }
 
     private static void execShellCommand(Command command)
-    {
+    {   
         shell.Commands.AddCommand(command);
         Collection<PSObject> psObjects = shell.Invoke();
         foreach (PSObject psObject in psObjects)
@@ -56,9 +59,9 @@ public static class GitAPI
                     Command com_cd = new Command("cd");
                     com_cd.Parameters.Add(repositoryLocal.dirPath);
                     execShellCommand(com_cd);
-                    Command com_git_init = new Command("git");
-                    com_git_init.Parameters.Add("init");
-                    execShellCommand(com_git_init);
+                    //Command com_git_init = new Command("git");
+                    //com_git_init.Parameters.Add("init");
+                    //execShellCommand(com_git_init);
                 }
             }
 
@@ -94,7 +97,9 @@ public static class GitAPI
 
             public static void scanRepositories(string localScanDirPath, bool recursive)
             {
-
+                Command com = new Command("echo");
+                com.Parameters.Add("TESTING");
+                execShellCommand(com);
             }
 
             public static void cloneRemote(RepositoryRemote repositoryRemote, string localCloneDirPath)
