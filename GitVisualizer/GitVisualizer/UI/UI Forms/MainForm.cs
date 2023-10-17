@@ -19,7 +19,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             InitializeComponent();
             ApplyColorTheme(AppTheme);
-            CheckValidation();
+            //CheckValidation();
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace GitVisualizer.UI.UI_Forms
             Debug.WriteLine("HERE");
             if (!hasCredentials)
             {
-                SetupForm setup = new SetupForm(this);
+                SetupForm setup = new SetupForm();
                 this.Hide();
                 setup.ShowDialog();
                 this.SetVisibleCore(false);

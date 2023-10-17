@@ -10,15 +10,13 @@ namespace GitVisualizer
     public partial class SetupForm : Form
     {
         public UITheme.AppTheme AppTheme = UITheme.DarkTheme;
-        private MainForm mainForm;
-        public SetupForm(MainForm mainForm)
+
+        public SetupForm()
         {
-            this.mainForm = mainForm;
             InitializeComponent();
             ApplyColorTheme(AppTheme);
             this.FormClosing += new FormClosingEventHandler(Form1_Close);
         }
-
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -52,9 +50,9 @@ namespace GitVisualizer
         /// <param name="e"></param>
         private void LoadMainAppFormRemote(object sender, EventArgs e)
         {
-            Debug.WriteLine("Loading Main App...");
-            this.Hide();
-            mainForm.ReOpenWindow();
+            MainForm main = new MainForm();
+            this.SetVisibleCore(false);
+            main.ShowDialog();
             this.Close();
         }
         /// <summary>
@@ -65,8 +63,8 @@ namespace GitVisualizer
         private void LoadMainAppFormLocal(object sender, EventArgs e)
         {
             Debug.WriteLine("Loading Main App...");
-            this.Hide();
-            mainForm.ReOpenWindow();
+            MainForm main = new MainForm();
+            main.ShowDialog();
             this.Close();
         }
     }

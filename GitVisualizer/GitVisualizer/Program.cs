@@ -15,9 +15,7 @@ namespace GitVisualizer
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            MainForm mainForm = new MainForm();
-            // removing this because closing setupform loads mainform again lol
-            //Application.Run(mainForm);
+            Application.Run(new SetupForm());
 
             Debug.WriteLine("This is how we debug!");
         }
