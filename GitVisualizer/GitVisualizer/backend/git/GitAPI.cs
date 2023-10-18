@@ -1,162 +1,169 @@
-using System.Text;
+
 using System.Diagnostics;
-using System.Net.Http.Headers;
-using System.Text.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Net.Http;
+using System.Management.Automation;
+using System.Collections.ObjectModel;
+using System.Management.Automation.Runspaces;
 
-/// <summary>
-/// Class <c>Github</c> contains methods to abstract the interaction with the GitHub API and contain many of Github user's data.
-/// </summary>
-public class Github
+namespace GitVisualizer;
+
+public static class GitAPI
 {
+    /// <summary> pointer to the live commit </summary>
+    public static Branch? liveBranch { get; private set; }
 
-    // members that can change during runtime
-    public static String userCode { get; private set; }
-    public static String deviceCode;
-    public static String accessToken { get; private set; }
+    /// <summary> currently checked out commit </summary>
+    public static Commit? liveCommit { get; private set; }
 
-    // end section
+    /// <summary> currently tracked local repository </summary>
+    public static RepositoryLocal? liveRepository { get; private set; }
 
-    private static String tempClientID = "a6b32f8800218e8eab39";
-    private static String tempClientSecret = "15b4419077375217ebfcc678d0b106b002bff374";
-    private static int interval = 5;
+    /// <summary> persistent shell instance for running commands </summary>
+    private static PowerShell shell;
 
-    private static HttpClient sharedClient = new()
+
+    /// <summary> GitAPI initialization </summary>
+    static GitAPI()
     {
-        BaseAddress = new Uri("https://api.github.com/"),
-    };
-    private static ProductInfoHeaderValue product = new ProductInfoHeaderValue("product", "1");
-    private static MediaTypeWithQualityHeaderValue jsonType = new MediaTypeWithQualityHeaderValue("application/json");
-    private static MediaTypeWithQualityHeaderValue githubType = new MediaTypeWithQualityHeaderValue("application/vnd.github+json");
-
-    // GitHub user information
-
-    public String repoList { get; private set; }
-
-    /// <summary>
-    /// The .ctor.
-    /// </summary>
-    public Github()
-    {
+        // TODO load most repo from config file
+        liveCommit = null;
+        liveRepository = null;
+        shell = PowerShell.Create();
     }
 
-    /// <summary>
-    /// The give permission.
-    /// </summary>
-    /// <returns>The task object.</returns>
-    public async Task GivePermission()
+
+
+    /// <summary> structure used to represent the results of a shell command</summary>
+    private struct ShellCommandResult
     {
-        await Task.Run(RegisterUser);
+        public bool success { get; private set; }
+        public string? errmsg { get; private set; }
+        public Collection<PSObject>? psObjects { get; private set; }
+        public ShellCommandResult(bool success, string? errmsg, Collection<PSObject>? psObjects)
+        {
+            this.success = success;
+            this.errmsg = errmsg;
+            this.psObjects = psObjects;
+        }
     }
 
-    /// <summary>
-    /// The method waits for the user to authorize the app to read and write to the user's repository.
-    /// </summary>
-    /// <returns>The task object.</returns>
-    public async Task WaitForAuthorization()
+    /// <summary> synchronously executes the given command returns the result struct </summary>
+    private static ShellCommandResult execShellCommand(Command command)
     {
-        await Task.Run(PollAuthorizationDevice);
-    }
-
-    /// <summary>
-    /// The method gets a list of the user repository as JSON.
-    /// </summary>
-    /// <returns>The task object.</returns>
-    public async Task GetRepositories()
-    {
-        // TODO: Format the JSON to make it easier to work in frontend.
-        await Task.Run(GetRepoList);
-    }
-
-    /// <summary>
-    /// The method deletes the user access token, essentially disassociating them from the app.
-    /// </summary>
-    /// <returns>The task object.</returns>
-    public async Task DeleteToken()
-    {
-        await Task.Run(RevokeAccessToken);
-    }
-
-    /// <summary>
-    /// Testing method for Nam. Do not call.
-    /// </summary>
-    public async void TestAsync()
-    {
-        await GivePermission();
-        Debug.Write("userCode: " + userCode);
-
-
-        if (userCode != null)
-            await WaitForAuthorization();
-
-        await GetRepositories();
-        Debug.Write("repo information: " + repoList);
-    }
-
-    /// <summary>
-    /// The private method to handle registering user with the app.
-    /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> RegisterUser()
-    {
-        using StringContent jsonContent = new(
-            System.Text.Json.JsonSerializer.Serialize(new
+        // TODO async shell command queue
+        try
+        {
+            shell.Commands.AddCommand(command);
+            Collection<PSObject> psObjects = shell.Invoke();
+            bool success = !shell.HadErrors;
+            string? errmsg = null;
+            if (!success)
             {
-                client_id = tempClientID,
-                scope = "repo"
-            }),
-            Encoding.UTF8,
-             jsonType);
-
-        CommonHelper();
-        HttpResponseMessage response = await sharedClient.PostAsync("https://github.com/login/device/code", jsonContent);
-
-        if (response.IsSuccessStatusCode)
-        {
-            String content = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine("RegisterUser(): User code generated successfully");
-            JObject json = JObject.Parse(content);
-
-            string s = json["interval"].ToString();
-            interval = int.Parse(s);
-            deviceCode = json["device_code"].ToString();
-            Debug.WriteLine(content);
-            Debug.WriteLine("----------------");
-            userCode = json["user_code"].ToString();
-            return userCode;
+                ErrorRecord err = shell.Streams.Error[0];
+                errmsg = err.ToString();
+                shell.Streams.Error.Clear();
+            }
+            return new ShellCommandResult(success, errmsg: errmsg, psObjects: psObjects);
         }
-
-        Debug.WriteLine("RegisterUser(): User code generation failed");
-        return null;
+        catch (Exception e)
+        {
+            string errmsg = e.ToString();
+            return new ShellCommandResult(success: false, errmsg: errmsg, psObjects: null);
+        }
     }
 
-    /// <summary>
-    /// The private method to handle registering user with the app.
-    /// </summary>
-    /// <returns>The task object.</returns>
-    private async Task PollAuthorizationDevice()
+
+
+    /// <summary> Git Actions </summary>
+    public static class Actions
     {
-        if (userCode == null)
+
+
+
+        public static class RemoteActions
         {
-            Debug.WriteLine("PollAuthorizationDevice(): No user code. Cannot poll until we know user have access to a user code.");
-            return;
+            public static void deleteRemote()
+            {
+
+            }
+
+            public static void createRemote()
+            {
+
+            }
+
+            public readonly static string push_description = "";
+            /// <summary>
+            /// 
+            /// </summary>
+            public static void push()
+            {
+
+            }
         }
 
-        CommonHelper();
-        PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(interval + 5));
-        int max = 10;
 
-        while (await timer.WaitForNextTickAsync() && max > 0)
+
+        /// <summary> actions on the local filesystem within the currently checked-out commit </summary>
+        public static class LocalActions
         {
-            String status = await SendAuthorizationRequest();
-            if (status != null)
-                break;
-            max--;
-        }
-    }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="repositoryLocal"></param>
+            public static void setLiveRepository(RepositoryLocal repositoryLocal)
+            {
+                if (!ReferenceEquals(repositoryLocal, liveRepository))
+                {
+                    // TODO check that .git folder and repo exist
+                    Command com = new Command("cd");
+                    com.Parameters.Add(repositoryLocal.dirPath);
+                    ShellCommandResult result = execShellCommand(com);
+                    // TODO check for command success
+                    //Command com_git_init = new Command("git");
+                    //com_git_init.Parameters.Add("init");
+                    //execShellCommand(com_git_init);
+                    // TODO check for command success
+                }
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="commit"></param>
+            public static void checkoutCommit(Commit commit)
+            {
+                if (!ReferenceEquals(commit, liveCommit))
+                {
+                    // TODO check that commit exists
+                    Command com = new Command("git");
+                    com.Parameters.Add("checkout");
+                    com.Parameters.Add(commit.longHash);
+                    ShellCommandResult result = execShellCommand(com);
+                    // TODO check for command success
+                    liveCommit = commit;
+                    liveBranch = null;
+                }
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="branch"></param>
+            public static void checkoutBranch(Branch branch)
+            {
+                if (!ReferenceEquals(branch.commit, liveCommit))
+                {
+                    // TODO check that branch exists and points to a valid commit
+                    Command com = new Command("git");
+                    com.Parameters.Add("checkout");
+                    com.Parameters.Add(branch.title);
+                    ShellCommandResult result = execShellCommand(com);
+                    // TODO check for command success
+                    liveCommit = branch.commit;
+                    liveBranch = branch;
+                }
+            }
 
     /// <summary>
     /// The private method to handle polling for the user to grant the app the appropriate permission to read/write to repository.
@@ -185,83 +192,168 @@ public class Github
 
             if (!content.Contains("error"))
             {
-                JObject json = JObject.Parse(content);
-                accessToken = json["access_token"].ToString();
+                // TODO check that liveCommit is not null
+                createLocalBranch(title, liveCommit);
+            }
+
+            public static void makeLocalBranchRemote()
+            {
+                // git push -u origin <branch>
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="branch"></param>
+            public static void deleteBranchLocal(Branch branch)
+            {
+
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="branch"></param>
+            public static void deleteBranchRemote(Branch branch)
+            {
+
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="localScanDirPath"></param>
+            /// <param name="recursive"></param>
+            public static void scanRepositories(string localScanDirPath, bool recursive)
+            {
+                /*
+                Command com = new Command("echo");
+                com.Parameters.Add("TESTING");
+                execShellCommand(com);
+                */
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="repositoryRemote"></param>
+            /// <param name="localCloneDirPath"></param>
+            public static void cloneRemote(RepositoryRemote repositoryRemote, string localCloneDirPath)
+            {
+
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public static void sync()
+            {
+
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public static void fetch()
+            {
+
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public static void pull()
+            {
+
+            }
+
+        }
+
+
+
+        /// <summary> actions on the local filesystem within the currently checked-out commit </summary>
+        public static class LiveActions
+        {
+            public readonly static string clean_description = "";
+            /// <summary>
+            /// 
+            /// </summary>
+            public static void clean()
+            {
+
+            }
+
+            public readonly static string add_description = "";
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="fpaths"></param>
+            public static void add(List<string> fpaths)
+            {
+
+            }
+
+            public readonly static string undoAdd_description = "";
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="fpaths"></param>
+            public static void undoAdd(List<string> fpaths)
+            {
+
+            }
+
+            public readonly static string commit_description = "";
+            /// <summary>
+            /// 
+            /// </summary>
+            public static void commit()
+            {
+
+            }
+
+            public readonly static string undoCommit_description = "";
+            /// <summary>
+            /// 
+            /// </summary>
+            public static void undoCommit()
+            {
+
             }
         }
-        return accessToken;
     }
 
-    /// <summary>
-    /// The private method to handle getting the GitHub user's repository list.
-    /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> GetRepoList()
+
+
+    /// <summary> Git Data Getters </summary>
+    public static class Getters
     {
-        if (accessToken == null)
-            return "";
 
-        sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
-        sharedClient.DefaultRequestHeaders.Accept.Add(githubType);
 
-        HttpResponseMessage response = await sharedClient.GetAsync("https://api.github.com/users/namdo1225/repos");
-        repoList = await response.Content.ReadAsStringAsync();
-        return repoList;
-    }
-
-    /// <summary>
-    /// The private method to revoke a user access token.
-    /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<bool> RevokeAccessToken()
-    {
-        if (accessToken == null)
+        public static class RemoteGetters
         {
-            Debug.WriteLine("RevokeAccessToken(): Access token is already deleted or null.");
-            return false;
-        }
-
-        StringContent jsonContent = new(
-            System.Text.Json.JsonSerializer.Serialize(new
+            public static List<RepositoryRemote> getRemoteRepositories()
             {
-                access_token = accessToken,
-            }),
-            Encoding.UTF8,
-            jsonType);
 
-        var request = new HttpRequestMessage(HttpMethod.Delete, "https://api.github.com/applications/" + tempClientID + "/token");
-        request.Headers.Add("Accept", "application/vnd.github+json");
-        request.Headers.Add("User-Agent", product.ToString());
-        request.Content = jsonContent;
-
-        var authenticationString = $"{tempClientID}:{tempClientSecret}";
-        var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
-        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
-
-        HttpResponseMessage response = await sharedClient.SendAsync(request);
-
-        Debug.WriteLine(request.ToString());
-        Debug.WriteLine(response.StatusCode);
-        if (response.StatusCode.ToString() == "NoContent")
-        {
-            Debug.WriteLine("RevokeAccessToken(): Access token revoked/deleted.");
-            accessToken = null;
-            return true;
+            }
         }
 
-        Debug.WriteLine("RevokeAccessToken(): Failed to delete access token.");
-        return false;
+
+
+        public static class LocalGetters
+        {
+            public static List<RepositoryLocal> getLocalRepositories()
+            {
+
+            }
+        }
+
+
+
+        public static class LiveGetters
+        {
+
+        }
     }
 
-    /// <summary>
-    /// A helper method that can be used many times. Reset the Http client to make the formatting of requests easier to do.
-    /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private void CommonHelper()
-    {
-        sharedClient.DefaultRequestHeaders.Accept.Clear();
-        sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
-        sharedClient.DefaultRequestHeaders.Accept.Add(jsonType);
-    }
 }
