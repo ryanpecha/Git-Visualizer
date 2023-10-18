@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net.Http;
+using System.Numerics;
 
 /// <summary>
 /// Class <c>Github</c> contains methods to abstract the interaction with the GitHub API and contain many of Github user's data.
@@ -14,8 +15,8 @@ public class Github
 {
 
     // members that can change during runtime
-    public static String userCode { get; private set; }
-    public static String deviceCode;
+    public static String? userCode { get; private set; }
+    public static String? deviceCode;
     public static String accessToken { get; private set; }
 
     // end section
@@ -24,7 +25,7 @@ public class Github
     private static String tempClientSecret = "15b4419077375217ebfcc678d0b106b002bff374";
     private static int interval = 5;
 
-    private static HttpClient sharedClient = new()
+    private static readonly HttpClient sharedClient = new()
     {
         BaseAddress = new Uri("https://api.github.com/"),
     };
@@ -34,7 +35,11 @@ public class Github
 
     // GitHub user information
 
-    public String repoList { get; private set; }
+    public List<Repo>? repos { get; private set; }
+    public String? username { get; private set; }
+    public String? avatarURL { get; private set; }
+    public String? userGitHubURL { get; private set; }
+
 
     /// <summary>
     /// The .ctor.
@@ -81,19 +86,53 @@ public class Github
     }
 
     /// <summary>
+    /// The method runs the request to get specific information about the user.
+    /// </summary>
+    /// <returns>The task object.</returns>
+    public async Task GetUserInfo()
+    {
+        // TODO: Format the JSON to make it easier to work in frontend.
+        await Task.Run(GetGitHubUser);
+    }
+
+    /// <summary>
     /// Testing method for Nam. Do not call.
     /// </summary>
     public async void TestAsync()
     {
         await GivePermission();
+
         Debug.Write("userCode: " + userCode);
 
 
         if (userCode != null)
             await WaitForAuthorization();
 
-        await GetRepositories();
-        Debug.Write("repo information: " + repoList);
+        await GetUserInfo();
+        await GetRepoList();
+
+        int i = 0;
+        foreach (Repo x in repos)
+        {
+            Debug.WriteLine(i + " " + x.name + " " + x.git_url);
+            Debug.WriteLine(createAuthenticatedGit(i));
+            i++;
+        }
+
+
+        await DeleteToken();
+    }
+
+    public String createAuthenticatedGit(int i)
+    {
+        if (repos == null)
+        {
+            return "";
+        }
+        else if (i < 0 || i > repos.Count)
+            return "createAuthenticatedGit(): Invalid index: " + i;
+
+        return "https://" + accessToken + "@" + repos[i].git_url;
     }
 
     /// <summary>
@@ -126,6 +165,7 @@ public class Github
             Debug.WriteLine(content);
             Debug.WriteLine("----------------");
             userCode = json["user_code"].ToString();
+
             return userCode;
         }
 
@@ -200,15 +240,50 @@ public class Github
     {
         if (accessToken == null)
             return "";
+        CommonAuthenticatedHelper();
 
-        sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
-        sharedClient.DefaultRequestHeaders.Accept.Add(githubType);
+        HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user/repos");
 
-        HttpResponseMessage response = await sharedClient.GetAsync("https://api.github.com/users/namdo1225/repos");
-        repoList = await response.Content.ReadAsStringAsync();
-        return repoList;
+        if (response.IsSuccessStatusCode)
+        {
+            String content = await response.Content.ReadAsStringAsync();
+            JArray array = JArray.Parse(content);
+            int gitEndIndex = 6;
+
+            repos = ((JArray)array).Select(repo => new Repo
+            {
+                name = (string)repo["name"],
+                git_url = ((string)repo["git_url"]).Substring(gitEndIndex)
+            }).ToList();
+        }
+
+        return "";
     }
+
+    /// <summary>
+    /// The private method to handle getting the GitHub user's public information.
+    /// </summary>
+    /// <returns>The Task<String> object that can be awaited for the String</returns>
+    private async Task<String> GetGitHubUser()
+    {
+        if (accessToken == null)
+            return "";
+        CommonAuthenticatedHelper();
+
+        HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user");
+
+        if (response.IsSuccessStatusCode)
+        {
+            String content = await response.Content.ReadAsStringAsync();
+            JObject json = JObject.Parse(content);
+            username = json["login"].ToString();
+            avatarURL = json["avatar_url"].ToString();
+            userGitHubURL = json["html_url"].ToString();
+        }
+
+        return username;
+    }
+
 
     /// <summary>
     /// The private method to revoke a user access token.
@@ -230,7 +305,7 @@ public class Github
             Encoding.UTF8,
             jsonType);
 
-        var request = new HttpRequestMessage(HttpMethod.Delete, "https://api.github.com/applications/" + tempClientID + "/token");
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"{sharedClient.BaseAddress}applications/{tempClientID}/token");
         request.Headers.Add("Accept", "application/vnd.github+json");
         request.Headers.Add("User-Agent", product.ToString());
         request.Content = jsonContent;
@@ -241,12 +316,11 @@ public class Github
 
         HttpResponseMessage response = await sharedClient.SendAsync(request);
 
-        Debug.WriteLine(request.ToString());
-        Debug.WriteLine(response.StatusCode);
         if (response.StatusCode.ToString() == "NoContent")
         {
             Debug.WriteLine("RevokeAccessToken(): Access token revoked/deleted.");
-            accessToken = null;
+
+            accessToken = username = avatarURL = userGitHubURL = null;
             return true;
         }
 
@@ -257,11 +331,20 @@ public class Github
     /// <summary>
     /// A helper method that can be used many times. Reset the Http client to make the formatting of requests easier to do.
     /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
     private void CommonHelper()
     {
         sharedClient.DefaultRequestHeaders.Accept.Clear();
         sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
         sharedClient.DefaultRequestHeaders.Accept.Add(jsonType);
+    }
+
+    /// <summary>
+    /// A helper method for authenticated requests that can be used many times.
+    /// </summary>
+    private void CommonAuthenticatedHelper()
+    {
+        sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
+        sharedClient.DefaultRequestHeaders.Accept.Add(githubType);
     }
 }
