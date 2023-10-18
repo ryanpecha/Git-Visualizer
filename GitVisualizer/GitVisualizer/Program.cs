@@ -16,10 +16,9 @@ namespace GitVisualizer
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(new SetupForm());
-
+            GitAPI.Actions.LocalActions.scanRepositories("test", false);
             Debug.WriteLine("This is how we debug!");
         }
-
 
         private static void DrawSkiaWeb()
         {
