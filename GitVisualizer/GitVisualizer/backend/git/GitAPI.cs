@@ -165,32 +165,31 @@ public static class GitAPI
                 }
             }
 
-    /// <summary>
-    /// The private method to handle polling for the user to grant the app the appropriate permission to read/write to repository.
-    /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> SendAuthorizationRequest()
-    {
-        HttpResponseMessage response;
-        StringContent jsonContent = new(
-            System.Text.Json.JsonSerializer.Serialize(new
+            /// <summary>
+            /// Creates a new branch from the given commit and checks into the new branch
+            /// </summary>
+            /// <param name="title"></param>
+            /// <param name="commit"></param>
+            public static void createLocalBranch(string title, Commit commit)
             {
-                client_id = tempClientID,
-                device_code = deviceCode,
-                grant_type = "urn:ietf:params:oauth:grant-type:device_code"
-            }),
-            Encoding.UTF8,
-            jsonType);
+                // TODO check that branch does not exist
+                Command com = new Command("git");
+                com.Parameters.Add("checkout");
+                com.Parameters.Add("-b");
+                com.Parameters.Add(title);
+                com.Parameters.Add(commit.longHash);
+                ShellCommandResult result = execShellCommand(com);
+                // TODO check for command success
+                Branch branch = new Branch(title, commit);
+                // TODO add new branch to global branch
+                liveCommit = branch.commit;
+            }
 
-        response = await sharedClient.PostAsync("https://github.com/login/oauth/access_token", jsonContent);
-
-        if (response.IsSuccessStatusCode)
-        {
-
-            String content = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine(content);
-
-            if (!content.Contains("error"))
+            /// <summary>
+            /// Creates a new branch from the live commit and checks into the new branch
+            /// </summary>
+            /// <param name="title"></param>
+            public static void createLocalBranch(string title)
             {
                 // TODO check that liveCommit is not null
                 createLocalBranch(title, liveCommit);
