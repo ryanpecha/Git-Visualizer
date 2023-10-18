@@ -19,6 +19,8 @@ namespace GitVisualizer
             GitAPI.Actions.LocalActions.scanRepositories("test", false);
             Debug.WriteLine("This is how we debug!");
         }
+    }
+
 
         private static void DrawSkiaWeb()
         {
