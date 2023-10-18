@@ -23,7 +23,7 @@
 - userGitHubURL: A String for the Github user profile page.
 
 ## API:
-- createAuthenticatedGit(int i): returns a String URL for which you can use git clone on that URL. The parameter selects which element of **repos** you can to retrieve.
+- CreateAuthenticatedGit(int i): returns a String URL for which you can use git clone on that URL. The parameter selects which element of **repos** you can to retrieve.
   For Backend developers: Using git clone with this will actually bypass any needs to enter password for future git pull/push. There might also be other functionalities being bypassed as well.
 
 - None of the methods below should block. Hopefully, your frontend UI won't freeze due to the following methods:
