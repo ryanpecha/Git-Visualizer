@@ -115,7 +115,7 @@ public class Github
         foreach (Repo x in repos)
         {
             Debug.WriteLine(i + " " + x.name + " " + x.git_url);
-            Debug.WriteLine(createAuthenticatedGit(i));
+            Debug.WriteLine(CreateAuthenticatedGit(i));
             i++;
         }
 
@@ -123,7 +123,12 @@ public class Github
         await DeleteToken();
     }
 
-    public String createAuthenticatedGit(int i)
+    /// <summary>
+    /// Returns an authenticated string good for git cloning.
+    /// </summary>
+    /// <param name="i">An int to grab index of the repo.</param>
+    /// <returns>The string URL for git cloning.</returns>
+    public String CreateAuthenticatedGit(int i)
     {
         if (repos == null)
         {
