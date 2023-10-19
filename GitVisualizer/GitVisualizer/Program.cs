@@ -23,6 +23,7 @@ namespace GitVisualizer
         /// </summary>
         public static MainForm MainForm => _mainForm;
 
+
         [STAThread]
         static void Main()
         {
@@ -31,7 +32,10 @@ namespace GitVisualizer
             ApplicationConfiguration.Initialize();
             Application.Run(_mainForm);
             GitAPI.Actions.LocalActions.scanRepositories("test", false);
-            _github.DeleteToken();
+            if (!_github.RememberUserAccess)
+            {
+                _github.DeleteToken();
+            }
             Debug.WriteLine("Program finished");
             
         }

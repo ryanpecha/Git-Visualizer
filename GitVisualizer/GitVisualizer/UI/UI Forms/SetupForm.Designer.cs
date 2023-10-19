@@ -50,6 +50,10 @@ namespace GitVisualizer
             label4 = new Label();
             userCodeLabelHeader = new Label();
             userCodeLabel = new Label();
+            rememberMeCheckbox = new CheckBox();
+            rememberMeLabel = new Label();
+            authorizationPanel = new Panel();
+            authorizationPanel.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -159,19 +163,18 @@ namespace GitVisualizer
             // 
             userCodeLabelHeader.AutoSize = true;
             userCodeLabelHeader.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            userCodeLabelHeader.Location = new Point(716, 68);
+            userCodeLabelHeader.Location = new Point(15, 18);
             userCodeLabelHeader.Name = "userCodeLabelHeader";
             userCodeLabelHeader.Size = new Size(443, 42);
             userCodeLabelHeader.TabIndex = 9;
             userCodeLabelHeader.Text = "A Github webpage should have opened in your browser. \r\nEnter the following code on that page to authorize your device:\r\n";
-            userCodeLabelHeader.Visible = false;
             userCodeLabelHeader.Click += userCodeLabelHeader_Click;
             // 
             // userCodeLabel
             // 
             userCodeLabel.AutoSize = true;
             userCodeLabel.Font = new Font("Segoe UI", 48F, FontStyle.Regular, GraphicsUnit.Point);
-            userCodeLabel.Location = new Point(766, 119);
+            userCodeLabel.Location = new Point(63, 79);
             userCodeLabel.Name = "userCodeLabel";
             userCodeLabel.Size = new Size(343, 86);
             userCodeLabel.TabIndex = 10;
@@ -179,12 +182,44 @@ namespace GitVisualizer
             userCodeLabel.TextAlign = ContentAlignment.MiddleCenter;
             userCodeLabel.Visible = false;
             // 
+            // rememberMeCheckbox
+            // 
+            rememberMeCheckbox.AutoSize = true;
+            rememberMeCheckbox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            rememberMeCheckbox.Location = new Point(32, 194);
+            rememberMeCheckbox.Name = "rememberMeCheckbox";
+            rememberMeCheckbox.Size = new Size(132, 25);
+            rememberMeCheckbox.TabIndex = 11;
+            rememberMeCheckbox.Text = "Remember Me";
+            rememberMeCheckbox.UseVisualStyleBackColor = true;
+            rememberMeCheckbox.CheckedChanged += RememberMeCheckboxChanged;
+            // 
+            // rememberMeLabel
+            // 
+            rememberMeLabel.AutoSize = true;
+            rememberMeLabel.Location = new Point(32, 222);
+            rememberMeLabel.Name = "rememberMeLabel";
+            rememberMeLabel.Size = new Size(426, 60);
+            rememberMeLabel.TabIndex = 12;
+            rememberMeLabel.Text = "If checked, your authorization code will be remembered so you will not have to \r\nauthorize again each time you open the app.\r\n\r\nLeave unchecked to revoke access to your account when exiting the app. ";
+            // 
+            // authorizationPanel
+            // 
+            authorizationPanel.Controls.Add(userCodeLabelHeader);
+            authorizationPanel.Controls.Add(rememberMeCheckbox);
+            authorizationPanel.Controls.Add(rememberMeLabel);
+            authorizationPanel.Controls.Add(userCodeLabel);
+            authorizationPanel.Location = new Point(660, 25);
+            authorizationPanel.Name = "authorizationPanel";
+            authorizationPanel.Size = new Size(483, 493);
+            authorizationPanel.TabIndex = 13;
+            authorizationPanel.Visible = false;
+            // 
             // SetupForm
             // 
             AutoScaleMode = AutoScaleMode.Inherit;
             ClientSize = new Size(1224, 810);
-            Controls.Add(userCodeLabel);
-            Controls.Add(userCodeLabelHeader);
+            Controls.Add(authorizationPanel);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(localWorkspaceButton);
@@ -198,6 +233,8 @@ namespace GitVisualizer
             StartPosition = FormStartPosition.CenterScreen;
             Text = "GitHelper Login";
             Load += Form1_Load;
+            authorizationPanel.ResumeLayout(false);
+            authorizationPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -242,5 +279,8 @@ namespace GitVisualizer
         private Label label4;
         private Label userCodeLabelHeader;
         private Label userCodeLabel;
+        private CheckBox rememberMeCheckbox;
+        private Label rememberMeLabel;
+        private Panel authorizationPanel;
     }
 }

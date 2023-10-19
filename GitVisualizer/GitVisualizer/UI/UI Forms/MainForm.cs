@@ -23,7 +23,6 @@ namespace GitVisualizer.UI.UI_Forms
             ApplyColorTheme(AppTheme);
             CheckValidation();
             this.Activated += PopulateReposTable;
-
         }
 
 
@@ -55,7 +54,20 @@ namespace GitVisualizer.UI.UI_Forms
 
         public void PopulateReposTable(object sender, EventArgs e)
         {
-            repositoriesGrid.Rows.Add("row1,col1", "row1,col2");
+            GetRepositoriesData();
+        }
+
+        private async void GetRepositoriesData()
+        {
+            await githubAPI.GetRepositories();
+            string repositoriesJSONContents = githubAPI.repoList;
+            if (repositoriesJSONContents == null) { return; }
+            string[] reposByName = repositoriesJSONContents.Split("\"name\":");
+            foreach (string reposName in reposByName)
+            {
+                Debug.WriteLine(reposName[..16]);
+            }
+            
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)

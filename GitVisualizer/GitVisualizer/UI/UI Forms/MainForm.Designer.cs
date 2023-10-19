@@ -175,6 +175,23 @@
                 page.ForeColor = theme.TextSelectable;
                 page.BackColor = theme.AppBackground;
             }
+
+            repositoriesGrid.BackgroundColor = theme.ElementBackground;
+            repositoriesGrid.ForeColor = theme.TextSelectable;
+            DataGridViewRowCollection gridRows = repositoriesGrid.Rows;
+            foreach (DataGridViewRow row in gridRows)
+            {
+                row.DefaultCellStyle.BackColor = theme.ElementBackground;
+                row.DefaultCellStyle.ForeColor = theme.TextSelectable;
+            }
+
+            DataGridViewColumnCollection gridCols = repositoriesGrid.Columns;
+            foreach (DataGridViewColumn column in gridCols)
+            {
+                column.DefaultCellStyle.BackColor = theme.ElementBackground;
+                column.DefaultCellStyle.ForeColor = theme.TextHeader;
+            }
+  
         }
         private TabPage tabPageBranches;
         private TabPage tabPageMerging;

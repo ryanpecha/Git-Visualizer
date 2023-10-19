@@ -38,9 +38,16 @@ public class Github
     private static MediaTypeWithQualityHeaderValue jsonType = new MediaTypeWithQualityHeaderValue("application/json");
     private static MediaTypeWithQualityHeaderValue githubType = new MediaTypeWithQualityHeaderValue("application/vnd.github+json");
 
+    private bool rememberUserAccess = false;
+
     // GitHub user information
 
     public String repoList { get; private set; }
+    /// <summary>
+    /// True if user wants to store access key in app, false if it wants to revoke it when app ends
+    /// </summary>
+    public bool RememberUserAccess => rememberUserAccess;
+
 
     /// <summary>
     /// The .ctor.
@@ -261,6 +268,16 @@ public class Github
 
         Debug.WriteLine("RevokeAccessToken(): Failed to delete access token.");
         return false;
+    }
+
+    /// <summary>
+    /// Allows external setting of remember user bool, which saves access token if true or
+    /// revokes it on app close when false.
+    /// </summary>
+    /// <param name="isEnabled"></param>
+    public void SetRememberUserAccessBool(bool isEnabled)
+    {
+        rememberUserAccess = isEnabled;
     }
 
     /// <summary>

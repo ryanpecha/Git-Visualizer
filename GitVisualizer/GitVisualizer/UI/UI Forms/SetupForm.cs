@@ -57,21 +57,22 @@ namespace GitVisualizer
         /// </summary>
         private async void GetPermissionGithub()
         {
+            authorizationPanel.Visible = true;
             await Program.Github.GivePermission();
+            ShowUserCode(Github.userCode);
+
 
             if (Github.userCode != null)
             {
-                ShowUserCode(Github.userCode);
                 Debug.Write(Github.userCode);
                 await Program.Github.WaitForAuthorization();
             }
-            
+
             this.Hide();
         }
 
         private void ShowUserCode(string userCode)
         {
-            userCodeLabelHeader.Visible = true;
             userCodeLabel.Text = userCode;
             userCodeLabel.Visible = true;
         }
@@ -91,8 +92,20 @@ namespace GitVisualizer
         /// <param name="e"></param>
         private void LoadMainAppFormLocal(object sender, EventArgs e)
         {
-            
+
             this.Hide();
+        }
+
+        /// <summary>
+        /// Changes Github remember user auth bool based on result of remember me checkbox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RememberMeCheckboxChanged(object sender, EventArgs e)
+        {
+            bool toRemember = rememberMeCheckbox.Checked;
+            Program.Github.SetRememberUserAccessBool(toRemember);
+            Debug.WriteLine("Remember user? " + Program.Github.RememberUserAccess);
         }
 
         private void button1_Click(object sender, EventArgs e)
