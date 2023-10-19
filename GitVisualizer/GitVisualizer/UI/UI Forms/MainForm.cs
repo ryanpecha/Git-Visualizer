@@ -16,6 +16,9 @@ namespace GitVisualizer.UI.UI_Forms
         private bool hasCredentials = false;
         public UITheme.AppTheme AppTheme = UITheme.DarkTheme;
         private Github githubAPI;
+
+        private RepositoriesControl repositoriesControl = new();
+        private BranchesControl branchesControl = new();
         public MainForm()
         {
             githubAPI = Program.Github;
@@ -25,6 +28,10 @@ namespace GitVisualizer.UI.UI_Forms
             this.Activated += PopulateReposTable;
         }
 
+        private void MainFormLoad(object sender, EventArgs e)
+        {
+
+        }
 
         /// <summary>
         /// Checks if user has already logged in with this device, and show login page if not
@@ -38,7 +45,32 @@ namespace GitVisualizer.UI.UI_Forms
                 // Shows setup page as dialog, so closing it returns here
                 setup.ShowDialog();
                 this.SetVisibleCore(false);
+                ShowControlInMainPanel(repositoriesControl);
             }
+        }
+
+        public void OnRepositoriesButtonPress(object sender, EventArgs e)
+        {
+            ShowControlInMainPanel(repositoriesControl);
+        }
+        public void OnBranchesButtonPress(object sender, EventArgs e)
+        {
+            ShowControlInMainPanel(branchesControl);
+        }
+        public void OnMergingButtonPress(object sender, EventArgs e)
+        {
+            mainPanel.Controls.Clear();
+        }
+
+        /// <summary>
+        /// Clears current main panel control and swaps it for given User Control view
+        /// </summary>
+        /// <param name="control"></param>
+        private void ShowControlInMainPanel(UserControl control)
+        {
+            mainPanel.Controls.Clear();
+            mainPanel.Controls.Add(control);
+            control.Dock = DockStyle.Fill;
         }
 
         /// <summary>
@@ -54,6 +86,7 @@ namespace GitVisualizer.UI.UI_Forms
 
         public void PopulateReposTable(object sender, EventArgs e)
         {
+
             GetRepositoriesData();
         }
 
@@ -67,22 +100,8 @@ namespace GitVisualizer.UI.UI_Forms
             {
                 Debug.WriteLine(reposName[..16]);
             }
-            
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
 
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
