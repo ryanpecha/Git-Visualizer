@@ -6,19 +6,36 @@ namespace GitVisualizer
 {
     internal static class Program
     {
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
+        /// 
+        private static readonly Github _github = new();
+        private static readonly MainForm _mainForm = new();
+
+        /// <summary>
+        /// Github API instance used for handling Github.com requests and communications with Github server.
+        /// </summary>
+        public static Github Github => _github;
+        /// <summary>
+        /// Instance for Main WindowsForm Form, where the main app window exists
+        /// </summary>
+        public static MainForm MainForm => _mainForm;
+
         [STAThread]
         static void Main()
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new SetupForm());
+            Application.Run(_mainForm);
             GitAPI.Actions.LocalActions.scanRepositories("test", false);
-            Debug.WriteLine("This is how we debug!");
+            _github.DeleteToken();
+            Debug.WriteLine("Program finished");
+            
         }
+
 
         private static void DrawSkiaWeb()
         {

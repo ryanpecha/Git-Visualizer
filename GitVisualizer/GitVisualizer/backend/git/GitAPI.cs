@@ -333,7 +333,7 @@ public static class GitAPI
         {
             public static List<RepositoryRemote> getRemoteRepositories()
             {
-
+                return null;    //TODO: implement, placeholder returns
             }
         }
 
@@ -343,7 +343,7 @@ public static class GitAPI
         {
             public static List<RepositoryLocal> getLocalRepositories()
             {
-
+                return null;    //TODO: implement, placeholder returns
             }
         }
 

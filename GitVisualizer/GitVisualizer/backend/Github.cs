@@ -18,10 +18,16 @@ public class Github
     public static String deviceCode;
     public static String accessToken { get; private set; }
 
+    /// <summary>
+    /// URL for login with code page on github
+    /// </summary>
+    public const String deviceLoginCodeURL = "https://github.com/login/device";
+
     // end section
 
     private static String tempClientID = "a6b32f8800218e8eab39";
     private static String tempClientSecret = "15b4419077375217ebfcc678d0b106b002bff374";
+    
     private static int interval = 5;
 
     private static HttpClient sharedClient = new()
@@ -75,9 +81,9 @@ public class Github
     /// The method deletes the user access token, essentially disassociating them from the app.
     /// </summary>
     /// <returns>The task object.</returns>
-    public async Task DeleteToken()
+    public bool DeleteToken()
     {
-        await Task.Run(RevokeAccessToken);
+        return RevokeAccessToken();
     }
 
     /// <summary>
@@ -106,7 +112,7 @@ public class Github
             System.Text.Json.JsonSerializer.Serialize(new
             {
                 client_id = tempClientID,
-                scope = "repo"
+                scope = "public_repo"
             }),
             Encoding.UTF8,
              jsonType);
@@ -214,13 +220,16 @@ public class Github
     /// The private method to revoke a user access token.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<bool> RevokeAccessToken()
+    private bool RevokeAccessToken()
     {
+        
         if (accessToken == null)
         {
             Debug.WriteLine("RevokeAccessToken(): Access token is already deleted or null.");
             return false;
         }
+        
+        Debug.WriteLine("Removing User token: " + accessToken);
 
         StringContent jsonContent = new(
             System.Text.Json.JsonSerializer.Serialize(new
@@ -239,7 +248,7 @@ public class Github
         var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
         request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
 
-        HttpResponseMessage response = await sharedClient.SendAsync(request);
+        HttpResponseMessage response = sharedClient.Send(request);
 
         Debug.WriteLine(request.ToString());
         Debug.WriteLine(response.StatusCode);
