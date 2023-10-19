@@ -121,5 +121,10 @@ namespace GitVisualizer
         {
 
         }
+
+        private void rememberMeLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

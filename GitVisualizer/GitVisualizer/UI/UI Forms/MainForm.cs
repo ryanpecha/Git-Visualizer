@@ -19,6 +19,7 @@ namespace GitVisualizer.UI.UI_Forms
 
         private RepositoriesControl repositoriesControl = new();
         private BranchesControl branchesControl = new();
+        private MergingControl mergingControl = new();
         public MainForm()
         {
             githubAPI = Program.Github;
@@ -59,7 +60,7 @@ namespace GitVisualizer.UI.UI_Forms
         }
         public void OnMergingButtonPress(object sender, EventArgs e)
         {
-            mainPanel.Controls.Clear();
+            ShowControlInMainPanel(mergingControl);
         }
 
         /// <summary>
