@@ -71,6 +71,20 @@
 
         #endregion
 
+        private void ApplyColorTheme(UITheme.AppTheme theme)
+        {
+            BackColor = theme.AppBackground;
+            ForeColor = theme.TextSoft;
+
+            /// Apply themes to all buttons
+            IEnumerable<Control> buttons = this.Controls.OfType<Control>().Where(x => x is Button);
+            foreach (Button button in buttons)
+            {
+                button.BackColor = theme.ElementBackground;
+                button.ForeColor = theme.TextSelectable;
+            }
+        }
+
         private DataGridView repositoriesGridView;
         private DataGridViewTextBoxColumn localReposColumn;
         private DataGridViewTextBoxColumn remoteReposColumn;

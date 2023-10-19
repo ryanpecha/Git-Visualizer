@@ -15,6 +15,7 @@ namespace GitVisualizer.UI.UI_Forms
         public BranchesControl()
         {
             InitializeComponent();
+            ApplyColorTheme(MainForm.AppTheme);
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

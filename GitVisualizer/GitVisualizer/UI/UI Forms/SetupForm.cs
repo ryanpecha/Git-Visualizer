@@ -9,11 +9,10 @@ namespace GitVisualizer
     /// </summary>
     public partial class SetupForm : Form
     {
-        public UITheme.AppTheme AppTheme = UITheme.DarkTheme;
         public SetupForm()
         {
             InitializeComponent();
-            ApplyColorTheme(AppTheme);
+            ApplyColorTheme(MainForm.AppTheme);
             this.FormClosing += new FormClosingEventHandler(LoadMainAppFormLocal); // Open main window when closing this one, skipping Auth
             Debug.Write("Setup Form opened\n");
         }

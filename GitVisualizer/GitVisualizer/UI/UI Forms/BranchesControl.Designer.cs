@@ -19,6 +19,13 @@
             }
             base.Dispose(disposing);
         }
+        private void ApplyColorTheme(UITheme.AppTheme theme)
+        {
+            BackColor = theme.AppBackground;
+            ForeColor = theme.TextSoft;
+
+        
+        }
 
         #region Component Designer generated code
 

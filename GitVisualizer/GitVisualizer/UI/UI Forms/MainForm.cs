@@ -14,7 +14,7 @@ namespace GitVisualizer.UI.UI_Forms
     public partial class MainForm : Form
     {
         private bool hasCredentials = false;
-        public UITheme.AppTheme AppTheme = UITheme.DarkTheme;
+        public static UITheme.AppTheme AppTheme = UITheme.DarkTheme;
         private Github githubAPI;
 
         private RepositoriesControl repositoriesControl = new();
