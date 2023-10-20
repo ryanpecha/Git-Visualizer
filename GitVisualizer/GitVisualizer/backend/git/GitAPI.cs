@@ -71,7 +71,6 @@ public static class GitAPI
 
 
 
-
     /// <summary> Git Actions </summary>
     public static class Actions
     {
@@ -232,6 +231,14 @@ public static class GitAPI
                 // fetch followed by a merge
             }
 
+
+            public readonly static string keepTrackOfDirectory_description = "";
+            public static void trackDirectory(string dirPath, bool recursive)
+            {
+                trackedDirIsRecuriveDict[dirPath] = recursive;
+                scanRepositories();
+            }
+
         }
 
 
@@ -290,12 +297,6 @@ public static class GitAPI
             return localRepositories;
         }
 
-        public readonly static string keepTrackOfDirectory_description = "";
-        public static void trackDirectory(string dirPath, bool recursive)
-        {
-            trackedDirIsRecuriveDict[dirPath] = recursive;
-            scanRepositories();
-        }
     }
 
 }
