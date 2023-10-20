@@ -66,7 +66,6 @@ public static class GitAPI
     }
 
 
-
     /// <summary> GitAPI initialization </summary>
     static GitAPI()
     {
@@ -170,10 +169,11 @@ public static class GitAPI
                     com.Parameters.Add(repositoryLocal.dirPath);
                     ShellCommandResult result = execShellCommand(com);
                     // TODO check for command success
-                    //Command com_git_init = new Command("git");
-                    //com_git_init.Parameters.Add("init");
-                    //execShellCommand(com_git_init);
+                    Command com_git_init = new Command("git");
+                    com_git_init.Parameters.Add("init");
+                    result = execShellCommand(com_git_init);
                     // TODO check for command success
+                    liveRepository = repositoryLocal;
                 }
             }
 
