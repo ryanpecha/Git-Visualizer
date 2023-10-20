@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Management.Automation;
 using System.Collections.ObjectModel;
 using System.Management.Automation.Runspaces;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GitVisualizer;
 
@@ -17,17 +18,70 @@ public static class GitAPI
     /// <summary> currently tracked local repository </summary>
     public static RepositoryLocal? liveRepository { get; private set; }
 
+    /// <summary> </summary>
+    public static string? liveRepositoryDirPath { get; private set; }
+
     /// <summary> persistent shell instance for running commands </summary>
     private static PowerShell shell;
+
+
+    //
+    private static Dictionary<string, RepositoryRemote> remoteRepositories;
+    //
+    private static Dictionary<string, RepositoryLocal> localRepositories;
+    //
+    private static Dictionary<string, bool> trackedDirRecurDict;
+    //
+    private static void scanRepositories()
+    {
+        foreach (KeyValuePair<string, bool> entry in trackedDirRecurDict)
+        {
+            string dirPath = entry.Key;
+            bool recursive = entry.Value;
+            SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
+            string[] gitFolderPaths = Directory.GetDirectories(dirPath, ".git/", searchOption);
+            foreach (string gitFolderPath in gitFolderPaths)
+            {
+                // getting parent folder of .git folder
+                DirectoryInfo? repoDirInfo = Directory.GetParent(gitFolderPath);
+                // skipping null info
+                if (repoDirInfo == null)
+                {
+                    continue;
+                }
+                // getting repo folder abs path
+                string repoDirPath = repoDirInfo.FullName;
+                // skipping already loaded repositories
+                if (localRepositories.Keys.Contains(repoDirPath))
+                {
+                    continue;
+                }
+                // 
+                string repoName = repoDirInfo.Name;
+                // TODO extract repo name from .git via git command
+                RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
+                localRepositories[repoName] = newLocalRepo;
+            }
+        }
+    }
+
 
 
     /// <summary> GitAPI initialization </summary>
     static GitAPI()
     {
-        // TODO load most repo from config file
+        shell = PowerShell.Create();
+        // TODO load tracked repos and previous program state from config file
         liveCommit = null;
         liveRepository = null;
-        shell = PowerShell.Create();
+        liveRepositoryDirPath = null;
+        //
+        remoteRepositories = new Dictionary<string, RepositoryRemote>();
+        localRepositories = new Dictionary<string, RepositoryLocal>();
+        //
+        trackedDirRecurDict = new Dictionary<string, bool>();
+        //
+        scanRepositories();
     }
 
 
@@ -81,21 +135,20 @@ public static class GitAPI
 
         public static class RemoteActions
         {
-            public static void deleteRemote()
+            public readonly static string deleteRemoteRepository_description = "";
+            public static void deleteRemoteRepository()
             {
 
             }
 
-            public static void createRemote()
+            public readonly static string createRemoteRepository_description = "";
+            public static void createRemoteRepository()
             {
 
             }
 
-            public readonly static string push_description = "";
-            /// <summary>
-            /// 
-            /// </summary>
-            public static void push()
+            public readonly static string pushCommitToRemoteRepository_description = "";
+            public static void pushCommitToRemoteRepository()
             {
 
             }
@@ -107,10 +160,7 @@ public static class GitAPI
         public static class LocalActions
         {
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="repositoryLocal"></param>
+            public readonly static string setLiveRepository_description = "";
             public static void setLiveRepository(RepositoryLocal repositoryLocal)
             {
                 if (!ReferenceEquals(repositoryLocal, liveRepository))
@@ -127,10 +177,8 @@ public static class GitAPI
                 }
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="commit"></param>
+
+            public readonly static string checkoutCommit_description = "";
             public static void checkoutCommit(Commit commit)
             {
                 if (!ReferenceEquals(commit, liveCommit))
@@ -146,10 +194,8 @@ public static class GitAPI
                 }
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="branch"></param>
+
+            public readonly static string checkoutBranch_description = "";
             public static void checkoutBranch(Branch branch)
             {
                 if (!ReferenceEquals(branch.commit, liveCommit))
@@ -165,11 +211,8 @@ public static class GitAPI
                 }
             }
 
-            /// <summary>
-            /// Creates a new branch from the given commit and checks into the new branch
-            /// </summary>
-            /// <param name="title"></param>
-            /// <param name="commit"></param>
+
+            public readonly static string createLocalBranch_description = "";
             public static void createLocalBranch(string title, Commit commit)
             {
                 // TODO check that branch does not exist
@@ -185,85 +228,60 @@ public static class GitAPI
                 liveCommit = branch.commit;
             }
 
-            /// <summary>
-            /// Creates a new branch from the live commit and checks into the new branch
-            /// </summary>
-            /// <param name="title"></param>
-            public static void createLocalBranch(string title)
-            {
-                // TODO check that liveCommit is not null
-                createLocalBranch(title, liveCommit);
-            }
 
-            public static void makeLocalBranchRemote()
+            public readonly static string addLocalBranchToRemote_description = "";
+            public static void addLocalBranchToRemote()
             {
                 // git push -u origin <branch>
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="branch"></param>
+
+            public readonly static string deleteBranchLocal_description = "";
             public static void deleteBranchLocal(Branch branch)
             {
 
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="branch"></param>
-            public static void deleteBranchRemote(Branch branch)
+
+            public readonly static string deleteRemoteBranch_description = "";
+            public static void deleteRemoteBranch(Branch branch)
             {
 
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="localScanDirPath"></param>
-            /// <param name="recursive"></param>
-            public static void scanRepositories(string localScanDirPath, bool recursive)
-            {
-                /*
-                Command com = new Command("echo");
-                com.Parameters.Add("TESTING");
-                execShellCommand(com);
-                */
-            }
 
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="repositoryRemote"></param>
-            /// <param name="localCloneDirPath"></param>
-            public static void cloneRemote(RepositoryRemote repositoryRemote, string localCloneDirPath)
+            public readonly static string cloneRemoteRepository_description = "";
+            public static void cloneRemoteRepository(RepositoryRemote repositoryRemote, string localCloneDirPath)
             {
 
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
+
+            public readonly static string merge_description = "";
+            public static void merge()
+            {
+
+            }
+
+
+            public readonly static string sync_description = "";
             public static void sync()
             {
-
+                // pull and push
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
+
+            public readonly static string fetch_description = "";
             public static void fetch()
             {
-
+                // gets info about remote repositories
             }
 
-            /// <summary>
-            /// 
-            /// </summary>
+
+            public readonly static string pull_description = "";
             public static void pull()
             {
-
+                // fetch followed by a merge
             }
 
         }
@@ -274,47 +292,30 @@ public static class GitAPI
         public static class LiveActions
         {
             public readonly static string clean_description = "";
-            /// <summary>
-            /// 
-            /// </summary>
             public static void clean()
             {
 
             }
 
             public readonly static string add_description = "";
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="fpaths"></param>
             public static void add(List<string> fpaths)
             {
 
             }
 
             public readonly static string undoAdd_description = "";
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="fpaths"></param>
             public static void undoAdd(List<string> fpaths)
             {
 
             }
 
             public readonly static string commit_description = "";
-            /// <summary>
-            /// 
-            /// </summary>
             public static void commit()
             {
 
             }
 
             public readonly static string undoCommit_description = "";
-            /// <summary>
-            /// 
-            /// </summary>
             public static void undoCommit()
             {
 
@@ -328,30 +329,24 @@ public static class GitAPI
     public static class Getters
     {
 
-
-        public static class RemoteGetters
+        public readonly static string getRemoteRepositories_description = "";
+        public static Dictionary<string, RepositoryRemote> getRemoteRepositories()
         {
-            public static List<RepositoryRemote> getRemoteRepositories()
-            {
-
-            }
+            return remoteRepositories;
         }
 
 
-
-        public static class LocalGetters
+        public readonly static string getLocalRepositories_description = "";
+        public static Dictionary<string, RepositoryLocal> getLocalRepositories()
         {
-            public static List<RepositoryLocal> getLocalRepositories()
-            {
-
-            }
+            return localRepositories;
         }
 
-
-
-        public static class LiveGetters
+        public readonly static string keepTrackOfDirectory_description = "";
+        public static void keepTrackOfDirectory(string dirPath, bool recursive)
         {
-
+            trackedDirRecurDict[dirPath] = recursive;
+            scanRepositories();
         }
     }
 

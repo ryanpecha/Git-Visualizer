@@ -2,12 +2,10 @@
 
 public class Repository
 {
-    //
-    private string title;
-    private string owner;
+    public string title { get; private set; }
 
-    public Repository()
+    public Repository(string title)
     {
-        
+        this.title = title;
     }
 }

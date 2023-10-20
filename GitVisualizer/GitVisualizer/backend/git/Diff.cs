@@ -3,11 +3,25 @@
 public class Diff
 {
 
-    public Diff(Commit commitA, Commit commitB) {
+    public Commit commitA { get; private set; }
+    public Commit commitB { get; private set; }
 
+    public Diff(Commit commitA, Commit commitB)
+    {
+        this.commitA = commitA;
+        this.commitB = commitB;
+        evaluateDiff();
     }
-    
-    public Diff() {
-        
+
+    public void recalcDiff(Commit commitA, Commit commitB)
+    {
+        this.commitA = commitA;
+        this.commitB = commitB;
+        evaluateDiff();
+    }
+
+    private void evaluateDiff()
+    {
+
     }
 }

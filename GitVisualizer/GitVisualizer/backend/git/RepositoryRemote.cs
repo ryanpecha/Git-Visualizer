@@ -1,11 +1,13 @@
 ﻿namespace GitVisualizer;
 
-public class RepositoryRemote
+public class RepositoryRemote : Repository
 {
-    string cloneUrlSSH;
-    string cloneUrlHTTPS;
+    public string cloneUrlSSH { get; private set; }
+    public string cloneUrlHTTPS { get; private set; }
 
-    public RepositoryRemote() {
-        
+    public RepositoryRemote(string title, string cloneUrlSSH, string cloneUrlHTTPS) : base(title)
+    {
+        this.cloneUrlSSH = cloneUrlSSH;
+        this.cloneUrlHTTPS = cloneUrlHTTPS;
     }
 }
