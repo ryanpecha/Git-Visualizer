@@ -1,9 +1,4 @@
-
-using System.Diagnostics;
-using System.Management.Automation;
-using System.Collections.ObjectModel;
 using System.Management.Automation.Runspaces;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GitVisualizer;
 
@@ -18,28 +13,22 @@ public static class GitAPI
     /// <summary> currently tracked local repository </summary>
     public static RepositoryLocal? liveRepository { get; private set; }
 
-    /// <summary> </summary>
-    public static string? liveRepositoryDirPath { get; private set; }
-
-    /// <summary> persistent shell instance for running commands </summary>
-    private static PowerShell shell;
-
-
     //
     private static Dictionary<string, RepositoryRemote> remoteRepositories;
     //
     private static Dictionary<string, RepositoryLocal> localRepositories;
     //
-    private static Dictionary<string, bool> trackedDirRecurDict;
+    private static Dictionary<string, bool> trackedDirIsRecuriveDict;
+
     //
     private static void scanRepositories()
     {
-        foreach (KeyValuePair<string, bool> entry in trackedDirRecurDict)
+        foreach (KeyValuePair<string, bool> entry in trackedDirIsRecuriveDict)
         {
             string dirPath = entry.Key;
             bool recursive = entry.Value;
             SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
-            string[] gitFolderPaths = Directory.GetDirectories(dirPath, ".git/", searchOption);
+            string[] gitFolderPaths = Directory.GetDirectories(dirPath, ".git", searchOption);
             foreach (string gitFolderPath in gitFolderPaths)
             {
                 // getting parent folder of .git folder
@@ -65,64 +54,21 @@ public static class GitAPI
         }
     }
 
-
     /// <summary> GitAPI initialization </summary>
     static GitAPI()
     {
-        shell = PowerShell.Create();
         // TODO load tracked repos and previous program state from config file
         liveCommit = null;
         liveRepository = null;
-        liveRepositoryDirPath = null;
         //
         remoteRepositories = new Dictionary<string, RepositoryRemote>();
         localRepositories = new Dictionary<string, RepositoryLocal>();
         //
-        trackedDirRecurDict = new Dictionary<string, bool>();
+        trackedDirIsRecuriveDict = new Dictionary<string, bool>();
         //
         scanRepositories();
     }
 
-
-
-    /// <summary> structure used to represent the results of a shell command</summary>
-    private struct ShellCommandResult
-    {
-        public bool success { get; private set; }
-        public string? errmsg { get; private set; }
-        public Collection<PSObject>? psObjects { get; private set; }
-        public ShellCommandResult(bool success, string? errmsg, Collection<PSObject>? psObjects)
-        {
-            this.success = success;
-            this.errmsg = errmsg;
-            this.psObjects = psObjects;
-        }
-    }
-
-    /// <summary> synchronously executes the given command returns the result struct </summary>
-    private static ShellCommandResult execShellCommand(Command command)
-    {
-        // TODO async shell command queue
-        try
-        {
-            shell.Commands.AddCommand(command);
-            Collection<PSObject> psObjects = shell.Invoke();
-            bool success = !shell.HadErrors;
-            string? errmsg = null;
-            if (!success)
-            {
-                ErrorRecord err = shell.Streams.Error[0];
-                errmsg = err.ToString();
-                shell.Streams.Error.Clear();
-            }
-            return new ShellCommandResult(success, errmsg: errmsg, psObjects: psObjects);
-        }
-        catch (Exception e)
-        {
-            string errmsg = e.ToString();
-            return new ShellCommandResult(success: false, errmsg: errmsg, psObjects: null);
-        }
-    }
 
 
 
@@ -167,13 +113,15 @@ public static class GitAPI
                     // TODO check that .git folder and repo exist
                     Command com = new Command("cd");
                     com.Parameters.Add(repositoryLocal.dirPath);
-                    ShellCommandResult result = execShellCommand(com);
+                    ShellComRes result = Shell.exec(com);
                     // TODO check for command success
-                    Command com_git_init = new Command("git");
-                    com_git_init.Parameters.Add("init");
-                    result = execShellCommand(com_git_init);
+                    com = new Command("git");
+                    com.Parameters.Add("init");
+                    result = Shell.exec(com);
                     // TODO check for command success
                     liveRepository = repositoryLocal;
+                    // TODO set commit to currently checked out repo commit
+                    //liveCommit = ;
                 }
             }
 
@@ -187,7 +135,7 @@ public static class GitAPI
                     Command com = new Command("git");
                     com.Parameters.Add("checkout");
                     com.Parameters.Add(commit.longHash);
-                    ShellCommandResult result = execShellCommand(com);
+                    ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     liveCommit = commit;
                     liveBranch = null;
@@ -204,7 +152,7 @@ public static class GitAPI
                     Command com = new Command("git");
                     com.Parameters.Add("checkout");
                     com.Parameters.Add(branch.title);
-                    ShellCommandResult result = execShellCommand(com);
+                    ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     liveCommit = branch.commit;
                     liveBranch = branch;
@@ -221,7 +169,7 @@ public static class GitAPI
                 com.Parameters.Add("-b");
                 com.Parameters.Add(title);
                 com.Parameters.Add(commit.longHash);
-                ShellCommandResult result = execShellCommand(com);
+                ShellComRes result = Shell.exec(com);
                 // TODO check for command success
                 Branch branch = new Branch(title, commit);
                 // TODO add new branch to global branch
@@ -338,14 +286,14 @@ public static class GitAPI
 
         public readonly static string getLocalRepositories_description = "";
         public static Dictionary<string, RepositoryLocal> getLocalRepositories()
-        {   
+        {
             return localRepositories;
         }
 
         public readonly static string keepTrackOfDirectory_description = "";
-        public static void keepTrackOfDirectory(string dirPath, bool recursive)
+        public static void trackDirectory(string dirPath, bool recursive)
         {
-            trackedDirRecurDict[dirPath] = recursive;
+            trackedDirIsRecuriveDict[dirPath] = recursive;
             scanRepositories();
         }
     }
