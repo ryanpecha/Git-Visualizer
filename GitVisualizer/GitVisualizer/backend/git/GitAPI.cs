@@ -338,7 +338,7 @@ public static class GitAPI
 
         public readonly static string getLocalRepositories_description = "";
         public static Dictionary<string, RepositoryLocal> getLocalRepositories()
-        {
+        {   
             return localRepositories;
         }
 

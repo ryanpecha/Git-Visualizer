@@ -29,77 +29,79 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tabControl = new TabControl();
-            tabPageRepositories = new TabPage();
-            tabPageBranches = new TabPage();
-            tabPageMerging = new TabPage();
-            tabPageFiles = new TabPage();
-            tabControl.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            githubBindingSource = new BindingSource(components);
+            repositoriesPageButton = new Button();
+            branchesPageButton = new Button();
+            mergingPageButton = new Button();
+            mainPanel = new Panel();
+            ((System.ComponentModel.ISupportInitialize)githubBindingSource).BeginInit();
             SuspendLayout();
             // 
-            // tabControl
+            // githubBindingSource
             // 
-            tabControl.Controls.Add(tabPageRepositories);
-            tabControl.Controls.Add(tabPageBranches);
-            tabControl.Controls.Add(tabPageMerging);
-            tabControl.Controls.Add(tabPageFiles);
-            tabControl.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            tabControl.Location = new Point(-4, 12);
-            tabControl.Name = "tabControl";
-            tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(1193, 713);
-            tabControl.SizeMode = TabSizeMode.Fixed;
-            tabControl.TabIndex = 0;
+            githubBindingSource.DataSource = typeof(Github);
             // 
-            // tabPageRepositories
+            // repositoriesPageButton
             // 
-            tabPageRepositories.BackColor = SystemColors.ControlDark;
-            tabPageRepositories.Location = new Point(4, 30);
-            tabPageRepositories.Name = "tabPageRepositories";
-            tabPageRepositories.Padding = new Padding(3);
-            tabPageRepositories.Size = new Size(1185, 679);
-            tabPageRepositories.TabIndex = 0;
-            tabPageRepositories.Text = "Repositories";
-            tabPageRepositories.UseVisualStyleBackColor = true;
+            repositoriesPageButton.FlatStyle = FlatStyle.Flat;
+            repositoriesPageButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            repositoriesPageButton.Location = new Point(6, 6);
+            repositoriesPageButton.Name = "repositoriesPageButton";
+            repositoriesPageButton.Size = new Size(156, 32);
+            repositoriesPageButton.TabIndex = 0;
+            repositoriesPageButton.Text = "Repositories";
+            repositoriesPageButton.UseVisualStyleBackColor = true;
+            repositoriesPageButton.Click += OnRepositoriesButtonPress;
             // 
-            // tabPageBranches
+            // branchesPageButton
             // 
-            tabPageBranches.Location = new Point(4, 30);
-            tabPageBranches.Name = "tabPageBranches";
-            tabPageBranches.Padding = new Padding(3);
-            tabPageBranches.Size = new Size(1185, 679);
-            tabPageBranches.TabIndex = 1;
-            tabPageBranches.Text = "Branches";
-            tabPageBranches.UseVisualStyleBackColor = true;
+            branchesPageButton.FlatStyle = FlatStyle.Flat;
+            branchesPageButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            branchesPageButton.Location = new Point(168, 6);
+            branchesPageButton.Name = "branchesPageButton";
+            branchesPageButton.Size = new Size(156, 32);
+            branchesPageButton.TabIndex = 1;
+            branchesPageButton.Text = "Branches";
+            branchesPageButton.UseVisualStyleBackColor = true;
+            branchesPageButton.Click += OnBranchesButtonPress;
             // 
-            // tabPageMerging
+            // mergingPageButton
             // 
-            tabPageMerging.Location = new Point(4, 30);
-            tabPageMerging.Name = "tabPageMerging";
-            tabPageMerging.Size = new Size(1185, 679);
-            tabPageMerging.TabIndex = 2;
-            tabPageMerging.Text = "Merging";
-            tabPageMerging.UseVisualStyleBackColor = true;
+            mergingPageButton.FlatStyle = FlatStyle.Flat;
+            mergingPageButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            mergingPageButton.Location = new Point(330, 6);
+            mergingPageButton.Name = "mergingPageButton";
+            mergingPageButton.Size = new Size(156, 32);
+            mergingPageButton.TabIndex = 2;
+            mergingPageButton.Text = "Merging";
+            mergingPageButton.UseVisualStyleBackColor = true;
+            mergingPageButton.Click += OnMergingButtonPress;
             // 
-            // tabPageFiles
+            // mainPanel
             // 
-            tabPageFiles.Location = new Point(4, 30);
-            tabPageFiles.Name = "tabPageFiles";
-            tabPageFiles.Size = new Size(1185, 679);
-            tabPageFiles.TabIndex = 3;
-            tabPageFiles.Text = "Files";
-            tabPageFiles.UseVisualStyleBackColor = true;
+            mainPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            mainPanel.Location = new Point(0, 42);
+            mainPanel.Margin = new Padding(6, 42, 6, 6);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Padding = new Padding(6);
+            mainPanel.Size = new Size(1001, 579);
+            mainPanel.TabIndex = 3;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1184, 721);
-            Controls.Add(tabControl);
+            ClientSize = new Size(1001, 621);
+            Controls.Add(mainPanel);
+            Controls.Add(mergingPageButton);
+            Controls.Add(branchesPageButton);
+            Controls.Add(repositoriesPageButton);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "GitHelper";
-            tabControl.ResumeLayout(false);
+            Load += MainFormLoad;
+            ((System.ComponentModel.ISupportInitialize)githubBindingSource).EndInit();
             ResumeLayout(false);
         }
 
@@ -109,21 +111,18 @@
             BackColor = theme.AppBackground;
             ForeColor = theme.TextSoft;
 
-            tabControl.BackColor = theme.ElementBackground;
-            tabControl.ForeColor = theme.TextHeader;
-            /// Apply themes to all tab pages
-            TabControl.TabPageCollection tabpages = tabControl.TabPages;
-            foreach (TabPage page in tabpages)
+            /// Apply themes to all buttons
+            IEnumerable<Control> buttons = this.Controls.OfType<Control>().Where(x => x is Button);
+            foreach (Button button in buttons)
             {
-                page.ForeColor = theme.TextSelectable;
-                page.BackColor = theme.AppBackground;
+                button.BackColor = theme.ElementBackground;
+                button.ForeColor = theme.TextSelectable;
             }
         }
-
-        private TabControl tabControl;
-        private TabPage tabPageRepositories;
-        private TabPage tabPageBranches;
-        private TabPage tabPageMerging;
-        private TabPage tabPageFiles;
+        private BindingSource githubBindingSource;
+        private Button repositoriesPageButton;
+        private Button branchesPageButton;
+        private Button mergingPageButton;
+        private Panel mainPanel;
     }
 }

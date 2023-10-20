@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace GitVisualizer.UI
             public Color TextSoft;
             public Color TextNormal;
             public Color TextHeader;
+            public Color TextBright;
             public Color TextSelectable;
 
         }
@@ -37,6 +39,7 @@ namespace GitVisualizer.UI
             TextSoft = Color.FromArgb(120, 122, 128),
             TextNormal = Color.FromArgb(180, 182, 188),
             TextHeader = Color.FromArgb(220, 222, 228),
+            TextBright = Color.FromArgb(200, 202, 255),
             TextSelectable = Color.FromArgb(250, 252, 255)
         };
     }
