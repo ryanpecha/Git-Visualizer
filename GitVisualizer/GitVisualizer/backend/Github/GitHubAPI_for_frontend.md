@@ -25,6 +25,8 @@
 
 ## API:
 - CreateAuthenticatedGit(int i): returns a String URL for which you can use git clone on that URL. The parameter selects which element of **repos** you can to retrieve.
+- CreateAuthenticatedGit(String url): returns a String URL for which you can use git clone on that URL. The parameter is the a url you want to make an authenticated URL out of.
+url should be in the format "github.com/[user]/[repoName].git".
 
 - None of the methods below should block. Hopefully, your frontend UI won't freeze due to the following methods:
 
@@ -34,3 +36,16 @@
 - GetRepositories(): Retrieve user's repository list. See **repos** member.
 - DeleteToken(): Deletes user access token, essentially disassociating user from the API.
 - GetRepositories(): Retrieve user's repository into **repos** member variable.
+
+## Pushing a local-only repository to GitHub:
+- CreateRepo(String name): Creates a public repository with the specified name on the user's GitHub page. IMPORTANT: use await when calling method to retrieve git clone's url.
+In your local repository's folder, use "git remote add origin REMOTE-URL" where REMOTE-URL can just be the clone url returned by CreateRepo().
+Then, use "git remote -v" to verify it's correct (optional). Then push via "git push origin main".
+
+## Working with storing credentials/Restoring state:
+- SaveUser(): Call this if user wants to save their access token and username into Windows Credential Manager. You do NOT provide any argument. Please ensure
+accessToken and username are not null. Return true if saving is successful.
+- ReadTokenAndUserName(): Read username and token from Windows Credential Manager. As such, be wary when mixing this call with SaveUser(). It sets accessToken
+and username. Return true if accessToken and username are not null.
+- DeleteStoredCredential(): Deletes credential from Windows Credential Manager. Return true if credential is deleted. This method is automatically called inside
+DeleteToken().
