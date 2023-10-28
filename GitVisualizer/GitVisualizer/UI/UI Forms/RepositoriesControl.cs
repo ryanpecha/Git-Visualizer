@@ -55,14 +55,19 @@ namespace GitVisualizer.UI.UI_Forms
         public void AddReposToTable()
         {
             List<Repo> githubRepositories = githubAPI.repos;
-            for (int i = 0; i <githubRepositories.Count; i++)
+            for (int i = 0; i < githubRepositories.Count; i++)
             {
                 repositoriesGridView.Rows.Add("Local path for: " + githubRepositories[i].name, githubRepositories[i].name);
             }
-                
+
         }
 
         private void repositoriesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void openOnGithubcomToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }

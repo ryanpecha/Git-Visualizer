@@ -28,10 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             repositoriesGridView = new DataGridView();
+            remoteRepoContextMenuStrip = new ContextMenuStrip(components);
+            makeActiveWorkspaceToolStripMenuItem = new ToolStripMenuItem();
+            cloneToLocalRepoToolStripMenuItem = new ToolStripMenuItem();
             localReposColumn = new DataGridViewTextBoxColumn();
             remoteReposColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
+            remoteRepoContextMenuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // repositoriesGridView
@@ -42,12 +47,33 @@
             repositoriesGridView.Columns.AddRange(new DataGridViewColumn[] { localReposColumn, remoteReposColumn });
             repositoriesGridView.Dock = DockStyle.Left;
             repositoriesGridView.Location = new Point(0, 0);
+            repositoriesGridView.MultiSelect = false;
             repositoriesGridView.Name = "repositoriesGridView";
             repositoriesGridView.ReadOnly = true;
             repositoriesGridView.RowTemplate.Height = 25;
+            repositoriesGridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
             repositoriesGridView.Size = new Size(759, 675);
             repositoriesGridView.TabIndex = 0;
             repositoriesGridView.CellContentClick += repositoriesGridView_CellContentClick;
+            // 
+            // remoteRepoContextMenuStrip
+            // 
+            remoteRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { makeActiveWorkspaceToolStripMenuItem, cloneToLocalRepoToolStripMenuItem });
+            remoteRepoContextMenuStrip.Name = "contextMenuStrip1";
+            remoteRepoContextMenuStrip.Size = new Size(201, 48);
+            remoteRepoContextMenuStrip.Text = "Remote Actions";
+            // 
+            // makeActiveWorkspaceToolStripMenuItem
+            // 
+            makeActiveWorkspaceToolStripMenuItem.Name = "makeActiveWorkspaceToolStripMenuItem";
+            makeActiveWorkspaceToolStripMenuItem.Size = new Size(200, 22);
+            makeActiveWorkspaceToolStripMenuItem.Text = "Make Active Workspace";
+            // 
+            // cloneToLocalRepoToolStripMenuItem
+            // 
+            cloneToLocalRepoToolStripMenuItem.Name = "cloneToLocalRepoToolStripMenuItem";
+            cloneToLocalRepoToolStripMenuItem.Size = new Size(200, 22);
+            cloneToLocalRepoToolStripMenuItem.Text = "Clone to Local Repo";
             // 
             // localReposColumn
             // 
@@ -59,9 +85,11 @@
             // remoteReposColumn
             // 
             remoteReposColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            remoteReposColumn.ContextMenuStrip = remoteRepoContextMenuStrip;
             remoteReposColumn.HeaderText = "Remote Repositories";
             remoteReposColumn.Name = "remoteReposColumn";
             remoteReposColumn.ReadOnly = true;
+            remoteReposColumn.Resizable = DataGridViewTriState.True;
             // 
             // RepositoriesControl
             // 
@@ -71,6 +99,7 @@
             Name = "RepositoriesControl";
             Size = new Size(1175, 675);
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).EndInit();
+            remoteRepoContextMenuStrip.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -89,8 +118,11 @@
                 button.ForeColor = theme.TextSelectable;
             }
         }
+        public DataGridView repositoriesGridView;
+        private ContextMenuStrip remoteRepoContextMenuStrip;
+        private ToolStripMenuItem makeActiveWorkspaceToolStripMenuItem;
+        private ToolStripMenuItem cloneToLocalRepoToolStripMenuItem;
         private DataGridViewTextBoxColumn localReposColumn;
         private DataGridViewTextBoxColumn remoteReposColumn;
-        public DataGridView repositoriesGridView;
     }
 }
