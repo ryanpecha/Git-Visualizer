@@ -26,7 +26,7 @@ namespace GitVisualizer.UI.UI_Forms
             InitializeComponent();
             ApplyColorTheme(AppTheme);
             CheckValidation();
-            this.Activated += PopulateReposTable;
+            this.Activated += repositoriesControl.PopulateReposDataGrid;    // When loaded, update repos table 
         }
 
         private void MainFormLoad(object sender, EventArgs e)
@@ -39,7 +39,7 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         private void CheckValidation()
         {
-            if (!hasCredentials)
+            if (Github.accessToken == null)
             {
                 SetupForm setup = new SetupForm();
                 this.Hide();
@@ -83,26 +83,11 @@ namespace GitVisualizer.UI.UI_Forms
             this.Show();
             this.SetVisibleCore(true);
             this.MaximizeBox = true;
+            
         }
 
-        public void PopulateReposTable(object sender, EventArgs e)
-        {
-
-            GetRepositoriesData();
-        }
-
-        private async void GetRepositoriesData()
-        {
-            await githubAPI.GetRepositories();
-            string repositoriesJSONContents = githubAPI.repoList;
-            if (repositoriesJSONContents == null) { return; }
-            string[] reposByName = repositoriesJSONContents.Split("\"name\":");
-            foreach (string reposName in reposByName)
-            {
-                Debug.WriteLine(reposName[..16]);
-            }
-
-        }
+        
+   
 
     }
 }

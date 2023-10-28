@@ -74,9 +74,6 @@ public static class GitAPI
     /// <summary> Git Actions </summary>
     public static class Actions
     {
-
-
-
         public static class RemoteActions
         {
             public readonly static string deleteRemoteRepository_description = "";

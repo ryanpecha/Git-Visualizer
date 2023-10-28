@@ -31,7 +31,7 @@ namespace GitVisualizer
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             Application.Run(_mainForm);
-            GitAPI.Actions.LocalActions.scanRepositories("test", false);
+            //GitAPI.Actions.LocalActions.scanRepositories("test", false);
             if (!_github.RememberUserAccess)
             {
                 _github.DeleteToken();

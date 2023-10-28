@@ -36,27 +36,32 @@
             // 
             // repositoriesGridView
             // 
+            repositoriesGridView.AllowUserToDeleteRows = false;
             repositoriesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             repositoriesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             repositoriesGridView.Columns.AddRange(new DataGridViewColumn[] { localReposColumn, remoteReposColumn });
             repositoriesGridView.Dock = DockStyle.Left;
             repositoriesGridView.Location = new Point(0, 0);
             repositoriesGridView.Name = "repositoriesGridView";
+            repositoriesGridView.ReadOnly = true;
             repositoriesGridView.RowTemplate.Height = 25;
-            repositoriesGridView.Size = new Size(453, 675);
+            repositoriesGridView.Size = new Size(759, 675);
             repositoriesGridView.TabIndex = 0;
+            repositoriesGridView.CellContentClick += repositoriesGridView_CellContentClick;
             // 
             // localReposColumn
             // 
             localReposColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             localReposColumn.HeaderText = "Local Repositories";
             localReposColumn.Name = "localReposColumn";
+            localReposColumn.ReadOnly = true;
             // 
             // remoteReposColumn
             // 
             remoteReposColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             remoteReposColumn.HeaderText = "Remote Repositories";
             remoteReposColumn.Name = "remoteReposColumn";
+            remoteReposColumn.ReadOnly = true;
             // 
             // RepositoriesControl
             // 
@@ -84,9 +89,8 @@
                 button.ForeColor = theme.TextSelectable;
             }
         }
-
-        private DataGridView repositoriesGridView;
         private DataGridViewTextBoxColumn localReposColumn;
         private DataGridViewTextBoxColumn remoteReposColumn;
+        public DataGridView repositoriesGridView;
     }
 }
