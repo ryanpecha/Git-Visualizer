@@ -35,9 +35,9 @@
             remoteRepoContextMenuStrip = new ContextMenuStrip(components);
             makeActiveWorkspaceToolStripMenuItem = new ToolStripMenuItem();
             cloneToLocalRepoToolStripMenuItem = new ToolStripMenuItem();
+            openOnGithubcomToolStripMenuItem = new ToolStripMenuItem();
             activeRepoPanel = new Panel();
             activeRepoHeader = new Label();
-            openOnGithubcomToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
             remoteRepoContextMenuStrip.SuspendLayout();
             activeRepoPanel.SuspendLayout();
@@ -80,7 +80,7 @@
             // 
             remoteRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { makeActiveWorkspaceToolStripMenuItem, cloneToLocalRepoToolStripMenuItem, openOnGithubcomToolStripMenuItem });
             remoteRepoContextMenuStrip.Name = "contextMenuStrip1";
-            remoteRepoContextMenuStrip.Size = new Size(201, 70);
+            remoteRepoContextMenuStrip.Size = new Size(201, 92);
             remoteRepoContextMenuStrip.Text = "Remote Actions";
             // 
             // makeActiveWorkspaceToolStripMenuItem
@@ -94,6 +94,12 @@
             cloneToLocalRepoToolStripMenuItem.Name = "cloneToLocalRepoToolStripMenuItem";
             cloneToLocalRepoToolStripMenuItem.Size = new Size(200, 22);
             cloneToLocalRepoToolStripMenuItem.Text = "Clone to Local Repo";
+            // 
+            // openOnGithubcomToolStripMenuItem
+            // 
+            openOnGithubcomToolStripMenuItem.Name = "openOnGithubcomToolStripMenuItem";
+            openOnGithubcomToolStripMenuItem.Size = new Size(200, 22);
+            openOnGithubcomToolStripMenuItem.Text = "Open on Github.com";
             // 
             // activeRepoPanel
             // 
@@ -114,12 +120,6 @@
             activeRepoHeader.Size = new Size(354, 59);
             activeRepoHeader.TabIndex = 0;
             activeRepoHeader.Text = "Active Repository";
-            // 
-            // openOnGithubcomToolStripMenuItem
-            // 
-            openOnGithubcomToolStripMenuItem.Name = "openOnGithubcomToolStripMenuItem";
-            openOnGithubcomToolStripMenuItem.Size = new Size(200, 22);
-            openOnGithubcomToolStripMenuItem.Text = "Open on Github.com";
             // 
             // RepositoriesControl
             // 

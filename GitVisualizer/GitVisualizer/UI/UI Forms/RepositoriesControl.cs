@@ -40,11 +40,11 @@ namespace GitVisualizer.UI.UI_Forms
         {
             if (githubAPI == null) { return; }
             await githubAPI.GetRepositories();
-            List<Repo> githubRepositories = githubAPI.repos;
+            List<RepositoryRemote> githubRepositories = githubAPI.repos;
             if (githubRepositories == null) { return; }
-            foreach (Repo repo in githubRepositories)
+            foreach (RepositoryRemote repo in githubRepositories)
             {
-                Debug.WriteLine(repo.name);
+                Debug.WriteLine(repo.title);
             }
             Invoke(AddReposToTable);
 
@@ -55,10 +55,10 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         public void AddReposToTable()
         {
-            List<Repo> githubRepositories = githubAPI.repos;
+            List<RepositoryRemote> githubRepositories = githubAPI.repos;
             for (int i = 0; i < githubRepositories.Count; i++)
             {
-                repositoriesGridView.Rows.Add("Local path for: " + githubRepositories[i].name, githubRepositories[i].name);
+                repositoriesGridView.Rows.Add("Local path for: " + githubRepositories[i].title, githubRepositories[i].title);
             }
 
         }
