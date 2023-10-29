@@ -34,7 +34,9 @@ namespace GitVisualizer
             //GitAPI.Actions.LocalActions.scanRepositories("test", false);
             if (!_github.RememberUserAccess)
             {
+                Debug.WriteLine("User wishes to reset authorization, deleting token...");
                 _github.DeleteToken();
+                Debug.WriteLine("Token removed, ending program");
             }
             Debug.WriteLine("Program finished");
             

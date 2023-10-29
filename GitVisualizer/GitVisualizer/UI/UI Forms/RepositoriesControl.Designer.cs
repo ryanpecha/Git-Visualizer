@@ -30,13 +30,17 @@
         {
             components = new System.ComponentModel.Container();
             repositoriesGridView = new DataGridView();
+            localReposColumn = new DataGridViewTextBoxColumn();
+            remoteReposColumn = new DataGridViewTextBoxColumn();
             remoteRepoContextMenuStrip = new ContextMenuStrip(components);
             makeActiveWorkspaceToolStripMenuItem = new ToolStripMenuItem();
             cloneToLocalRepoToolStripMenuItem = new ToolStripMenuItem();
-            localReposColumn = new DataGridViewTextBoxColumn();
-            remoteReposColumn = new DataGridViewTextBoxColumn();
+            activeRepoPanel = new Panel();
+            activeRepoHeader = new Label();
+            openOnGithubcomToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
             remoteRepoContextMenuStrip.SuspendLayout();
+            activeRepoPanel.SuspendLayout();
             SuspendLayout();
             // 
             // repositoriesGridView
@@ -56,25 +60,6 @@
             repositoriesGridView.TabIndex = 0;
             repositoriesGridView.CellContentClick += repositoriesGridView_CellContentClick;
             // 
-            // remoteRepoContextMenuStrip
-            // 
-            remoteRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { makeActiveWorkspaceToolStripMenuItem, cloneToLocalRepoToolStripMenuItem });
-            remoteRepoContextMenuStrip.Name = "contextMenuStrip1";
-            remoteRepoContextMenuStrip.Size = new Size(201, 48);
-            remoteRepoContextMenuStrip.Text = "Remote Actions";
-            // 
-            // makeActiveWorkspaceToolStripMenuItem
-            // 
-            makeActiveWorkspaceToolStripMenuItem.Name = "makeActiveWorkspaceToolStripMenuItem";
-            makeActiveWorkspaceToolStripMenuItem.Size = new Size(200, 22);
-            makeActiveWorkspaceToolStripMenuItem.Text = "Make Active Workspace";
-            // 
-            // cloneToLocalRepoToolStripMenuItem
-            // 
-            cloneToLocalRepoToolStripMenuItem.Name = "cloneToLocalRepoToolStripMenuItem";
-            cloneToLocalRepoToolStripMenuItem.Size = new Size(200, 22);
-            cloneToLocalRepoToolStripMenuItem.Text = "Clone to Local Repo";
-            // 
             // localReposColumn
             // 
             localReposColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -91,15 +76,63 @@
             remoteReposColumn.ReadOnly = true;
             remoteReposColumn.Resizable = DataGridViewTriState.True;
             // 
+            // remoteRepoContextMenuStrip
+            // 
+            remoteRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { makeActiveWorkspaceToolStripMenuItem, cloneToLocalRepoToolStripMenuItem, openOnGithubcomToolStripMenuItem });
+            remoteRepoContextMenuStrip.Name = "contextMenuStrip1";
+            remoteRepoContextMenuStrip.Size = new Size(201, 70);
+            remoteRepoContextMenuStrip.Text = "Remote Actions";
+            // 
+            // makeActiveWorkspaceToolStripMenuItem
+            // 
+            makeActiveWorkspaceToolStripMenuItem.Name = "makeActiveWorkspaceToolStripMenuItem";
+            makeActiveWorkspaceToolStripMenuItem.Size = new Size(200, 22);
+            makeActiveWorkspaceToolStripMenuItem.Text = "Make Active Workspace";
+            // 
+            // cloneToLocalRepoToolStripMenuItem
+            // 
+            cloneToLocalRepoToolStripMenuItem.Name = "cloneToLocalRepoToolStripMenuItem";
+            cloneToLocalRepoToolStripMenuItem.Size = new Size(200, 22);
+            cloneToLocalRepoToolStripMenuItem.Text = "Clone to Local Repo";
+            // 
+            // activeRepoPanel
+            // 
+            activeRepoPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            activeRepoPanel.Controls.Add(activeRepoHeader);
+            activeRepoPanel.Dock = DockStyle.Right;
+            activeRepoPanel.Location = new Point(757, 0);
+            activeRepoPanel.Name = "activeRepoPanel";
+            activeRepoPanel.Size = new Size(418, 675);
+            activeRepoPanel.TabIndex = 1;
+            // 
+            // activeRepoHeader
+            // 
+            activeRepoHeader.AutoSize = true;
+            activeRepoHeader.Font = new Font("Segoe UI", 32F, FontStyle.Regular, GraphicsUnit.Point);
+            activeRepoHeader.Location = new Point(25, 15);
+            activeRepoHeader.Name = "activeRepoHeader";
+            activeRepoHeader.Size = new Size(354, 59);
+            activeRepoHeader.TabIndex = 0;
+            activeRepoHeader.Text = "Active Repository";
+            // 
+            // openOnGithubcomToolStripMenuItem
+            // 
+            openOnGithubcomToolStripMenuItem.Name = "openOnGithubcomToolStripMenuItem";
+            openOnGithubcomToolStripMenuItem.Size = new Size(200, 22);
+            openOnGithubcomToolStripMenuItem.Text = "Open on Github.com";
+            // 
             // RepositoriesControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(activeRepoPanel);
             Controls.Add(repositoriesGridView);
             Name = "RepositoriesControl";
             Size = new Size(1175, 675);
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).EndInit();
             remoteRepoContextMenuStrip.ResumeLayout(false);
+            activeRepoPanel.ResumeLayout(false);
+            activeRepoPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -117,6 +150,16 @@
                 button.BackColor = theme.ElementBackground;
                 button.ForeColor = theme.TextSelectable;
             }
+
+            repositoriesGridView.BackgroundColor = theme.ElementBackground;
+            repositoriesGridView.ForeColor = theme.TextSelectable;
+            repositoriesGridView.DefaultCellStyle.ForeColor = theme.TextSelectable;
+            repositoriesGridView.DefaultCellStyle.BackColor = theme.ElementBackground;
+            repositoriesGridView.ColumnHeadersDefaultCellStyle.ForeColor = theme.TextSelectable;
+            repositoriesGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
+            repositoriesGridView.EnableHeadersVisualStyles = false;
+
+
         }
         public DataGridView repositoriesGridView;
         private ContextMenuStrip remoteRepoContextMenuStrip;
@@ -124,5 +167,8 @@
         private ToolStripMenuItem cloneToLocalRepoToolStripMenuItem;
         private DataGridViewTextBoxColumn localReposColumn;
         private DataGridViewTextBoxColumn remoteReposColumn;
+        private Panel activeRepoPanel;
+        private Label activeRepoHeader;
+        private ToolStripMenuItem openOnGithubcomToolStripMenuItem;
     }
 }

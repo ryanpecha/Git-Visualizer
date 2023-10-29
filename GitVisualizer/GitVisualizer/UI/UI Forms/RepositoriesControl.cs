@@ -18,6 +18,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             githubAPI = Program.Github;
             InitializeComponent();
+            ApplyColorTheme(MainForm.AppTheme);
         }
 
 

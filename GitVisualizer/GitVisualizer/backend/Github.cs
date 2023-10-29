@@ -164,7 +164,7 @@ public class Github
             System.Text.Json.JsonSerializer.Serialize(new
             {
                 client_id = tempClientID,
-                scope = "public_repo"
+                scope = "repo"
             }),
             Encoding.UTF8,
              jsonType);
@@ -181,7 +181,7 @@ public class Github
             string s = json["interval"].ToString();
             interval = int.Parse(s);
             deviceCode = json["device_code"].ToString();
-            Debug.WriteLine(content);
+            //Debug.WriteLine(content);
             Debug.WriteLine("----------------");
             userCode = json["user_code"].ToString();
 
@@ -240,7 +240,7 @@ public class Github
         {
 
             String content = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine(content);
+            //Debug.WriteLine(content);
 
             if (!content.Contains("error"))
             {
@@ -317,7 +317,7 @@ public class Github
             return false;
         }
         
-        Debug.WriteLine("Removing User token: " + accessToken);
+        //Debug.WriteLine("Removing User token: " + accessToken);
 
         StringContent jsonContent = new(
             System.Text.Json.JsonSerializer.Serialize(new
@@ -330,24 +330,25 @@ public class Github
         var request = new HttpRequestMessage(HttpMethod.Delete, $"{sharedClient.BaseAddress}applications/{tempClientID}/token");
         request.Headers.Add("Accept", "application/vnd.github+json");
         request.Headers.Add("User-Agent", product.ToString());
-        request.Content = jsonContent;
-
         var authenticationString = $"{tempClientID}:{tempClientSecret}";
         var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
         request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
 
+        request.Content = jsonContent;
+
         HttpResponseMessage response = sharedClient.Send(request);
+        Debug.WriteLine(response.ToString());
 
-        if (response.StatusCode.ToString() == "NoContent")
+        if (response.StatusCode != System.Net.HttpStatusCode.NoContent)
         {
-            Debug.WriteLine("RevokeAccessToken(): Access token revoked/deleted.");
-
-            accessToken = username = avatarURL = userGitHubURL = null;
-            return true;
+            Debug.WriteLine("RevokeAccessToken(): Failed to delete access token.");
+            return false;
         }
+        Debug.WriteLine("RevokeAccessToken(): Access token revoked/deleted.");
 
-        Debug.WriteLine("RevokeAccessToken(): Failed to delete access token.");
-        return false;
+        accessToken = username = avatarURL = userGitHubURL = null;
+        return true;
+       
     }
 
     /// <summary>
