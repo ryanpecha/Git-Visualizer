@@ -502,7 +502,7 @@ public class Github
             Encoding.UTF8,
             jsonType);
 
-        var request = new HttpRequestMessage(HttpMethod.Delete, $"{sharedClient.BaseAddress}applications/{tempClientID}/token");
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"{sharedClient.BaseAddress}applications/{tempClientID}/grant");
         request.Headers.Add("Accept", "application/vnd.github+json");
         request.Headers.Add("User-Agent", product.ToString());
         request.Content = jsonContent;
