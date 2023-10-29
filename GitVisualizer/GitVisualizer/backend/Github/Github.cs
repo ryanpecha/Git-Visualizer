@@ -9,6 +9,7 @@ using System.Numerics;
 using CredentialManagement;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using GitVisualizer;
 
 /// <summary>
 /// Class <c>Github</c> contains methods to abstract the interaction with the GitHub API and contain many of Github user's data.
@@ -117,7 +118,7 @@ public class Github
 
     private static String tempClientID = "a6b32f8800218e8eab39";
     private static String tempClientSecret = "15b4419077375217ebfcc678d0b106b002bff374";
-    
+
     private static int interval = 5;
 
     private static readonly HttpClient sharedClient = new()
@@ -133,7 +134,7 @@ public class Github
     /// <summary>
     /// Gets or Sets the repo list.
     /// </summary>
-    public List<Repo>? repos { get; private set; }
+    public List<RepositoryRemote>? repos { get; private set; }
 
     /// <summary>
     /// Gets or Sets the username.
@@ -220,7 +221,7 @@ public class Github
     {
 
         // GitHub API code you can change.
-        
+
         await GivePermission();
 
         //Debug.Write("userCode: " + userCode);
@@ -270,7 +271,7 @@ public class Github
         else if (i < 0 || i > repos.Count)
             return "createAuthenticatedGit(): Invalid index: " + i;
 
-        return "https://" + accessToken + "@" + repos[i].git_url;
+        return "https://" + accessToken + "@" + repos[i].cloneUrlHTTPS;
     }
 
     /// <summary>
@@ -442,11 +443,10 @@ public class Github
             JArray array = JArray.Parse(content);
             int gitEndIndex = 6;
 
-            repos = ((JArray)array).Select(repo => new Repo
-            {
-                name = (string)repo["name"],
-                git_url = ((string)repo["git_url"]).Substring(gitEndIndex)
-            }).ToList();
+            repos = ((JArray)array).Select(repo => new RepositoryRemote(
+                title: (string)repo["name"],
+                cloneUrlHTTPS: ((string)repo["git_url"]).Substring(gitEndIndex)
+            )).ToList();
         }
 
         return null;
@@ -484,13 +484,13 @@ public class Github
     /// <returns>The Task<String> object that can be awaited for the String</returns>
     private bool RevokeAccessToken()
     {
-        
+
         if (accessToken == null)
         {
             Debug.WriteLine("RevokeAccessToken(): Access token is already deleted or null.");
             return false;
         }
-        
+
         Debug.WriteLine("Removing User token: " + accessToken);
         DeleteStoredCredential();
 
