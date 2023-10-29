@@ -2,22 +2,111 @@
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net.Http;
 using System.Numerics;
+
+using CredentialManagement;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 /// <summary>
 /// Class <c>Github</c> contains methods to abstract the interaction with the GitHub API and contain many of Github user's data.
 /// </summary>
 public class Github
 {
+    /// <summary>
+    /// Class <c>CredentialStore</c> contains methods to work with Windows Credential Manager to read and write GitHub user's data.
+    /// </summary>
+    private static class CredentialStore
+    {
+        private static String userTarget = "VisualizerGitHub_user";
 
-    // members that can change during runtime
+        /// <summary>
+        /// Saves GitHub user's credential to Windows Credential Manager.
+        /// </summary>
+        /// <param name="username">The GitHub username.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>true if credential is saved. false otherwise.</returns>
+        public static bool SaveCredential(String username, String token)
+        {
+            Credential credential = new Credential();
+            credential.Target = userTarget;
+
+            if (!credential.Exists())
+            {
+                Debug.Write($"DeleteCredential(): credential stored.");
+                credential.Username = username;
+                credential.Password = token;
+                credential.Type = CredentialType.Generic;
+                credential.PersistanceType = PersistanceType.LocalComputer;
+                credential.Save();
+                return true;
+            }
+            Debug.Write($"DeleteCredential(): credential already exists. Not writing anything.");
+            return false;
+        }
+
+        /// <summary>
+        /// Retrieves user's token from Windows Credential Manager.
+        /// </summary>
+        /// <returns>A String for the token. null if retrieval fails.</returns>
+        public static String GetToken()
+        {
+            Credential credential = new Credential();
+            credential.Target = userTarget;
+            if (credential.Exists())
+            {
+                credential.Load();
+                return credential.Password;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Retrieves user's username from Windows Credential Manager.
+        /// </summary>
+        /// <returns>A String for the username. empty string if retrieval fails.</returns>
+        public static String GetUserName()
+        {
+            Credential credential = new Credential();
+            credential.Target = userTarget;
+            if (credential.Exists())
+            {
+                credential.Load();
+                return credential.Username;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Deletes GitHub user's credential from Windows Credential Manager.
+        /// </summary>
+        /// <returns>true if deletion is successful. false otherwise.</returns>
+        public static bool DeleteCredential()
+        {
+            Credential credential = new Credential();
+            credential.Target = userTarget;
+            if (credential.Exists())
+            {
+                Debug.Write($"DeleteCredential(): credential deleted.");
+                credential.Delete();
+                return true;
+            }
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Gets or Sets the user code.
+    /// </summary>
     public static String? userCode { get; private set; }
     public static String? deviceCode;
-    public static String accessToken { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the access token.
+    /// </summary>
+    public static String? accessToken { get; private set; }
 
     /// <summary>
     /// URL for login with code page on github
@@ -41,19 +130,35 @@ public class Github
 
     private bool rememberUserAccess = false;
 
-    // GitHub user information
-
+    /// <summary>
+    /// Gets or Sets the repo list.
+    /// </summary>
     public List<Repo>? repos { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the username.
+    /// </summary>
     public String? username { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the avatar u r l.
+    /// </summary>
     public String? avatarURL { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the user git hub u r l.
+    /// </summary>
     public String? userGitHubURL { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the repo list.
+    /// </summary>
     public String repoList { get; private set; }
 
     /// <summary>
     /// True if user wants to store access key in app, false if it wants to revoke it when app ends
     /// </summary>
     public bool RememberUserAccess => rememberUserAccess;
-
 
     /// <summary>
     /// The .ctor.
@@ -63,7 +168,7 @@ public class Github
     }
 
     /// <summary>
-    /// The give permission.
+    /// Attempts to ask user to grant the app permission to read/write public repositories.
     /// </summary>
     /// <returns>The task object.</returns>
     public async Task GivePermission()
@@ -105,7 +210,6 @@ public class Github
     /// <returns>The task object.</returns>
     public async Task GetUserInfo()
     {
-        // TODO: Format the JSON to make it easier to work in frontend.
         await Task.Run(GetGitHubUser);
     }
 
@@ -114,27 +218,44 @@ public class Github
     /// </summary>
     public async void TestAsync()
     {
+
+        // GitHub API code you can change.
+        
         await GivePermission();
 
-        Debug.Write("userCode: " + userCode);
+        //Debug.Write("userCode: " + userCode);
 
-
+        // BEGIN of SECTION: this section is not necessary if retrieving from Windows Credential Manager
         if (userCode != null)
             await WaitForAuthorization();
 
         await GetUserInfo();
-        await GetRepoList();
+        // END of SECTION
 
+
+        // have only 1 of the following 2 function calls run. SaveUser() saves credentials and ReadTokenAndUserName() read stored credential.
+        // from storage.
+        //SaveUser();
+        //ReadTokenAndUserName();
+
+        await GetRepoList();
         int i = 0;
+        /*
         foreach (Repo x in repos)
         {
             Debug.WriteLine(i + " " + x.name + " " + x.git_url);
             Debug.WriteLine(CreateAuthenticatedGit(i));
             i++;
-        }
+        }*/
+
+        String repo_url = await CreateRepo("testingCreatingARepo");
+        Debug.WriteLine(CreateAuthenticatedGit(repo_url));
+
+        // delete stored storage credential
+        DeleteStoredCredential();
 
         bool tokenRemoveSuccess = DeleteToken();
-        Debug.Write($"TOKEN REMOVED : {tokenRemoveSuccess}");
+        Debug.WriteLine($"TOKEN REMOVED: {tokenRemoveSuccess}");
     }
 
     /// <summary>
@@ -145,13 +266,65 @@ public class Github
     public String CreateAuthenticatedGit(int i)
     {
         if (repos == null)
-        {
-            return "";
-        }
+            return null;
         else if (i < 0 || i > repos.Count)
             return "createAuthenticatedGit(): Invalid index: " + i;
 
         return "https://" + accessToken + "@" + repos[i].git_url;
+    }
+
+    /// <summary>
+    /// Returns an authenticated string good for git cloning.
+    /// </summary>
+    /// <returns>The string URL for git cloning.</returns>
+    public String CreateAuthenticatedGit(String url)
+    {
+        return "https://" + accessToken + "@" + url;
+    }
+
+    /// <summary>
+    /// Allows external setting of remember user bool, which saves access token if true or
+    /// revokes it on app close when false.
+    /// </summary>
+    /// <param name="isEnabled">a setter bool.</param>
+    public void SetRememberUserAccessBool(bool isEnabled)
+    {
+        rememberUserAccess = isEnabled;
+    }
+
+    /// <summary>
+    /// Saves the GitHub user's credentials into local computer.
+    /// </summary>
+    /// <returns>A bool. true if saved. false otherwise.</returns>
+    public bool SaveUser()
+    {
+        if (username == null || accessToken == null)
+        {
+            Debug.WriteLine("SaveUser(): accessToken is null OR please call GetGitHubUser() before trying to save user credentials.");
+            return false;
+        }
+
+        return CredentialStore.SaveCredential(username, accessToken);
+    }
+
+    /// <summary>
+    /// Read token and user name from storage.
+    /// </summary>
+    /// <returns>true if members accessToken and username have been set properly. false otherwise.</returns>
+    public bool ReadTokenAndUserName()
+    {
+        accessToken = CredentialStore.GetToken();
+        username = CredentialStore.GetUserName();
+        return accessToken != null && username != null;
+    }
+
+    /// <summary>
+    /// Delete GitHub user's credential from storage. NOTE: Might be useful to restrict user's token as well.
+    /// </summary>
+    /// <returns>true if credential is deleted. false otherwise.</returns>
+    public bool DeleteStoredCredential()
+    {
+        return CredentialStore.DeleteCredential();
     }
 
     /// <summary>
@@ -258,7 +431,7 @@ public class Github
     private async Task<String> GetRepoList()
     {
         if (accessToken == null)
-            return "";
+            return null;
         CommonAuthenticatedHelper();
 
         HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user/repos");
@@ -276,7 +449,7 @@ public class Github
             }).ToList();
         }
 
-        return "";
+        return null;
     }
 
     /// <summary>
@@ -286,7 +459,7 @@ public class Github
     private async Task<String> GetGitHubUser()
     {
         if (accessToken == null)
-            return "";
+            return null;
         CommonAuthenticatedHelper();
 
         HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user");
@@ -298,14 +471,15 @@ public class Github
             username = json["login"].ToString();
             avatarURL = json["avatar_url"].ToString();
             userGitHubURL = json["html_url"].ToString();
+            return username;
         }
 
-        return username;
+        return null;
     }
 
 
     /// <summary>
-    /// The private method to revoke a user access token.
+    /// The private method to revoke a user access token. Method will also call DeleteStoredCredential().
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
     private bool RevokeAccessToken()
@@ -318,6 +492,7 @@ public class Github
         }
         
         Debug.WriteLine("Removing User token: " + accessToken);
+        DeleteStoredCredential();
 
         StringContent jsonContent = new(
             System.Text.Json.JsonSerializer.Serialize(new
@@ -351,13 +526,37 @@ public class Github
     }
 
     /// <summary>
-    /// Allows external setting of remember user bool, which saves access token if true or
-    /// revokes it on app close when false.
+    /// Method to create an empty public repo with a specified name on GitHub.
     /// </summary>
-    /// <param name="isEnabled"></param>
-    public void SetRememberUserAccessBool(bool isEnabled)
+    /// <param name="repoName">The repo name.</param>
+    /// <returns>The git clone url of the newly created GitHub repo.</returns>
+    private async Task<String> CreateRepo(String repoName)
     {
-        rememberUserAccess = isEnabled;
+        if (accessToken == null)
+            return null;
+        CommonAuthenticatedHelper();
+
+        using StringContent jsonContent = new(
+            System.Text.Json.JsonSerializer.Serialize(new
+            {
+                name = repoName,
+            }),
+            Encoding.UTF8,
+             jsonType);
+
+        HttpResponseMessage response = await sharedClient.PostAsync("https://api.github.com/user/repos", jsonContent);
+        if (response.StatusCode.ToString() == "Created")
+        {
+            Debug.WriteLine($"CreateRepo(): Repo {repoName} created.");
+            String content = await response.Content.ReadAsStringAsync();
+            JObject json = JObject.Parse(content);
+            int gitEndIndex = 8;
+            return username = json["clone_url"].ToString().Substring(gitEndIndex);
+
+        }
+
+        Debug.WriteLine($"CreateRepo(): Repo {repoName} creation failed.");
+        return null;
     }
 
     /// <summary>
@@ -365,7 +564,7 @@ public class Github
     /// </summary>
     private void CommonHelper()
     {
-        sharedClient.DefaultRequestHeaders.Accept.Clear();
+        sharedClient.DefaultRequestHeaders.Clear();
         sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
         sharedClient.DefaultRequestHeaders.Accept.Add(jsonType);
     }
@@ -375,6 +574,7 @@ public class Github
     /// </summary>
     private void CommonAuthenticatedHelper()
     {
+        sharedClient.DefaultRequestHeaders.Clear();
         sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
         sharedClient.DefaultRequestHeaders.Accept.Add(githubType);
