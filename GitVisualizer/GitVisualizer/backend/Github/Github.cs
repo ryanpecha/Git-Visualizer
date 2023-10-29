@@ -66,7 +66,7 @@ public class Github
         /// <summary>
         /// Retrieves user's username from Windows Credential Manager.
         /// </summary>
-        /// <returns>A String for the username. null if retrieval fails.</returns>
+        /// <returns>A String for the username. empty string if retrieval fails.</returns>
         public static String GetUserName()
         {
             Credential credential = new Credential();
@@ -97,10 +97,16 @@ public class Github
         }
     }
 
-    // members that can change during runtime
+    /// <summary>
+    /// Gets or Sets the user code.
+    /// </summary>
     public static String? userCode { get; private set; }
     public static String? deviceCode;
-    public static String accessToken { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the access token.
+    /// </summary>
+    public static String? accessToken { get; private set; }
 
     /// <summary>
     /// URL for login with code page on github
@@ -124,12 +130,29 @@ public class Github
 
     private bool rememberUserAccess = false;
 
-    // GitHub user information
-
+    /// <summary>
+    /// Gets or Sets the repo list.
+    /// </summary>
     public List<Repo>? repos { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the username.
+    /// </summary>
     public String? username { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the avatar u r l.
+    /// </summary>
     public String? avatarURL { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the user git hub u r l.
+    /// </summary>
     public String? userGitHubURL { get; private set; }
+
+    /// <summary>
+    /// Gets or Sets the repo list.
+    /// </summary>
     public String repoList { get; private set; }
 
     /// <summary>
@@ -145,7 +168,7 @@ public class Github
     }
 
     /// <summary>
-    /// The give permission.
+    /// Attempts to ask user to grant the app permission to read/write public repositories.
     /// </summary>
     /// <returns>The task object.</returns>
     public async Task GivePermission()
@@ -187,7 +210,6 @@ public class Github
     /// <returns>The task object.</returns>
     public async Task GetUserInfo()
     {
-        // TODO: Format the JSON to make it easier to work in frontend.
         await Task.Run(GetGitHubUser);
     }
 
@@ -198,31 +220,33 @@ public class Github
     {
 
         // GitHub API code you can change.
-        //await GivePermission();
+        
+        await GivePermission();
 
         //Debug.Write("userCode: " + userCode);
 
         // BEGIN of SECTION: this section is not necessary if retrieving from Windows Credential Manager
-        /*if (userCode != null)
+        if (userCode != null)
             await WaitForAuthorization();
 
-        await GetUserInfo();*/
+        await GetUserInfo();
         // END of SECTION
 
 
         // have only 1 of the following 2 function calls run. SaveUser() saves credentials and ReadTokenAndUserName() read stored credential.
         // from storage.
         //SaveUser();
-        ReadTokenAndUserName();
+        //ReadTokenAndUserName();
 
         await GetRepoList();
         int i = 0;
+        /*
         foreach (Repo x in repos)
         {
             Debug.WriteLine(i + " " + x.name + " " + x.git_url);
             Debug.WriteLine(CreateAuthenticatedGit(i));
             i++;
-        }
+        }*/
 
         String repo_url = await CreateRepo("testingCreatingARepo");
         Debug.WriteLine(CreateAuthenticatedGit(repo_url));
@@ -231,7 +255,7 @@ public class Github
         DeleteStoredCredential();
 
         bool tokenRemoveSuccess = DeleteToken();
-        Debug.WriteLine($"TOKEN REMOVED : {tokenRemoveSuccess}");
+        Debug.WriteLine($"TOKEN REMOVED: {tokenRemoveSuccess}");
     }
 
     /// <summary>
@@ -242,9 +266,7 @@ public class Github
     public String CreateAuthenticatedGit(int i)
     {
         if (repos == null)
-        {
-            return "";
-        }
+            return null;
         else if (i < 0 || i > repos.Count)
             return "createAuthenticatedGit(): Invalid index: " + i;
 
@@ -264,7 +286,7 @@ public class Github
     /// Allows external setting of remember user bool, which saves access token if true or
     /// revokes it on app close when false.
     /// </summary>
-    /// <param name="isEnabled"></param>
+    /// <param name="isEnabled">a setter bool.</param>
     public void SetRememberUserAccessBool(bool isEnabled)
     {
         rememberUserAccess = isEnabled;
@@ -409,7 +431,7 @@ public class Github
     private async Task<String> GetRepoList()
     {
         if (accessToken == null)
-            return "";
+            return null;
         CommonAuthenticatedHelper();
 
         HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user/repos");
@@ -427,7 +449,7 @@ public class Github
             }).ToList();
         }
 
-        return "";
+        return null;
     }
 
     /// <summary>
@@ -437,7 +459,7 @@ public class Github
     private async Task<String> GetGitHubUser()
     {
         if (accessToken == null)
-            return "";
+            return null;
         CommonAuthenticatedHelper();
 
         HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user");
@@ -449,9 +471,10 @@ public class Github
             username = json["login"].ToString();
             avatarURL = json["avatar_url"].ToString();
             userGitHubURL = json["html_url"].ToString();
+            return username;
         }
 
-        return username;
+        return null;
     }
 
 
@@ -510,7 +533,7 @@ public class Github
     private async Task<String> CreateRepo(String repoName)
     {
         if (accessToken == null)
-            return "";
+            return null;
         CommonAuthenticatedHelper();
 
         using StringContent jsonContent = new(
@@ -533,7 +556,7 @@ public class Github
         }
 
         Debug.WriteLine($"CreateRepo(): Repo {repoName} creation failed.");
-        return "";
+        return null;
     }
 
     /// <summary>
