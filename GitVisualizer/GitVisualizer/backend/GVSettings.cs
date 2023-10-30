@@ -5,7 +5,7 @@ using System;
 
 public static class GVSettings
 {
-    private static readonly string SETTINGS_FPATH = "gitVis.json";
+    private static readonly string SETTINGS_FPATH = "GitVisualizer.settings.json";
     public static GVSettingsData data { get; private set; }
 
     // try load file, else defaults
