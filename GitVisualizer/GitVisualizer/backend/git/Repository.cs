@@ -7,6 +7,6 @@ public class Repository
 
     public Repository(string title)
     {
-        this.title = title;
+        this.title = title.Replace(" ", "-");
     }
 }
