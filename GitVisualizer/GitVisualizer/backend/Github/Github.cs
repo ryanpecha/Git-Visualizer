@@ -170,6 +170,8 @@ public class Github
     /// <summary>
     /// Attempts to ask user to grant the app permission to read/write public repositories.
     /// </summary>
+    /// <param name="scope">The scope as a string. "public" for read/write access to public repos.
+    /// "private" read/write access to ALL repos.</param>
     /// <returns>The task object.</returns>
     public async Task GivePermission(string scope = "public")
     {
@@ -188,6 +190,8 @@ public class Github
     /// <summary>
     /// The method gets a list of the user repository as JSON.
     /// </summary>
+    /// <param name="scope">The scope as a string. "public" for all public repos. "private" for all private repos.
+    /// "all" for all user's repos.</param>
     /// <returns>The task object.</returns>
     public async Task GetRepositories(string scope = "public")
     {
@@ -330,6 +334,8 @@ public class Github
     /// <summary>
     /// The private method to handle registering user with the app.
     /// </summary>
+    /// <param name="scope">The scope as a string. "public" for read/write access to public repos.
+    /// "private" read/write access to ALL repos.</param>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
     private async Task<String> RegisterUser(string scope = "public")
     {
@@ -429,11 +435,12 @@ public class Github
     /// <summary>
     /// The private method to handle getting the GitHub user's repository list.
     /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
+    /// <param name="scope">The scope as a string. "public" for all public repos. "private" for all private repos.
+    /// "all" for all user's repos.</param>
+    /// <returns>The result.</returns>
     private async Task<String> GetRepoList(string scope = "public")
     {
         scope = (scope != "private" && scope != "all") ? "public" : scope;
-        Debug.WriteLine(scope);
         if (accessToken == null)
             return null;
         CommonAuthenticatedHelper();
