@@ -22,5 +22,10 @@ namespace GitVisualizer.UI.UI_Forms
         {
 
         }
+
+        private void titleLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

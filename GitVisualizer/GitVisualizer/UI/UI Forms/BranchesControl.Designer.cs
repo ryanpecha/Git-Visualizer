@@ -24,7 +24,19 @@
             BackColor = theme.AppBackground;
             ForeColor = theme.TextSoft;
 
-        
+            branchesGridView.BackColor = theme.ElementBackground;
+            branchesGridView.ForeColor = theme.TextSelectable;
+
+            branchesGridView.BackgroundColor = theme.ElementBackground;
+            branchesGridView.ForeColor = theme.TextSelectable;
+            branchesGridView.DefaultCellStyle.ForeColor = theme.TextSelectable;
+            branchesGridView.DefaultCellStyle.BackColor = theme.ElementBackground;
+            branchesGridView.ColumnHeadersDefaultCellStyle.ForeColor = theme.TextSelectable;
+            branchesGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
+            branchesGridView.EnableHeadersVisualStyles = false;
+
+            branchesControlPanel.BackColor = theme.PanelBackground;
+            branchesControlPanel.ForeColor = theme.TextBright;
         }
 
         #region Component Designer generated code
@@ -35,74 +47,181 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ListViewItem listViewItem1 = new ListViewItem(new string[] { "main", "" }, -1);
-            ListViewItem listViewItem2 = new ListViewItem("main");
-            ListViewItem listViewItem3 = new ListViewItem("development");
-            branchesListView = new ListView();
-            branchColumn = new ColumnHeader();
-            userColumn = new ColumnHeader();
-            commentColumn = new ColumnHeader();
-            dateColumn = new ColumnHeader();
-            branchGraphColumn = new ColumnHeader();
+            branchesControlPanel = new Panel();
+            buttonsPanel = new Panel();
+            revokeAccessButton = new Button();
+            grantAccessButton = new Button();
+            titleLabel = new Label();
+            branchesGridView = new DataGridView();
+            graphColumn = new DataGridViewImageColumn();
+            branchColumn = new DataGridViewTextBoxColumn();
+            idColumn = new DataGridViewTextBoxColumn();
+            userColumn = new DataGridViewTextBoxColumn();
+            dateColumn = new DataGridViewTextBoxColumn();
+            commentColumn = new DataGridViewTextBoxColumn();
+            branchesControlPanel.SuspendLayout();
+            buttonsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)branchesGridView).BeginInit();
             SuspendLayout();
             // 
-            // branchesListView
+            // branchesControlPanel
             // 
-            branchesListView.BorderStyle = BorderStyle.FixedSingle;
-            branchesListView.Columns.AddRange(new ColumnHeader[] { branchGraphColumn, branchColumn, userColumn, commentColumn, dateColumn });
-            branchesListView.Dock = DockStyle.Fill;
-            branchesListView.GridLines = true;
-            branchesListView.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2, listViewItem3 });
-            branchesListView.Location = new Point(0, 0);
-            branchesListView.Name = "branchesListView";
-            branchesListView.Size = new Size(1175, 675);
-            branchesListView.TabIndex = 0;
-            branchesListView.UseCompatibleStateImageBehavior = false;
-            branchesListView.View = View.Details;
-            branchesListView.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            branchesControlPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            branchesControlPanel.BorderStyle = BorderStyle.FixedSingle;
+            branchesControlPanel.Controls.Add(buttonsPanel);
+            branchesControlPanel.Controls.Add(titleLabel);
+            branchesControlPanel.Dock = DockStyle.Left;
+            branchesControlPanel.Location = new Point(0, 0);
+            branchesControlPanel.MinimumSize = new Size(280, 280);
+            branchesControlPanel.Name = "branchesControlPanel";
+            branchesControlPanel.Size = new Size(280, 675);
+            branchesControlPanel.TabIndex = 2;
+            // 
+            // buttonsPanel
+            // 
+            buttonsPanel.AutoSize = true;
+            buttonsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonsPanel.Controls.Add(revokeAccessButton);
+            buttonsPanel.Controls.Add(grantAccessButton);
+            buttonsPanel.Dock = DockStyle.Bottom;
+            buttonsPanel.Location = new Point(280, 493);
+            buttonsPanel.MinimumSize = new Size(0, 180);
+            buttonsPanel.Name = "buttonsPanel";
+            buttonsPanel.Size = new Size(0, 180);
+            buttonsPanel.TabIndex = 2;
+            // 
+            // revokeAccessButton
+            // 
+            revokeAccessButton.FlatStyle = FlatStyle.Flat;
+            revokeAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            revokeAccessButton.Location = new Point(47, 28);
+            revokeAccessButton.Name = "revokeAccessButton";
+            revokeAccessButton.Size = new Size(166, 54);
+            revokeAccessButton.TabIndex = 0;
+            revokeAccessButton.Text = "Revoke Access";
+            revokeAccessButton.UseVisualStyleBackColor = true;
+            // 
+            // grantAccessButton
+            // 
+            grantAccessButton.FlatStyle = FlatStyle.Flat;
+            grantAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            grantAccessButton.Location = new Point(47, 106);
+            grantAccessButton.Name = "grantAccessButton";
+            grantAccessButton.Size = new Size(166, 54);
+            grantAccessButton.TabIndex = 0;
+            grantAccessButton.Text = "Grant Access";
+            grantAccessButton.UseVisualStyleBackColor = true;
+            // 
+            // titleLabel
+            // 
+            titleLabel.AutoSize = true;
+            titleLabel.Dock = DockStyle.Left;
+            titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            titleLabel.Location = new Point(0, 0);
+            titleLabel.Margin = new Padding(0);
+            titleLabel.MinimumSize = new Size(280, 50);
+            titleLabel.Name = "titleLabel";
+            titleLabel.Size = new Size(280, 50);
+            titleLabel.TabIndex = 1;
+            titleLabel.Text = "Branches";
+            titleLabel.Click += titleLabel_Click;
+            // 
+            // branchesGridView
+            // 
+            branchesGridView.AllowUserToDeleteRows = false;
+            branchesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            branchesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            branchesGridView.Columns.AddRange(new DataGridViewColumn[] { graphColumn, branchColumn, idColumn, userColumn, dateColumn, commentColumn });
+            branchesGridView.Dock = DockStyle.Fill;
+            branchesGridView.ImeMode = ImeMode.Off;
+            branchesGridView.Location = new Point(280, 0);
+            branchesGridView.Margin = new Padding(6);
+            branchesGridView.MultiSelect = false;
+            branchesGridView.Name = "branchesGridView";
+            branchesGridView.ReadOnly = true;
+            branchesGridView.RowHeadersVisible = false;
+            branchesGridView.RowTemplate.Height = 25;
+            branchesGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            branchesGridView.ShowEditingIcon = false;
+            branchesGridView.Size = new Size(895, 675);
+            branchesGridView.TabIndex = 3;
+            // 
+            // graphColumn
+            // 
+            graphColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            graphColumn.FillWeight = 50F;
+            graphColumn.HeaderText = "Graph";
+            graphColumn.Name = "graphColumn";
+            graphColumn.ReadOnly = true;
+            graphColumn.Resizable = DataGridViewTriState.True;
+            graphColumn.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // branchColumn
             // 
-            branchColumn.Text = "Branch";
+            branchColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            branchColumn.HeaderText = "Branch";
+            branchColumn.Name = "branchColumn";
+            branchColumn.ReadOnly = true;
             branchColumn.Width = 90;
+            // 
+            // idColumn
+            // 
+            idColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            idColumn.HeaderText = "ID";
+            idColumn.Name = "idColumn";
+            idColumn.ReadOnly = true;
+            idColumn.Width = 90;
             // 
             // userColumn
             // 
-            userColumn.Text = "User";
+            userColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            userColumn.HeaderText = "User";
+            userColumn.Name = "userColumn";
+            userColumn.ReadOnly = true;
             userColumn.Width = 90;
-            // 
-            // commentColumn
-            // 
-            commentColumn.Text = "Comment";
-            commentColumn.Width = 360;
             // 
             // dateColumn
             // 
-            dateColumn.Text = "Date";
+            dateColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dateColumn.HeaderText = "Date";
+            dateColumn.Name = "dateColumn";
+            dateColumn.ReadOnly = true;
             dateColumn.Width = 90;
             // 
-            // branchGraphColumn
+            // commentColumn
             // 
-            branchGraphColumn.Text = "Local Root";
-            branchGraphColumn.Width = 120;
+            commentColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            commentColumn.HeaderText = "Comment";
+            commentColumn.Name = "commentColumn";
+            commentColumn.ReadOnly = true;
             // 
             // BranchesControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(branchesListView);
+            Controls.Add(branchesGridView);
+            Controls.Add(branchesControlPanel);
             Name = "BranchesControl";
             Size = new Size(1175, 675);
+            branchesControlPanel.ResumeLayout(false);
+            branchesControlPanel.PerformLayout();
+            buttonsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)branchesGridView).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private ListView branchesListView;
-        private ColumnHeader branchColumn;
-        private ColumnHeader userColumn;
-        private ColumnHeader commentColumn;
-        private ColumnHeader dateColumn;
-        private ColumnHeader branchGraphColumn;
+        private Panel branchesControlPanel;
+        private Panel buttonsPanel;
+        private Button revokeAccessButton;
+        private Button grantAccessButton;
+        private Label titleLabel;
+        public DataGridView branchesGridView;
+        private DataGridViewImageColumn graphColumn;
+        private DataGridViewTextBoxColumn branchColumn;
+        private DataGridViewTextBoxColumn idColumn;
+        private DataGridViewTextBoxColumn userColumn;
+        private DataGridViewTextBoxColumn dateColumn;
+        private DataGridViewTextBoxColumn commentColumn;
     }
 }
