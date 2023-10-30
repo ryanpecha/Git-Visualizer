@@ -119,7 +119,7 @@ public class Github
     private static String tempClientID = "a6b32f8800218e8eab39";
     private static String tempClientSecret = "15b4419077375217ebfcc678d0b106b002bff374";
 
-    private static int interval = 5;
+    private static int interval = 1;
 
     private static readonly HttpClient sharedClient = new()
     {
