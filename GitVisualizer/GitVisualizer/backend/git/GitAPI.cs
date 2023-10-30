@@ -6,7 +6,7 @@ namespace GitVisualizer;
 
 public static class GitAPI
 {
-    static readonly string SETTINGS_FPATH = "gitVis.json";
+
 
     /// <summary> pointer to the live commit </summary>
     public static Branch? liveBranch { get; private set; }
@@ -17,13 +17,17 @@ public static class GitAPI
     /// <summary> currently tracked local repository </summary>
     public static RepositoryLocal? liveRepository { get; private set; }
 
+
+
     //
     private static Dictionary<string, RepositoryRemote> remoteRepositories;
     //
     private static Dictionary<string, RepositoryLocal> localRepositories;
+
+
     //
     private static Dictionary<string, bool> trackedDirIsRecuriveDict;
-    private static Dictionary<string, bool> trackedRepoIsRecuriveDict;
+
 
     //
     private static void scanDirs(Dictionary<string, bool> dirIsRecursiveDict)
@@ -53,7 +57,7 @@ public static class GitAPI
                 }
                 // 
                 string repoName = repoDirInfo.Name;
-                 Debug.WriteLine($"LOCATED REPO title={repoName} path={repoDirPath}");
+                Debug.WriteLine($"LOCATED REPO title={repoName} path={repoDirPath}");
                 // TODO extract repo name from .git via git command
                 RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
                 localRepositories[repoName] = newLocalRepo;
@@ -74,7 +78,6 @@ public static class GitAPI
     {
         //
         Debug.WriteLine("INITIALIZING GIT API");
-        Debug.WriteLine("ROOT SETTINGS PATH : " + Path.GetFullPath(SETTINGS_FPATH));
         if (!Path.Exists(SETTINGS_FPATH))
         {
             File.WriteAllText(SETTINGS_FPATH, GVSettings.getDefaultJsonStr());
@@ -99,11 +102,11 @@ public static class GitAPI
         {
             throw new Exception("Settings file is invalid json");
         }
-        foreach (Tracking tracking in settingsJson.trackedLocalDirs)
+        foreach (LocalTracking tracking in settingsJson.trackedLocalDirs)
         {
             trackedDirIsRecuriveDict[tracking.path] = tracking.recursive;
         }
-        foreach (Tracking tracking in settingsJson.trackedLocalRepos)
+        foreach (LocalTracking tracking in settingsJson.trackedLocalRepos)
         {
             trackedRepoIsRecuriveDict[tracking.path] = tracking.recursive;
         }
@@ -283,13 +286,12 @@ public static class GitAPI
                 {
                     throw new Exception("Settings file is invalid json");
                 }
-                settingsJson.trackedLocalDirs.Add(new Tracking(dirPath, recursive));
+                settingsJson.trackedLocalDirs.Add(new LocalTracking(dirPath, recursive));
                 settingsStr = JsonSerializer.Serialize(settingsJson);
                 File.WriteAllText(SETTINGS_FPATH, settingsStr);
                 scanRepositories();
             }
 
-            /*
             public readonly static string trackRepository_description = "";
             public static void trackRepository(string repoPath, bool recursive)
             {
@@ -305,7 +307,6 @@ public static class GitAPI
                 File.WriteAllText(SETTINGS_FPATH, settingsStr);
                 scanRepositories();
             }
-            */
         }
 
 
@@ -364,6 +365,27 @@ public static class GitAPI
             return localRepositories;
         }
 
+        public static List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
+        {
+            List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> repos = new List<Tuple<string, RepositoryLocal?, RepositoryRemote?>>();
+            HashSet<string> repoNames = [.. localRepositories.Keys, .. remoteRepositories.Keys];
+            foreach (string repoName in repoNames)
+            {
+                RepositoryLocal? localRepo = null;
+                if (localRepositories.ContainsKey(repoName))
+                {
+                    localRepo = localRepositories[repoName];
+                }
+                RepositoryRemote? remoteRepo = null;
+                if (remoteRepositories.ContainsKey(repoName))
+                {
+                    remoteRepo = remoteRepositories[repoName];
+                }
+                Tuple<string, RepositoryLocal?, RepositoryRemote?> repo = new Tuple<string, RepositoryLocal?, RepositoryRemote?>(repoName, localRepo, remoteRepo);
+                repos.Add(repo);
+            }
+            return repos;
+        }
     }
 
 }
