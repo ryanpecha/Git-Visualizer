@@ -1,9 +1,13 @@
+using System.Diagnostics;
 using System.Management.Automation.Runspaces;
+using System.Text.Json;
 
 namespace GitVisualizer;
 
 public static class GitAPI
 {
+    static readonly string SETTINGS_FPATH = "gitVis.json";
+
     /// <summary> pointer to the live commit </summary>
     public static Branch? liveBranch { get; private set; }
 
@@ -19,12 +23,14 @@ public static class GitAPI
     private static Dictionary<string, RepositoryLocal> localRepositories;
     //
     private static Dictionary<string, bool> trackedDirIsRecuriveDict;
+    private static Dictionary<string, bool> trackedRepoIsRecuriveDict;
 
     //
-    private static void scanRepositories()
+    private static void scanDirs(Dictionary<string, bool> dirIsRecursiveDict)
     {
-        foreach (KeyValuePair<string, bool> entry in trackedDirIsRecuriveDict)
+        foreach (KeyValuePair<string, bool> entry in dirIsRecursiveDict)
         {
+            Debug.WriteLine($"SCANNING recursive={entry.Value} path={entry.Key}");
             string dirPath = entry.Key;
             bool recursive = entry.Value;
             SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
@@ -47,6 +53,7 @@ public static class GitAPI
                 }
                 // 
                 string repoName = repoDirInfo.Name;
+                 Debug.WriteLine($"LOCATED REPO title={repoName} path={repoDirPath}");
                 // TODO extract repo name from .git via git command
                 RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
                 localRepositories[repoName] = newLocalRepo;
@@ -54,9 +61,25 @@ public static class GitAPI
         }
     }
 
+    //
+    private static void scanRepositories()
+    {
+        scanDirs(trackedDirIsRecuriveDict);
+        scanDirs(trackedRepoIsRecuriveDict);
+    }
+
+
     /// <summary> GitAPI initialization </summary>
     static GitAPI()
     {
+        //
+        Debug.WriteLine("INITIALIZING GIT API");
+        Debug.WriteLine("ROOT SETTINGS PATH : " + Path.GetFullPath(SETTINGS_FPATH));
+        if (!Path.Exists(SETTINGS_FPATH))
+        {
+            File.WriteAllText(SETTINGS_FPATH, GVSettings.getDefaultJsonStr());
+        }
+
         // TODO load tracked repos and previous program state from config file
         liveCommit = null;
         liveRepository = null;
@@ -65,6 +88,27 @@ public static class GitAPI
         localRepositories = new Dictionary<string, RepositoryLocal>();
         //
         trackedDirIsRecuriveDict = new Dictionary<string, bool>();
+        trackedRepoIsRecuriveDict = new Dictionary<string, bool>();
+        //
+
+        Debug.WriteLine("GIT API - READING SETTINGS JSON TEXT");
+        string settingsStr = File.ReadAllText(SETTINGS_FPATH);
+        Debug.WriteLine("GIT API - PARSING SETTINGS JSON");
+        GVSettings? settingsJson = JsonSerializer.Deserialize<GVSettings>(settingsStr);
+        if (settingsJson == null)
+        {
+            throw new Exception("Settings file is invalid json");
+        }
+        foreach (Tracking tracking in settingsJson.trackedLocalDirs)
+        {
+            trackedDirIsRecuriveDict[tracking.path] = tracking.recursive;
+        }
+        foreach (Tracking tracking in settingsJson.trackedLocalRepos)
+        {
+            trackedRepoIsRecuriveDict[tracking.path] = tracking.recursive;
+        }
+        Debug.WriteLine(trackedDirIsRecuriveDict.ToString());
+        Debug.WriteLine(trackedRepoIsRecuriveDict.ToString());
         //
         scanRepositories();
     }
@@ -229,13 +273,39 @@ public static class GitAPI
             }
 
 
-            public readonly static string keepTrackOfDirectory_description = "";
+            public readonly static string trackDirectory_description = "";
             public static void trackDirectory(string dirPath, bool recursive)
             {
                 trackedDirIsRecuriveDict[dirPath] = recursive;
+                string settingsStr = File.ReadAllText(SETTINGS_FPATH);
+                GVSettings? settingsJson = JsonSerializer.Deserialize<GVSettings>(settingsStr);
+                if (settingsJson == null)
+                {
+                    throw new Exception("Settings file is invalid json");
+                }
+                settingsJson.trackedLocalDirs.Add(new Tracking(dirPath, recursive));
+                settingsStr = JsonSerializer.Serialize(settingsJson);
+                File.WriteAllText(SETTINGS_FPATH, settingsStr);
                 scanRepositories();
             }
 
+            /*
+            public readonly static string trackRepository_description = "";
+            public static void trackRepository(string repoPath, bool recursive)
+            {
+                trackedRepoIsRecuriveDict[repoPath] = recursive;
+                string settingsStr = File.ReadAllText(SETTINGS_FPATH);
+                GVSettings? settingsJson = JsonSerializer.Deserialize<GVSettings>(settingsStr);
+                if (settingsJson == null)
+                {
+                    throw new Exception("Settings file is invalid json");
+                }
+                settingsJson.trackedLocalRepos.Add(new Tracking(repoPath, recursive));
+                settingsStr = JsonSerializer.Serialize(settingsJson);
+                File.WriteAllText(SETTINGS_FPATH, settingsStr);
+                scanRepositories();
+            }
+            */
         }
 
 
