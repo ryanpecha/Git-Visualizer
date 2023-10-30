@@ -35,7 +35,9 @@ public static class GVSettings
         {
             throw new Exception("Settings file is invalid json");
         }
-        data = nullableData;
+        else {
+            data = nullableData;
+        }
     }
 
     public static void saveSettings()
