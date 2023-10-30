@@ -33,7 +33,9 @@ public static class GVSettings
         GVSettingsData? nullableData = JsonSerializer.Deserialize<GVSettingsData>(settingsStr);
         if (nullableData == null)
         {
-            throw new Exception("Settings file is invalid json");
+            Debug.WriteLine("Settings file is invalid json, loading defaults");
+            File.Delete(SETTINGS_FPATH);
+            data = new GVSettingsData();
         }
         else
         {

@@ -36,7 +36,7 @@ public class Github
 
             if (!credential.Exists())
             {
-                Debug.Write($"DeleteCredential(): credential stored.");
+                Debug.Write($"SaveCredential(): credential stored.");
                 credential.Username = username;
                 credential.Password = token;
                 credential.Type = CredentialType.Generic;
@@ -44,7 +44,7 @@ public class Github
                 credential.Save();
                 return true;
             }
-            Debug.Write($"DeleteCredential(): credential already exists. Not writing anything.");
+            Debug.Write($"SaveCredential(): credential already exists. Not writing anything.");
             return false;
         }
 
@@ -86,11 +86,12 @@ public class Github
         /// <returns>true if deletion is successful. false otherwise.</returns>
         public static bool DeleteCredential()
         {
+            Debug.WriteLine("DeleteCredential()");
             Credential credential = new Credential();
             credential.Target = userTarget;
             if (credential.Exists())
             {
-                Debug.Write($"DeleteCredential(): credential deleted.");
+                Debug.WriteLine($"DeleteCredential(): credential deleted.");
                 credential.Delete();
                 return true;
             }
@@ -137,17 +138,17 @@ public class Github
     /// <summary>
     /// Gets or Sets the username.
     /// </summary>
-    public string? username { get; private set; }
+    public static string? username { get; private set; }
 
     /// <summary>
     /// Gets or Sets the avatar u r l.
     /// </summary>
-    public string? avatarURL { get; private set; }
+    public static string? avatarURL { get; private set; }
 
     /// <summary>
     /// Gets or Sets the user git hub u r l.
     /// </summary>
-    public string? userGitHubURL { get; private set; }
+    public static string? userGitHubURL { get; private set; }
 
     /// <summary>
     /// Attempts to ask user to grant the app permission to read/write public repositories.
@@ -211,6 +212,7 @@ public class Github
     /// <returns>A bool. true if saved. false otherwise.</returns>
     public bool SaveUser()
     {
+        Debug.WriteLine("SAVING CREDENTIALS");
         if (username == null || accessToken == null)
         {
             Debug.WriteLine(
@@ -218,7 +220,6 @@ public class Github
             );
             return false;
         }
-
         return CredentialStore.SaveCredential(username, accessToken);
     }
 
@@ -226,7 +227,7 @@ public class Github
     /// Read token and user name from storage.
     /// </summary>
     /// <returns>true if members accessToken and username have been set properly. false otherwise.</returns>
-    public bool LoadStoredCredentials()
+    public static bool LoadStoredCredentials()
     {
         accessToken = CredentialStore.GetToken();
         username = CredentialStore.GetUserName();
@@ -335,6 +336,11 @@ public class Github
             string? status = await SendAuthorizationRequest();
             if (status != null)
             {
+                await GetGitHubUser();
+                if (!SaveUser())
+                {
+                    Debug.WriteLine("WARNING : Failed to save credentials");
+                }
                 break;
             }
             triesRemaining--;
@@ -488,14 +494,18 @@ public class Github
     /// <returns>The Task<String> object that can be awaited for the String</returns>
     private bool RevokeAccessToken()
     {
+
+        Debug.WriteLine("Removing User token");
+        bool deleteCredentialSuccess = DeleteStoredCredential();
+        if (!deleteCredentialSuccess) {
+            Console.WriteLine("WARNING : failed to delete local credentials");
+        }
+
         if (accessToken == null)
         {
             Debug.WriteLine("RevokeAccessToken(): Access token is already deleted or null.");
             return false;
         }
-
-        Debug.WriteLine("Removing User token: " + accessToken);
-        DeleteStoredCredential();
 
         StringContent jsonContent =
             new(
@@ -566,13 +576,12 @@ public class Github
             Debug.WriteLine($"CreateRepo(): Repo {repoName} created.");
             string content = await response.Content.ReadAsStringAsync();
             JObject resJson = JObject.Parse(content);
-            JToken? userNameToken = resJson["clone_url"];
-            if (userNameToken == null)
+            JToken? cloneUrlToken = resJson["clone_url"];
+            if (cloneUrlToken == null)
             {
                 return null;
             }
-            username = userNameToken.ToString().Substring(8);
-            return username;
+            return cloneUrlToken.ToString().Substring(8);
         }
 
         Debug.WriteLine($"CreateRepo(): Repo {repoName} creation failed.");

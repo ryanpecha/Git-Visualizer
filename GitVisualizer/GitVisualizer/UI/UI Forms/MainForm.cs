@@ -18,33 +18,40 @@ namespace GitVisualizer.UI.UI_Forms
         private RepositoriesControl repositoriesControl = new();
         private BranchesControl branchesControl = new();
         private MergingControl mergingControl = new();
+
         public MainForm()
         {
             InitializeComponent();
             ApplyColorTheme(AppTheme);
-            CheckValidation();   
+            CheckValidation();
         }
 
-        private void MainFormLoad(object sender, EventArgs e)
-        {
-
-        }
+        private void MainFormLoad(object sender, EventArgs e) { }
 
         /// <summary>
         /// Checks if user has already logged in with this device, and show login page if not
         /// </summary>
         private void CheckValidation()
         {
-            if (Github.accessToken == null)
+            Debug.WriteLine("CHECKING VALIDATION");
+            Debug.WriteLine(
+                $"LOADED SETTINGS rememberGitHubLogin={GVSettings.data.rememberGitHubLogin}"
+            );
+            if (!GVSettings.data.rememberGitHubLogin)
             {
+                Debug.WriteLine("DELETING LOCAL CREDENTIALS");
+                GitAPI.github.DeleteToken();
+            }
+            if (!Github.LoadStoredCredentials())
+            {
+                Debug.WriteLine("LOADING SETUP FORM");
                 SetupForm setup = new SetupForm();
-                this.Hide();
+                Hide();
                 // Shows setup page as dialog, so closing it returns here
                 setup.ShowDialog();
-                this.SetVisibleCore(false);
-                ShowControlInMainPanel(repositoriesControl);
-                
+                SetVisibleCore(false);
             }
+            ShowControlInMainPanel(repositoriesControl);
             repositoriesControl.EnterControl();
         }
 
@@ -52,10 +59,12 @@ namespace GitVisualizer.UI.UI_Forms
         {
             ShowControlInMainPanel(repositoriesControl);
         }
+
         public void OnBranchesButtonPress(object sender, EventArgs e)
         {
             ShowControlInMainPanel(branchesControl);
         }
+
         public void OnMergingButtonPress(object sender, EventArgs e)
         {
             ShowControlInMainPanel(mergingControl);
@@ -81,11 +90,6 @@ namespace GitVisualizer.UI.UI_Forms
             this.Show();
             this.SetVisibleCore(true);
             this.MaximizeBox = true;
-            
         }
-
-        
-   
-
     }
 }

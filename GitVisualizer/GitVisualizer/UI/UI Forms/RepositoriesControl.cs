@@ -37,19 +37,20 @@ namespace GitVisualizer.UI.UI_Forms
 
         private void InitCallback()
         {
+            Debug.WriteLine("InitCallback()");
+            //AddReposToTable();
             Invoke(AddReposToTable);
         }
+
         /// <summary>
         /// Main thread function to populate data grid cells with APi result repos
         /// </summary>
         public void AddReposToTable()
         {
+            Debug.WriteLine("AddReposToTable()");
             List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> allRepos = GitAPI.Getters.getAllRepositories();
 
-
-            repositoriesGridView.Rows.Clear();
-
-
+            //repositoriesGridView.Rows.Clear();
 
             foreach (Tuple<string, RepositoryLocal?, RepositoryRemote?> repoTuple in allRepos)
             {

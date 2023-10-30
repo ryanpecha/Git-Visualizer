@@ -45,14 +45,13 @@ public static class GitAPI
         localRepositories = new Dictionary<string, RepositoryLocal>();
     }
 
-
-
     public class Scanning
     {
 
         //
         public static void scanDirs(Action? callback)
         {
+            Debug.WriteLine("scanDirs()");
             foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
             {
                 Debug.WriteLine($"SCANNING recursive={trackedDir.recursive} path={trackedDir.path}");
@@ -85,6 +84,7 @@ public static class GitAPI
                 }
             }
             if (callback != null) {
+                Debug.WriteLine("scanDirs() calling callback");
                 callback();
             }
         }
@@ -93,6 +93,7 @@ public static class GitAPI
         //
         public static async Task scanRemotesAsync(Action? callback)
         {
+            Debug.WriteLine("scanRemotesAsync()");
             List<RepositoryRemote>? remotes = await github.FetchReposAsync();
             if (remotes != null) {
                 foreach (RepositoryRemote remoteRepo in remotes)
@@ -104,15 +105,16 @@ public static class GitAPI
                 Debug.WriteLine("WARNING : GitHub remote fetch returned null");
             }
             if (callback != null) {
+                Debug.WriteLine("scanRemotesAsync() calling callback");
                 callback();
             }
         }
 
 
         //
-        public async static void scanAllAsync(Action callback)
+        public static async void scanAllAsync(Action callback)
         {
-            Debug.WriteLine("ASYNC INITIALIZING GIT API");
+            Debug.WriteLine("scanAllAsync()");
             // loading local repositories
             scanDirs(null);
             // loading remote repositories
