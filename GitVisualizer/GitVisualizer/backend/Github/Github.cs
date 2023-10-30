@@ -171,9 +171,9 @@ public class Github
     /// Attempts to ask user to grant the app permission to read/write public repositories.
     /// </summary>
     /// <returns>The task object.</returns>
-    public async Task GivePermission()
+    public async Task GivePermission(string scope = "public")
     {
-        await Task.Run(RegisterUser);
+        await Task.Run(() => RegisterUser(scope));
     }
 
     /// <summary>
@@ -189,10 +189,10 @@ public class Github
     /// The method gets a list of the user repository as JSON.
     /// </summary>
     /// <returns>The task object.</returns>
-    public async Task GetRepositories()
+    public async Task GetRepositories(string scope = "public")
     {
         // TODO: Format the JSON to make it easier to work in frontend.
-        await Task.Run(GetRepoList);
+        await Task.Run(() => GetRepoList(scope));
     }
 
     /// <summary>
@@ -238,15 +238,15 @@ public class Github
         //SaveUser();
         //ReadTokenAndUserName();
 
-        await GetRepoList();
+        await GetRepositories();
         int i = 0;
-        /*
+
         foreach (Repo x in repos)
         {
             Debug.WriteLine(i + " " + x.name + " " + x.git_url);
             Debug.WriteLine(CreateAuthenticatedGit(i));
             i++;
-        }*/
+        }
 
         String repo_url = await CreateRepo("testingCreatingARepo");
         Debug.WriteLine(CreateAuthenticatedGit(repo_url));
@@ -331,13 +331,15 @@ public class Github
     /// The private method to handle registering user with the app.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> RegisterUser()
+    private async Task<String> RegisterUser(string scope = "public")
     {
+        string actualScope = (scope == "private") ? "repo" : "public_repo";
+
         using StringContent jsonContent = new(
             System.Text.Json.JsonSerializer.Serialize(new
             {
                 client_id = tempClientID,
-                scope = "public_repo"
+                scope = actualScope
             }),
             Encoding.UTF8,
              jsonType);
@@ -428,27 +430,38 @@ public class Github
     /// The private method to handle getting the GitHub user's repository list.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> GetRepoList()
+    private async Task<String> GetRepoList(string scope = "public")
     {
+        scope = (scope != "private" && scope != "all") ? "public" : scope;
+        Debug.WriteLine(scope);
         if (accessToken == null)
             return null;
         CommonAuthenticatedHelper();
+        int page = 1;
 
-        HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user/repos");
+        repos = new List<Repo>();
 
-        if (response.IsSuccessStatusCode)
+        while (true)
         {
-            String content = await response.Content.ReadAsStringAsync();
-            JArray array = JArray.Parse(content);
-            int gitEndIndex = 6;
+            HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user/repos?type={scope}&per_page=100&page={page++}");
 
-            repos = ((JArray)array).Select(repo => new Repo
+            if (response.IsSuccessStatusCode)
             {
-                name = (string)repo["name"],
-                git_url = ((string)repo["git_url"]).Substring(gitEndIndex)
-            }).ToList();
-        }
+                String content = await response.Content.ReadAsStringAsync();
+                JArray array = JArray.Parse(content);
+                int gitEndIndex = 6;
 
+                List<Repo> tempRepo = ((JArray)array).Select(repo => new Repo
+                {
+                    name = (string)repo["name"],
+                    git_url = ((string)repo["git_url"]).Substring(gitEndIndex),
+                }).ToList();
+
+                if (tempRepo.Count == 0)
+                    break;
+                repos.AddRange(tempRepo);
+            }
+        }
         return null;
     }
 
@@ -484,7 +497,6 @@ public class Github
     /// <returns>The Task<String> object that can be awaited for the String</returns>
     private bool RevokeAccessToken()
     {
-        
         if (accessToken == null)
         {
             Debug.WriteLine("RevokeAccessToken(): Access token is already deleted or null.");
