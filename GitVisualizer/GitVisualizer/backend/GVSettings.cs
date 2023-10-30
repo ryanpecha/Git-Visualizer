@@ -6,45 +6,58 @@ public class GVSettings
     private static readonly string SETTINGS_FPATH = "gitVis.json";
 
     public string githubAppToken { get; set; }
-    public List<LocalTracking> trackedLocalDirs { get; set; }
-    public List<LocalTracking> trackedLocalRepos { get; set; }
+    public List<LocalTrackedDir> trackedLocalDirs { get; set; }
 
     // try load file, else defaults
     public GVSettings()
     {
+        githubAppToken = "";
+        trackedLocalDirs = new List<LocalTrackedDir>();
         if (!Path.Exists(SETTINGS_FPATH))
         {
-            this.githubAppToken = "";
-            this.trackedLocalDirs = new List<LocalTracking>();
-            this.trackedLocalRepos = new List<LocalTracking>();
-            return;
+            saveSettings();
         }
         else
         {
-
+            loadSettings();
         }
     }
 
-    public static void debugPath()
+    public static void debugPrintPath()
     {
         Debug.WriteLine("ROOT SETTINGS PATH : " + Path.GetFullPath(SETTINGS_FPATH));
     }
 
-    public static void saveSettings()
+    public void loadSettings()
     {
-        GVSettings settingsRef = new GVSettings();
-        string settingsString = JsonSerializer.Serialize(settingsRef);
-        File.WriteAllText(SETTINGS_FPATH, settingsString);
+        //
+        string settingsStr = File.ReadAllText(SETTINGS_FPATH);
+        GVSettings? settingsJson = JsonSerializer.Deserialize<GVSettings>(settingsStr);
+        if (settingsJson == null)
+        {
+            throw new Exception("Settings file is invalid json");
+        }
+        else
+        {
+            githubAppToken = settingsJson.githubAppToken;
+            trackedLocalDirs = settingsJson.trackedLocalDirs;
+        }
     }
 
-    public class LocalTracking
+    public void saveSettings()
     {
-        public string path { get; set; }
-        public bool recursive { get; set; }
-        public LocalTracking(string path, bool recursive)
-        {
-            this.path = path;
-            this.recursive = recursive;
-        }
+        string settingsString = JsonSerializer.Serialize(this);
+        File.WriteAllText(SETTINGS_FPATH, settingsString);
+    }
+}
+
+public class LocalTrackedDir
+{
+    public string path { get; set; }
+    public bool recursive { get; set; }
+    public LocalTrackedDir(string path, bool recursive)
+    {
+        this.path = path;
+        this.recursive = recursive;
     }
 }
