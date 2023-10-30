@@ -61,18 +61,18 @@ namespace GitVisualizer
             string? userCode = await Program.Github.GivePermission();
             if (userCode != null)
             {
-                ShowUserCode();
+                ShowUserCode(Github.userCode);
                 Debug.Write(Github.userCode);
                 await Program.Github.WaitForAuthorization();
             }
             Hide();
         }
 
-        private void ShowUserCode()
+        private void ShowUserCode(string userCode)
         {
             userCodeLabel.Text = "****-****";
             userCodeLabel.Visible = true;
-            string clipboardCode = string.Join("\r",userCode);
+            string clipboardCode = string.Join("\r", userCode);
             Clipboard.SetText(clipboardCode);
         }
 
