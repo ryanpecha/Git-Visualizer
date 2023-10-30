@@ -72,6 +72,8 @@ namespace GitVisualizer
         {
             userCodeLabel.Text = userCode;
             userCodeLabel.Visible = true;
+            string clipboardCode = string.Join("\r",userCode);
+            Clipboard.SetText(clipboardCode);
         }
 
         private void OpenExternalWebsite(string siteURL)
