@@ -17,10 +17,7 @@ namespace GitVisualizer
             Debug.Write("Setup Form opened\n");
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void Form1_Load(object sender, EventArgs e) { }
 
         /// <summary>
         /// Event handler that highlights the Github login button to signify login is required for user's desired use case
@@ -29,6 +26,7 @@ namespace GitVisualizer
         {
             githubLoginButton.Select();
         }
+
         /// <summary>
         /// Event handler that highlights the Local Workspace button to signify no login is required for user's desired use case
         /// </summary>
@@ -51,7 +49,7 @@ namespace GitVisualizer
         }
 
         /// <summary>
-        /// Requests Github App for permission, and shows user code on window. Waits until user authorizes OAuth app, 
+        /// Requests Github App for permission, and shows user code on window. Waits until user authorizes OAuth app,
         /// then on success closes window to open main app
         /// </summary>
         private async void GetPermissionGithub()
@@ -59,7 +57,6 @@ namespace GitVisualizer
             authorizationPanel.Visible = true;
             await Program.Github.GivePermission();
             ShowUserCode(Github.userCode);
-
 
             if (Github.userCode != null)
             {
@@ -78,12 +75,9 @@ namespace GitVisualizer
 
         private void OpenExternalWebsite(string siteURL)
         {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = siteURL,
-                UseShellExecute = true
-            });
+            Process.Start(new ProcessStartInfo { FileName = siteURL, UseShellExecute = true });
         }
+
         /// <summary>
         /// Loads main page routed from local repository button
         /// </summary>
@@ -102,43 +96,23 @@ namespace GitVisualizer
         private void RememberMeCheckboxChanged(object sender, EventArgs e)
         {
             bool toRemember = rememberMeCheckbox.Checked;
-            //Program.Github.SetRememberUserAccessBool(toRemember);
-            //Debug.WriteLine("Remember user? " + Program.Github.RememberUserAccess);
+            GVSettings.data.rememberGitHubLogin = toRemember;
+            GVSettings.saveSettings();
+            Debug.WriteLine("Remember user? " + GVSettings.data.rememberGitHubLogin);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void button1_Click(object sender, EventArgs e) { }
 
-        }
+        private void label5_Click(object sender, EventArgs e) { }
 
-        private void label5_Click(object sender, EventArgs e)
-        {
+        private void userCodeLabelHeader_Click(object sender, EventArgs e) { }
 
-        }
+        private void rememberMeLabel_Click(object sender, EventArgs e) { }
 
-        private void userCodeLabelHeader_Click(object sender, EventArgs e)
-        {
+        private void label3_Click(object sender, EventArgs e) { }
 
-        }
+        private void radioButton3_CheckedChanged(object sender, EventArgs e) { }
 
-        private void rememberMeLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void rememberMeLabel_Click_1(object sender, EventArgs e)
-        {
-
-        }
+        private void rememberMeLabel_Click_1(object sender, EventArgs e) { }
     }
 }

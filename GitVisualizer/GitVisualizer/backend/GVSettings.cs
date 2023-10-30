@@ -49,25 +49,18 @@ public static class GVSettings
 
     public class GVSettingsData
     {
-        public string githubAppToken { get; set; }
-        public bool githubAppHasAuth { get; set; }
+        public bool rememberGitHubLogin { get; set; }
         public List<LocalTrackedDir> trackedLocalDirs { get; set; }
 
-        public GVSettingsData(
-            string githubAppToken,
-            bool githubAppHasAuth,
-            List<LocalTrackedDir> trackedLocalDirs
-        )
+        public GVSettingsData(bool rememberGitHubLogin, List<LocalTrackedDir> trackedLocalDirs)
         {
-            this.githubAppToken = githubAppToken;
-            this.githubAppHasAuth = githubAppHasAuth;
+            this.rememberGitHubLogin = rememberGitHubLogin;
             this.trackedLocalDirs = trackedLocalDirs;
         }
 
         public GVSettingsData()
         {
-            githubAppToken = "";
-            githubAppHasAuth = false;
+            rememberGitHubLogin = true;
             trackedLocalDirs = new List<LocalTrackedDir>();
         }
     }

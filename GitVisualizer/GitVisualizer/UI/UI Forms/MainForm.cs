@@ -13,20 +13,16 @@ namespace GitVisualizer.UI.UI_Forms
 {
     public partial class MainForm : Form
     {
-        private bool hasCredentials = false;
         public static UITheme.AppTheme AppTheme = UITheme.DarkTheme;
-        private Github githubAPI;
 
         private RepositoriesControl repositoriesControl = new();
         private BranchesControl branchesControl = new();
         private MergingControl mergingControl = new();
         public MainForm()
         {
-            githubAPI = Program.Github;
             InitializeComponent();
             ApplyColorTheme(AppTheme);
-            CheckValidation();
-            
+            CheckValidation();   
         }
 
         private void MainFormLoad(object sender, EventArgs e)
