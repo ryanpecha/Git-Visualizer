@@ -186,6 +186,8 @@ namespace GitVisualizer
             // rememberMeCheckbox
             // 
             rememberMeCheckbox.AutoSize = true;
+            rememberMeCheckbox.Checked = true;
+            rememberMeCheckbox.CheckState = CheckState.Checked;
             rememberMeCheckbox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
             rememberMeCheckbox.Location = new Point(12, 322);
             rememberMeCheckbox.Name = "rememberMeCheckbox";

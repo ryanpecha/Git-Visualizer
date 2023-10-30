@@ -26,5 +26,15 @@ namespace GitVisualizer.UI.UI_Forms
         {
 
         }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void diffFile1Group_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

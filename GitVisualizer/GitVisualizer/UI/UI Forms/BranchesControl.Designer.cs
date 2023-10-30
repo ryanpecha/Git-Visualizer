@@ -48,9 +48,6 @@
         private void InitializeComponent()
         {
             branchesControlPanel = new Panel();
-            buttonsPanel = new Panel();
-            revokeAccessButton = new Button();
-            grantAccessButton = new Button();
             titleLabel = new Label();
             branchesGridView = new DataGridView();
             graphColumn = new DataGridViewImageColumn();
@@ -60,7 +57,6 @@
             dateColumn = new DataGridViewTextBoxColumn();
             commentColumn = new DataGridViewTextBoxColumn();
             branchesControlPanel.SuspendLayout();
-            buttonsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).BeginInit();
             SuspendLayout();
             // 
@@ -68,7 +64,6 @@
             // 
             branchesControlPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             branchesControlPanel.BorderStyle = BorderStyle.FixedSingle;
-            branchesControlPanel.Controls.Add(buttonsPanel);
             branchesControlPanel.Controls.Add(titleLabel);
             branchesControlPanel.Dock = DockStyle.Left;
             branchesControlPanel.Location = new Point(0, 0);
@@ -77,45 +72,10 @@
             branchesControlPanel.Size = new Size(280, 675);
             branchesControlPanel.TabIndex = 2;
             // 
-            // buttonsPanel
-            // 
-            buttonsPanel.AutoSize = true;
-            buttonsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonsPanel.Controls.Add(revokeAccessButton);
-            buttonsPanel.Controls.Add(grantAccessButton);
-            buttonsPanel.Dock = DockStyle.Bottom;
-            buttonsPanel.Location = new Point(280, 493);
-            buttonsPanel.MinimumSize = new Size(0, 180);
-            buttonsPanel.Name = "buttonsPanel";
-            buttonsPanel.Size = new Size(0, 180);
-            buttonsPanel.TabIndex = 2;
-            // 
-            // revokeAccessButton
-            // 
-            revokeAccessButton.FlatStyle = FlatStyle.Flat;
-            revokeAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            revokeAccessButton.Location = new Point(47, 28);
-            revokeAccessButton.Name = "revokeAccessButton";
-            revokeAccessButton.Size = new Size(166, 54);
-            revokeAccessButton.TabIndex = 0;
-            revokeAccessButton.Text = "Revoke Access";
-            revokeAccessButton.UseVisualStyleBackColor = true;
-            // 
-            // grantAccessButton
-            // 
-            grantAccessButton.FlatStyle = FlatStyle.Flat;
-            grantAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            grantAccessButton.Location = new Point(47, 106);
-            grantAccessButton.Name = "grantAccessButton";
-            grantAccessButton.Size = new Size(166, 54);
-            grantAccessButton.TabIndex = 0;
-            grantAccessButton.Text = "Grant Access";
-            grantAccessButton.UseVisualStyleBackColor = true;
-            // 
             // titleLabel
             // 
             titleLabel.AutoSize = true;
-            titleLabel.Dock = DockStyle.Left;
+            titleLabel.Dock = DockStyle.Top;
             titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
             titleLabel.Location = new Point(0, 0);
             titleLabel.Margin = new Padding(0);
@@ -205,16 +165,12 @@
             Size = new Size(1175, 675);
             branchesControlPanel.ResumeLayout(false);
             branchesControlPanel.PerformLayout();
-            buttonsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)branchesGridView).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
         private Panel branchesControlPanel;
-        private Panel buttonsPanel;
-        private Button revokeAccessButton;
-        private Button grantAccessButton;
         private Label titleLabel;
         public DataGridView branchesGridView;
         private DataGridViewImageColumn graphColumn;
