@@ -53,6 +53,7 @@ namespace GitVisualizer
             rememberMeCheckbox = new CheckBox();
             rememberMeLabel = new Label();
             authorizationPanel = new Panel();
+            showCodeCheckBox = new CheckBox();
             authorizationPanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -164,16 +165,15 @@ namespace GitVisualizer
             // userCodeLabelHeader
             // 
             userCodeLabelHeader.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            userCodeLabelHeader.Location = new Point(12, 74);
+            userCodeLabelHeader.Location = new Point(12, 9);
             userCodeLabelHeader.Name = "userCodeLabelHeader";
-            userCodeLabelHeader.Size = new Size(375, 122);
+            userCodeLabelHeader.Size = new Size(375, 187);
             userCodeLabelHeader.TabIndex = 9;
-            userCodeLabelHeader.Text = "A Github webpage should have opened in your browser. \r\n\r\nEnter the following code on that page to authorize your device:\r\n";
+            userCodeLabelHeader.Text = resources.GetString("userCodeLabelHeader.Text");
             userCodeLabelHeader.Click += userCodeLabelHeader_Click;
             // 
             // userCodeLabel
             // 
-            userCodeLabel.AutoSize = true;
             userCodeLabel.Font = new Font("Segoe UI", 48F, FontStyle.Regular, GraphicsUnit.Point);
             userCodeLabel.Location = new Point(33, 199);
             userCodeLabel.Name = "userCodeLabel";
@@ -189,7 +189,7 @@ namespace GitVisualizer
             rememberMeCheckbox.Checked = true;
             rememberMeCheckbox.CheckState = CheckState.Checked;
             rememberMeCheckbox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            rememberMeCheckbox.Location = new Point(12, 309);
+            rememberMeCheckbox.Location = new Point(12, 351);
             rememberMeCheckbox.Name = "rememberMeCheckbox";
             rememberMeCheckbox.Size = new Size(177, 34);
             rememberMeCheckbox.TabIndex = 11;
@@ -199,7 +199,7 @@ namespace GitVisualizer
             // 
             // rememberMeLabel
             // 
-            rememberMeLabel.Location = new Point(12, 355);
+            rememberMeLabel.Location = new Point(12, 390);
             rememberMeLabel.Name = "rememberMeLabel";
             rememberMeLabel.Size = new Size(391, 100);
             rememberMeLabel.TabIndex = 12;
@@ -209,6 +209,7 @@ namespace GitVisualizer
             // authorizationPanel
             // 
             authorizationPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            authorizationPanel.Controls.Add(showCodeCheckBox);
             authorizationPanel.Controls.Add(userCodeLabelHeader);
             authorizationPanel.Controls.Add(rememberMeCheckbox);
             authorizationPanel.Controls.Add(rememberMeLabel);
@@ -220,6 +221,18 @@ namespace GitVisualizer
             authorizationPanel.Size = new Size(418, 559);
             authorizationPanel.TabIndex = 13;
             authorizationPanel.Visible = false;
+            // 
+            // showCodeCheckBox
+            // 
+            showCodeCheckBox.AutoSize = true;
+            showCodeCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            showCodeCheckBox.Location = new Point(62, 288);
+            showCodeCheckBox.Name = "showCodeCheckBox";
+            showCodeCheckBox.Size = new Size(215, 25);
+            showCodeCheckBox.TabIndex = 13;
+            showCodeCheckBox.Text = "Show Code (Sensitive Info)";
+            showCodeCheckBox.UseVisualStyleBackColor = true;
+            showCodeCheckBox.CheckedChanged += ShowCodeCheckboxChanged;
             // 
             // SetupForm
             // 
@@ -292,5 +305,6 @@ namespace GitVisualizer
         private CheckBox rememberMeCheckbox;
         private Label rememberMeLabel;
         private Panel authorizationPanel;
+        private CheckBox showCodeCheckBox;
     }
 }

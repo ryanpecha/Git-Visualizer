@@ -61,7 +61,7 @@ namespace GitVisualizer
             string? userCode = await Program.Github.GivePermission();
             if (userCode != null)
             {
-                ShowUserCode(userCode);
+                ShowUserCode(Github.userCode);
                 Debug.Write(Github.userCode);
                 await Program.Github.WaitForAuthorization();
             }
@@ -70,10 +70,22 @@ namespace GitVisualizer
 
         private void ShowUserCode(string userCode)
         {
-            userCodeLabel.Text = userCode;
+            userCodeLabel.Text = "****-****";
             userCodeLabel.Visible = true;
             string clipboardCode = string.Join("\r", userCode);
             Clipboard.SetText(clipboardCode);
+        }
+
+        private void ShowCodeCheckboxChanged(object sender, EventArgs e)
+        {
+            if (showCodeCheckBox.Checked)
+            {
+                userCodeLabel.Text = Github.userCode;
+            }
+            else
+            {
+                userCodeLabel.Text = "****-****";
+            }
         }
 
         private void OpenExternalWebsite(string siteURL)

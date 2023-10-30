@@ -79,6 +79,11 @@ namespace GitVisualizer.UI.UI_Forms
 
         }
 
+        private void RevokeGithubAuthenticationButtonPressed(object sender, EventArgs e)
+        {
+            //TODO: Revoke function
+            Program.Github.DeleteToken();
+        }
         private void repositoriesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
