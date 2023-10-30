@@ -13,7 +13,7 @@ namespace GitVisualizer
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            this.FormClosing += new FormClosingEventHandler(LoadMainAppFormLocal); // Open main window when closing this one, skipping Auth
+            FormClosing += new FormClosingEventHandler(LoadMainAppFormLocal); // Open main window when closing this one, skipping Auth
             Debug.Write("Setup Form opened\n");
         }
 
@@ -61,31 +61,19 @@ namespace GitVisualizer
             string? userCode = await Program.Github.GivePermission();
             if (userCode != null)
             {
-                ShowUserCode();
+                ShowUserCode(userCode);
                 Debug.Write(Github.userCode);
                 await Program.Github.WaitForAuthorization();
             }
             Hide();
         }
 
-        private void ShowUserCode()
+        private void ShowUserCode(string userCode)
         {
-            userCodeLabel.Text = "****-****";
+            userCodeLabel.Text = userCode;
             userCodeLabel.Visible = true;
-            string clipboardCode = string.Join("\r", Github.userCode);
+            string clipboardCode = string.Join("\r", userCode);
             Clipboard.SetText(clipboardCode);
-        }
-
-        private void ShowCodeCheckboxChanged(object sender, EventArgs e)
-        {
-            if (showCodeCheckBox.Checked)
-            {
-                userCodeLabel.Text = Github.userCode;
-            }
-            else
-            {
-                userCodeLabel.Text = "****-****";
-            }
         }
 
         private void OpenExternalWebsite(string siteURL)
@@ -98,7 +86,7 @@ namespace GitVisualizer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void LoadMainAppFormLocal(object sender, EventArgs e)
+        private void LoadMainAppFormLocal(object? sender, EventArgs e)
         {
             this.Hide();
         }
