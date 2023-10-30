@@ -9,7 +9,6 @@ namespace GitVisualizer;
 public static class GitAPI
 {
 
-    public static GVSettings settings { get; set; }
     public static Github github { get; set; }
 
     /// <summary> pointer to the live commit </summary>
@@ -34,7 +33,7 @@ public static class GitAPI
         //
         public static void scanDirs()
         {
-            foreach (LocalTrackedDir trackedDir in settings.trackedLocalDirs)
+            foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
             {
                 Debug.WriteLine($"SCANNING recursive={trackedDir.recursive} path={trackedDir.path}");
                 string dirPath = trackedDir.path;
@@ -89,9 +88,6 @@ public static class GitAPI
     static GitAPI()
     {
         Debug.WriteLine("INITIALIZING GIT API");
-
-        //
-        settings = new GVSettings();
         github = Program.Github;
 
         // TODO load tracked repos and previous program state from config file
@@ -270,7 +266,7 @@ public static class GitAPI
             public readonly static string trackDirectory_description = "";
             public static void trackDirectory(string dirPath, bool recursive)
             {
-                foreach (LocalTrackedDir trackedDir in settings.trackedLocalDirs)
+                foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
                 {
                     if (trackedDir.path == dirPath)
                     {
@@ -279,8 +275,8 @@ public static class GitAPI
                     }
                 }
                 LocalTrackedDir newTrackedDir = new LocalTrackedDir(dirPath, recursive);
-                settings.trackedLocalDirs.Add(newTrackedDir);
-                settings.saveSettings();
+                GVSettings.data.trackedLocalDirs.Add(newTrackedDir);
+                GVSettings.saveSettings();
                 Scanning.scanDirs();
             }
         }

@@ -1,18 +1,15 @@
 using System.Diagnostics;
 using System.Text.Json;
 
-public class GVSettings
+public static class GVSettings
 {
     private static readonly string SETTINGS_FPATH = "gitVis.json";
-
-    public string githubAppToken { get; set; }
-    public List<LocalTrackedDir> trackedLocalDirs { get; set; }
+    public static GVSettingsData data { get; private set; }
 
     // try load file, else defaults
-    public GVSettings()
+    static GVSettings()
     {
-        githubAppToken = "";
-        trackedLocalDirs = new List<LocalTrackedDir>();
+        data = new GVSettingsData();
         if (!Path.Exists(SETTINGS_FPATH))
         {
             saveSettings();
@@ -28,26 +25,32 @@ public class GVSettings
         Debug.WriteLine("ROOT SETTINGS PATH : " + Path.GetFullPath(SETTINGS_FPATH));
     }
 
-    public void loadSettings()
+    public static void loadSettings()
     {
-        //
         string settingsStr = File.ReadAllText(SETTINGS_FPATH);
-        GVSettings? settingsJson = JsonSerializer.Deserialize<GVSettings>(settingsStr);
-        if (settingsJson == null)
+        GVSettingsData? data = JsonSerializer.Deserialize<GVSettingsData>(settingsStr);
+        if (data == null)
         {
             throw new Exception("Settings file is invalid json");
         }
-        else
-        {
-            githubAppToken = settingsJson.githubAppToken;
-            trackedLocalDirs = settingsJson.trackedLocalDirs;
-        }
     }
 
-    public void saveSettings()
+    public static void saveSettings()
     {
-        string settingsString = JsonSerializer.Serialize(this);
+        string settingsString = JsonSerializer.Serialize(data);
         File.WriteAllText(SETTINGS_FPATH, settingsString);
+    }
+
+    public class GVSettingsData
+    {
+        public string githubAppToken { get; set; }
+        public List<LocalTrackedDir> trackedLocalDirs { get; set; }
+
+        public GVSettingsData()
+        {
+            githubAppToken = "";
+            trackedLocalDirs = new List<LocalTrackedDir>();
+        }
     }
 }
 
