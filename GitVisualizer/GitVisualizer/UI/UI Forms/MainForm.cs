@@ -13,7 +13,9 @@ namespace GitVisualizer.UI.UI_Forms
 {
     public partial class MainForm : Form
     {
-        public static UITheme.AppTheme AppTheme = UITheme.DarkTheme;
+        //public static UITheme.AppTheme AppTheme = UITheme.DarkTheme;
+        public static UITheme.AppTheme AppTheme = UITheme.BlueThemeDark;
+        //public static UITheme.AppTheme AppTheme = UITheme.BlueThemeLight;
 
         private RepositoriesControl repositoriesControl = new();
         private BranchesControl branchesControl = new();

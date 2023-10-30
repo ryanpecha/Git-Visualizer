@@ -148,6 +148,7 @@
             revokeAccessButton.TabIndex = 0;
             revokeAccessButton.Text = "Revoke Access";
             revokeAccessButton.UseVisualStyleBackColor = true;
+            revokeAccessButton.Click += RevokeGithubAuthenticationButtonPressed;
             // 
             // grantAccessButton
             // 

@@ -125,6 +125,14 @@ Login will generate a user token for this device, and you will automatically be 
   <metadata name="notifyIcon1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="userCodeLabelHeader.Text" xml:space="preserve">
+    <value>A Github webpage should have opened in your browser. 
+
+The following code has been copied to your clipboard to be pasted in the Github webpage.
+
+Enter the following code on that page to authorize your device:
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
   </metadata>
