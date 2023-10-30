@@ -164,7 +164,7 @@ namespace GitVisualizer
             // userCodeLabelHeader
             // 
             userCodeLabelHeader.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            userCodeLabelHeader.Location = new Point(12, 52);
+            userCodeLabelHeader.Location = new Point(12, 74);
             userCodeLabelHeader.Name = "userCodeLabelHeader";
             userCodeLabelHeader.Size = new Size(375, 122);
             userCodeLabelHeader.TabIndex = 9;
@@ -189,7 +189,7 @@ namespace GitVisualizer
             rememberMeCheckbox.Checked = true;
             rememberMeCheckbox.CheckState = CheckState.Checked;
             rememberMeCheckbox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            rememberMeCheckbox.Location = new Point(12, 322);
+            rememberMeCheckbox.Location = new Point(12, 309);
             rememberMeCheckbox.Name = "rememberMeCheckbox";
             rememberMeCheckbox.Size = new Size(177, 34);
             rememberMeCheckbox.TabIndex = 11;
@@ -199,7 +199,7 @@ namespace GitVisualizer
             // 
             // rememberMeLabel
             // 
-            rememberMeLabel.Location = new Point(12, 373);
+            rememberMeLabel.Location = new Point(12, 355);
             rememberMeLabel.Name = "rememberMeLabel";
             rememberMeLabel.Size = new Size(391, 100);
             rememberMeLabel.TabIndex = 12;
