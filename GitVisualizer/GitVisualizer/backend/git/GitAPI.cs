@@ -88,11 +88,14 @@ public static class GitAPI
     static GitAPI()
     {
         Debug.WriteLine("INITIALIZING GIT API");
+
+        // ref to program GitHub api
         github = Program.Github;
 
         // TODO load tracked repos and previous program state from config file
         liveCommit = null;
         liveRepository = null;
+        
         //
         remoteRepositories = new Dictionary<string, RepositoryRemote>();
         localRepositories = new Dictionary<string, RepositoryLocal>();
@@ -100,8 +103,9 @@ public static class GitAPI
 
     public async static void initialize(Action callback)
     {
-        //
+        // loading local repositories
         Scanning.scanDirs();
+        // loading remote repositories
         await Scanning.scanRemotesAsync(callback);
     }
 
