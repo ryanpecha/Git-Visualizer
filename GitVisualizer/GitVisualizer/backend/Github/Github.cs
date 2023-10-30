@@ -226,7 +226,7 @@ public class Github
     /// Read token and user name from storage.
     /// </summary>
     /// <returns>true if members accessToken and username have been set properly. false otherwise.</returns>
-    public bool ReadTokenAndUserName()
+    public bool LoadStoredCredentials()
     {
         accessToken = CredentialStore.GetToken();
         username = CredentialStore.GetUserName();
