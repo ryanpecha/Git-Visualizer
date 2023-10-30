@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Text.Json;
+using System.Xml;
+using System;
 
 public static class GVSettings
 {
@@ -30,7 +32,9 @@ public static class GVSettings
     public static void loadSettings()
     {
         string settingsStr = File.ReadAllText(SETTINGS_FPATH);
-        GVSettingsData? nullableData = JsonSerializer.Deserialize<GVSettingsData>(settingsStr);
+        GVSettingsData? nullableData = System.Text.Json.JsonSerializer.Deserialize<GVSettingsData>(
+            settingsStr
+        );
         if (nullableData == null)
         {
             Debug.WriteLine("Settings file is invalid json, loading defaults");
@@ -45,7 +49,8 @@ public static class GVSettings
 
     public static void saveSettings()
     {
-        string settingsString = JsonSerializer.Serialize(data);
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        string settingsString = JsonSerializer.Serialize(data, options);
         File.WriteAllText(SETTINGS_FPATH, settingsString);
     }
 
