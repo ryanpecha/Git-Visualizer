@@ -39,7 +39,13 @@
             fetchButton = new Button();
             pullButton = new Button();
             pushButton = new Button();
+            gitButtonsPanel = new Panel();
+            pageButtonsPanel = new Panel();
+            buttonsMenuPanel = new Panel();
             ((System.ComponentModel.ISupportInitialize)githubBindingSource).BeginInit();
+            gitButtonsPanel.SuspendLayout();
+            pageButtonsPanel.SuspendLayout();
+            buttonsMenuPanel.SuspendLayout();
             SuspendLayout();
             // 
             // githubBindingSource
@@ -50,7 +56,7 @@
             // 
             repositoriesPageButton.FlatStyle = FlatStyle.Flat;
             repositoriesPageButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            repositoriesPageButton.Location = new Point(6, 6);
+            repositoriesPageButton.Location = new Point(12, 7);
             repositoriesPageButton.Name = "repositoriesPageButton";
             repositoriesPageButton.Size = new Size(156, 32);
             repositoriesPageButton.TabIndex = 0;
@@ -62,7 +68,7 @@
             // 
             branchesPageButton.FlatStyle = FlatStyle.Flat;
             branchesPageButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            branchesPageButton.Location = new Point(168, 6);
+            branchesPageButton.Location = new Point(174, 7);
             branchesPageButton.Name = "branchesPageButton";
             branchesPageButton.Size = new Size(156, 32);
             branchesPageButton.TabIndex = 1;
@@ -74,7 +80,7 @@
             // 
             mergingPageButton.FlatStyle = FlatStyle.Flat;
             mergingPageButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            mergingPageButton.Location = new Point(330, 6);
+            mergingPageButton.Location = new Point(336, 7);
             mergingPageButton.Name = "mergingPageButton";
             mergingPageButton.Size = new Size(156, 32);
             mergingPageButton.TabIndex = 2;
@@ -84,18 +90,18 @@
             // 
             // mainPanel
             // 
-            mainPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            mainPanel.Location = new Point(0, 42);
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(0, 47);
             mainPanel.Margin = new Padding(6, 42, 6, 6);
             mainPanel.Name = "mainPanel";
             mainPanel.Padding = new Padding(6);
-            mainPanel.Size = new Size(1001, 579);
+            mainPanel.Size = new Size(1001, 574);
             mainPanel.TabIndex = 3;
             // 
             // undoButton
             // 
             undoButton.FlatStyle = FlatStyle.Flat;
-            undoButton.Location = new Point(897, 10);
+            undoButton.Location = new Point(257, 7);
             undoButton.Margin = new Padding(1);
             undoButton.Name = "undoButton";
             undoButton.Size = new Size(79, 28);
@@ -106,7 +112,7 @@
             // fetchButton
             // 
             fetchButton.FlatStyle = FlatStyle.Flat;
-            fetchButton.Location = new Point(815, 10);
+            fetchButton.Location = new Point(175, 7);
             fetchButton.Margin = new Padding(1);
             fetchButton.Name = "fetchButton";
             fetchButton.Size = new Size(79, 28);
@@ -117,7 +123,7 @@
             // pullButton
             // 
             pullButton.FlatStyle = FlatStyle.Flat;
-            pullButton.Location = new Point(733, 10);
+            pullButton.Location = new Point(93, 7);
             pullButton.Margin = new Padding(1);
             pullButton.Name = "pullButton";
             pullButton.Size = new Size(79, 28);
@@ -128,7 +134,7 @@
             // pushButton
             // 
             pushButton.FlatStyle = FlatStyle.Flat;
-            pushButton.Location = new Point(652, 10);
+            pushButton.Location = new Point(12, 7);
             pushButton.Margin = new Padding(1);
             pushButton.Name = "pushButton";
             pushButton.Size = new Size(79, 28);
@@ -136,24 +142,54 @@
             pushButton.Text = "Push";
             pushButton.UseVisualStyleBackColor = true;
             // 
+            // gitButtonsPanel
+            // 
+            gitButtonsPanel.Controls.Add(undoButton);
+            gitButtonsPanel.Controls.Add(fetchButton);
+            gitButtonsPanel.Controls.Add(pullButton);
+            gitButtonsPanel.Controls.Add(pushButton);
+            gitButtonsPanel.Dock = DockStyle.Right;
+            gitButtonsPanel.Location = new Point(662, 0);
+            gitButtonsPanel.Name = "gitButtonsPanel";
+            gitButtonsPanel.Size = new Size(339, 47);
+            gitButtonsPanel.TabIndex = 8;
+            // 
+            // pageButtonsPanel
+            // 
+            pageButtonsPanel.Controls.Add(mergingPageButton);
+            pageButtonsPanel.Controls.Add(branchesPageButton);
+            pageButtonsPanel.Controls.Add(repositoriesPageButton);
+            pageButtonsPanel.Dock = DockStyle.Left;
+            pageButtonsPanel.Location = new Point(0, 0);
+            pageButtonsPanel.Name = "pageButtonsPanel";
+            pageButtonsPanel.Size = new Size(495, 47);
+            pageButtonsPanel.TabIndex = 4;
+            // 
+            // buttonsMenuPanel
+            // 
+            buttonsMenuPanel.Controls.Add(pageButtonsPanel);
+            buttonsMenuPanel.Controls.Add(gitButtonsPanel);
+            buttonsMenuPanel.Dock = DockStyle.Top;
+            buttonsMenuPanel.Location = new Point(0, 0);
+            buttonsMenuPanel.Name = "buttonsMenuPanel";
+            buttonsMenuPanel.Size = new Size(1001, 47);
+            buttonsMenuPanel.TabIndex = 5;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1001, 621);
-            Controls.Add(undoButton);
-            Controls.Add(fetchButton);
-            Controls.Add(pullButton);
-            Controls.Add(pushButton);
             Controls.Add(mainPanel);
-            Controls.Add(mergingPageButton);
-            Controls.Add(branchesPageButton);
-            Controls.Add(repositoriesPageButton);
+            Controls.Add(buttonsMenuPanel);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "GitHelper";
             Load += MainFormLoad;
             ((System.ComponentModel.ISupportInitialize)githubBindingSource).EndInit();
+            gitButtonsPanel.ResumeLayout(false);
+            pageButtonsPanel.ResumeLayout(false);
+            buttonsMenuPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -180,5 +216,8 @@
         private Button fetchButton;
         private Button pullButton;
         private Button pushButton;
+        private Panel gitButtonsPanel;
+        private Panel pageButtonsPanel;
+        private Panel buttonsMenuPanel;
     }
 }
