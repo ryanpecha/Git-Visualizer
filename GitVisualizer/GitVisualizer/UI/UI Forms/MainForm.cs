@@ -26,7 +26,7 @@ namespace GitVisualizer.UI.UI_Forms
             InitializeComponent();
             ApplyColorTheme(AppTheme);
             CheckValidation();
-            
+
         }
 
         private void MainFormLoad(object sender, EventArgs e)
@@ -47,7 +47,7 @@ namespace GitVisualizer.UI.UI_Forms
                 setup.ShowDialog();
                 this.SetVisibleCore(false);
                 ShowControlInMainPanel(repositoriesControl);
-                
+
             }
             repositoriesControl.EnterControl();
         }
@@ -85,11 +85,12 @@ namespace GitVisualizer.UI.UI_Forms
             this.Show();
             this.SetVisibleCore(true);
             this.MaximizeBox = true;
-            
+
         }
 
-        
-   
+        private void toolStripLabel1_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 }

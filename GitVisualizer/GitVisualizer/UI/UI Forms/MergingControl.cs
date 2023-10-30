@@ -15,6 +15,7 @@ namespace GitVisualizer.UI.UI_Forms
         public MergingControl()
         {
             InitializeComponent();
+            ApplyColorTheme(MainForm.AppTheme);
         }
 
         private void MergingControl_Load(object sender, EventArgs e)
@@ -33,6 +34,11 @@ namespace GitVisualizer.UI.UI_Forms
         }
 
         private void diffFile1Group_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void revokeAccessButton_Click(object sender, EventArgs e)
         {
 
         }
