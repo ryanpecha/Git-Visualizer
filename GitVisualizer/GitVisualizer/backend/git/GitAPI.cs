@@ -9,7 +9,6 @@ namespace GitVisualizer;
 public static class GitAPI
 {
 
-    public static GVSettings settings { get; set; }
     public static Github github { get; set; }
 
     /// <summary> pointer to the live commit </summary>
@@ -28,13 +27,43 @@ public static class GitAPI
     private static Dictionary<string, RepositoryLocal> localRepositories;
 
 
+
+    /// <summary> GitAPI initialization </summary>
+    static GitAPI()
+    {
+        Debug.WriteLine("INITIALIZING GIT API");
+
+        // ref to program GitHub api
+        github = Program.Github;
+
+        // TODO load tracked repos and previous program state from config file
+        liveCommit = null;
+        liveRepository = null;
+
+        //
+        remoteRepositories = new Dictionary<string, RepositoryRemote>();
+        localRepositories = new Dictionary<string, RepositoryLocal>();
+    }
+
+
+
+    public async static void initializeAsync(Action callback)
+    {
+        // loading local repositories
+        Scanning.scanDirs();
+        // loading remote repositories
+        await Scanning.scanRemotesAsync(callback);
+    }
+
+
+
     public class Scanning
     {
 
         //
         public static void scanDirs()
         {
-            foreach (LocalTrackedDir trackedDir in settings.trackedLocalDirs)
+            foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
             {
                 Debug.WriteLine($"SCANNING recursive={trackedDir.recursive} path={trackedDir.path}");
                 string dirPath = trackedDir.path;
@@ -68,6 +97,7 @@ public static class GitAPI
             }
         }
 
+        //
         public static async Task scanRemotesAsync(Action callback)
         {
             await github.GetRepositories();
@@ -85,29 +115,6 @@ public static class GitAPI
     }
 
 
-    /// <summary> GitAPI initialization </summary>
-    static GitAPI()
-    {
-        Debug.WriteLine("INITIALIZING GIT API");
-
-        //
-        settings = new GVSettings();
-        github = Program.Github;
-
-        // TODO load tracked repos and previous program state from config file
-        liveCommit = null;
-        liveRepository = null;
-        //
-        remoteRepositories = new Dictionary<string, RepositoryRemote>();
-        localRepositories = new Dictionary<string, RepositoryLocal>();
-    }
-
-    public async static void initialize(Action callback)
-    {
-        //
-        Scanning.scanDirs();
-        await Scanning.scanRemotesAsync(callback);
-    }
 
     /// <summary> Git Actions </summary>
     public static class Actions
@@ -270,7 +277,7 @@ public static class GitAPI
             public readonly static string trackDirectory_description = "";
             public static void trackDirectory(string dirPath, bool recursive)
             {
-                foreach (LocalTrackedDir trackedDir in settings.trackedLocalDirs)
+                foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
                 {
                     if (trackedDir.path == dirPath)
                     {
@@ -279,8 +286,8 @@ public static class GitAPI
                     }
                 }
                 LocalTrackedDir newTrackedDir = new LocalTrackedDir(dirPath, recursive);
-                settings.trackedLocalDirs.Add(newTrackedDir);
-                settings.saveSettings();
+                GVSettings.data.trackedLocalDirs.Add(newTrackedDir);
+                GVSettings.saveSettings();
                 Scanning.scanDirs();
             }
         }
