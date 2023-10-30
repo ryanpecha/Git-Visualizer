@@ -27,6 +27,36 @@ public static class GitAPI
     private static Dictionary<string, RepositoryLocal> localRepositories;
 
 
+
+    /// <summary> GitAPI initialization </summary>
+    static GitAPI()
+    {
+        Debug.WriteLine("INITIALIZING GIT API");
+
+        // ref to program GitHub api
+        github = Program.Github;
+
+        // TODO load tracked repos and previous program state from config file
+        liveCommit = null;
+        liveRepository = null;
+
+        //
+        remoteRepositories = new Dictionary<string, RepositoryRemote>();
+        localRepositories = new Dictionary<string, RepositoryLocal>();
+    }
+
+
+
+    public async static void initializeAsync(Action callback)
+    {
+        // loading local repositories
+        Scanning.scanDirs();
+        // loading remote repositories
+        await Scanning.scanRemotesAsync(callback);
+    }
+
+
+
     public class Scanning
     {
 
@@ -67,6 +97,7 @@ public static class GitAPI
             }
         }
 
+        //
         public static async Task scanRemotesAsync(Action callback)
         {
             await github.GetRepositories();
@@ -84,30 +115,6 @@ public static class GitAPI
     }
 
 
-    /// <summary> GitAPI initialization </summary>
-    static GitAPI()
-    {
-        Debug.WriteLine("INITIALIZING GIT API");
-
-        // ref to program GitHub api
-        github = Program.Github;
-
-        // TODO load tracked repos and previous program state from config file
-        liveCommit = null;
-        liveRepository = null;
-        
-        //
-        remoteRepositories = new Dictionary<string, RepositoryRemote>();
-        localRepositories = new Dictionary<string, RepositoryLocal>();
-    }
-
-    public async static void initialize(Action callback)
-    {
-        // loading local repositories
-        Scanning.scanDirs();
-        // loading remote repositories
-        await Scanning.scanRemotesAsync(callback);
-    }
 
     /// <summary> Git Actions </summary>
     public static class Actions
