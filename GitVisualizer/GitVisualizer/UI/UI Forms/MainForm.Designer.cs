@@ -106,7 +106,7 @@
             undoButton.Name = "undoButton";
             undoButton.Size = new Size(79, 28);
             undoButton.TabIndex = 7;
-            undoButton.Text = "Undo Change";
+            undoButton.Text = "Undo";
             undoButton.UseVisualStyleBackColor = true;
             // 
             // fetchButton
