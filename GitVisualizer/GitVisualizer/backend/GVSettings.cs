@@ -12,10 +12,12 @@ public static class GVSettings
         data = new GVSettingsData();
         if (!Path.Exists(SETTINGS_FPATH))
         {
+            Debug.WriteLine("CREATING DEFAULT SETTINGS FILE");
             saveSettings();
         }
         else
         {
+            Debug.WriteLine("LOADING SETTINGS FILE");
             loadSettings();
         }
     }
@@ -28,11 +30,12 @@ public static class GVSettings
     public static void loadSettings()
     {
         string settingsStr = File.ReadAllText(SETTINGS_FPATH);
-        GVSettingsData? data = JsonSerializer.Deserialize<GVSettingsData>(settingsStr);
-        if (data == null)
+        GVSettingsData? nullableData = JsonSerializer.Deserialize<GVSettingsData>(settingsStr);
+        if (nullableData == null)
         {
             throw new Exception("Settings file is invalid json");
         }
+        data = nullableData;
     }
 
     public static void saveSettings()
@@ -45,7 +48,11 @@ public static class GVSettings
     {
         public string githubAppToken { get; set; }
         public List<LocalTrackedDir> trackedLocalDirs { get; set; }
-
+        public GVSettingsData(string githubAppToken, List<LocalTrackedDir> trackedLocalDirs)
+        {
+            this.githubAppToken = githubAppToken;
+            this.trackedLocalDirs = trackedLocalDirs;
+        }
         public GVSettingsData()
         {
             githubAppToken = "";

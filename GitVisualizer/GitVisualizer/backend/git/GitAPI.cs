@@ -60,7 +60,7 @@ public static class GitAPI
 
     public class Scanning
     {
-
+        //Debug.WriteLine($"SCANNING recursive={trackedDir.recursive} path={trackedDir.path}");
         //
         public static void scanDirs()
         {
@@ -93,7 +93,6 @@ public static class GitAPI
                     // TODO extract repo name from .git via git command
                     RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
                     localRepositories[repoName] = newLocalRepo;
-
                 }
             }
         }
@@ -351,10 +350,12 @@ public static class GitAPI
 
         public static List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
         {
+            Debug.WriteLine("GETTING ALL REPOS");
             List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> repos = new List<Tuple<string, RepositoryLocal?, RepositoryRemote?>>();
             HashSet<string> repoNames = [.. localRepositories.Keys, .. remoteRepositories.Keys];
             foreach (string repoName in repoNames)
             {
+                Debug.WriteLine("FOUND REPO : " + repoName);
                 RepositoryLocal? localRepo = null;
                 if (localRepositories.ContainsKey(repoName))
                 {
