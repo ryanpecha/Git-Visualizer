@@ -26,7 +26,7 @@ namespace GitVisualizer.UI.UI_Forms
             InitializeComponent();
             ApplyColorTheme(AppTheme);
             CheckValidation();
-            this.Activated += repositoriesControl.PopulateReposDataGrid;    // When loaded, update repos table 
+            
         }
 
         private void MainFormLoad(object sender, EventArgs e)
@@ -47,7 +47,9 @@ namespace GitVisualizer.UI.UI_Forms
                 setup.ShowDialog();
                 this.SetVisibleCore(false);
                 ShowControlInMainPanel(repositoriesControl);
+                
             }
+            repositoriesControl.PopulateReposDataGrid();
         }
 
         public void OnRepositoriesButtonPress(object sender, EventArgs e)

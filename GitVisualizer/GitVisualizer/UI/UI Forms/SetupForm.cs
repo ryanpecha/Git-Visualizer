@@ -91,7 +91,6 @@ namespace GitVisualizer
         /// <param name="e"></param>
         private void LoadMainAppFormLocal(object sender, EventArgs e)
         {
-
             this.Hide();
         }
 
