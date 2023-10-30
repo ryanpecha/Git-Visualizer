@@ -17,7 +17,8 @@ namespace GitVisualizer
             Debug.Write("Setup Form opened\n");
         }
 
-        private void Form1_Load(object sender, EventArgs e) {
+        private void Form1_Load(object sender, EventArgs e)
+        {
             rememberMeCheckbox.Checked = GVSettings.data.rememberGitHubLogin;
         }
 
@@ -57,16 +58,14 @@ namespace GitVisualizer
         private async void GetPermissionGithub()
         {
             authorizationPanel.Visible = true;
-            await Program.Github.GivePermission();
-            ShowUserCode(Github.userCode);
-            
-            if (Github.userCode != null)
+            string? userCode = await Program.Github.GivePermission();
+            if (userCode != null)
             {
+                ShowUserCode(userCode);
                 Debug.Write(Github.userCode);
                 await Program.Github.WaitForAuthorization();
             }
-
-            this.Hide();
+            Hide();
         }
 
         private void ShowUserCode(string userCode)

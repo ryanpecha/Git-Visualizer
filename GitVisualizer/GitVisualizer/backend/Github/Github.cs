@@ -154,9 +154,9 @@ public class Github
     /// Attempts to ask user to grant the app permission to read/write public repositories.
     /// </summary>
     /// <returns>The task object.</returns>
-    public async Task GivePermission()
+    public async Task<string?> GivePermission()
     {
-        await Task.Run(RegisterUser);
+        return await Task.Run(RegisterUser);
     }
 
     /// <summary>
