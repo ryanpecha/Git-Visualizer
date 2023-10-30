@@ -27,7 +27,7 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void PopulateReposDataGrid(object sender, EventArgs e)
+        public void PopulateReposDataGrid()
         {
             GetRepositoriesData();
         }
