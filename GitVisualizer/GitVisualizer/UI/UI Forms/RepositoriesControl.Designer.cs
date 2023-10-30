@@ -54,13 +54,16 @@
             repositoriesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             repositoriesGridView.Columns.AddRange(new DataGridViewColumn[] { localReposColumn, remoteReposColumn });
             repositoriesGridView.Dock = DockStyle.Fill;
+            repositoriesGridView.ImeMode = ImeMode.Off;
             repositoriesGridView.Location = new Point(280, 0);
             repositoriesGridView.Margin = new Padding(6);
             repositoriesGridView.MultiSelect = false;
             repositoriesGridView.Name = "repositoriesGridView";
             repositoriesGridView.ReadOnly = true;
+            repositoriesGridView.RowHeadersVisible = false;
             repositoriesGridView.RowTemplate.Height = 25;
-            repositoriesGridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            repositoriesGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            repositoriesGridView.ShowEditingIcon = false;
             repositoriesGridView.Size = new Size(895, 675);
             repositoriesGridView.TabIndex = 0;
             repositoriesGridView.CellContentClick += repositoriesGridView_CellContentClick;
@@ -71,6 +74,7 @@
             localReposColumn.HeaderText = "Local Repositories";
             localReposColumn.Name = "localReposColumn";
             localReposColumn.ReadOnly = true;
+            localReposColumn.ToolTipText = "Repository Folders stored locally on your device, which hold the files you modify directly on your computer.";
             // 
             // remoteReposColumn
             // 
@@ -215,13 +219,13 @@
         private ContextMenuStrip remoteRepoContextMenuStrip;
         private ToolStripMenuItem makeActiveWorkspaceToolStripMenuItem;
         private ToolStripMenuItem cloneToLocalRepoToolStripMenuItem;
-        private DataGridViewTextBoxColumn localReposColumn;
-        private DataGridViewTextBoxColumn remoteReposColumn;
         private ToolStripMenuItem openOnGithubcomToolStripMenuItem;
         private Panel repositoriesControlPanel;
         private Button grantAccessButton;
         private Button revokeAccessButton;
         private Label titleLabel;
         private Panel buttonsPanel;
+        private DataGridViewTextBoxColumn localReposColumn;
+        private DataGridViewTextBoxColumn remoteReposColumn;
     }
 }
