@@ -3,6 +3,10 @@ using System.Management.Automation.Runspaces;
 using System.Text.Json;
 using System;
 using System.Runtime.InteropServices;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.IO;
 
 namespace GitVisualizer;
 
@@ -286,6 +290,7 @@ public static class GitAPI
             public readonly static string trackDirectory_description = "";
             public static void trackDirectory(string dirPath, bool recursive, Action? callback)
             {
+
                 foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
                 {
                     if (trackedDir.path == dirPath)
@@ -298,6 +303,15 @@ public static class GitAPI
                 GVSettings.data.trackedLocalDirs.Add(newTrackedDir);
                 GVSettings.saveSettings();
                 Scanning.scanDirs(callback);
+            }
+
+            public static void userSelectTrackDirectory(bool recursive, Action? callback) {
+                FolderBrowserDialog dialog = new FolderBrowserDialog();
+                DialogResult result = dialog.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath)) {
+                    string fullPath = Path.GetFullPath(dialog.SelectedPath);
+                    trackDirectory(fullPath,recursive, callback);
+                }
             }
         }
 
