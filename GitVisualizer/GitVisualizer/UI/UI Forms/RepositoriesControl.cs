@@ -27,39 +27,34 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void PopulateReposDataGrid()
+        public void EnterControl()
         {
-            GetRepositoriesData();
+            //GetLocalRepositoriesData();
+            //GetRemoteRepositoriesData();
+            AddReposToTable();
+            GitAPI.initialize(AddReposToTable);
         }
 
-        /// <summary>
-        /// Async awaits Github API request to get all remote repositories before invoking main thread
-        /// call to populate table cells with Repo info
-        /// </summary>
-        private async void GetRepositoriesData()
-        {
-            if (githubAPI == null) { return; }
-            await githubAPI.GetRepositories();
-            List<RepositoryRemote> githubRepositories = githubAPI.repos;
-            if (githubRepositories == null) { return; }
-            foreach (RepositoryRemote repo in githubRepositories)
-            {
-                Debug.WriteLine(repo.title);
-            }
-            Invoke(AddReposToTable);
-
-        }
 
         /// <summary>
         /// Main thread function to populate data grid cells with APi result repos
         /// </summary>
         public void AddReposToTable()
         {
-            List<RepositoryRemote> githubRepositories = githubAPI.repos;
+            Dictionary<string,RepositoryLocal>.ValueCollection localRepos = GitAPI.Getters.getLocalRepositories().Values;
+
+            repositoriesGridView.Rows.Clear();
+
+            foreach(RepositoryLocal localRepo in localRepos)
+            {
+   
+            }
+            /*
             for (int i = 0; i < githubRepositories.Count; i++)
             {
                 repositoriesGridView.Rows.Add("Local path for: " + githubRepositories[i].title, githubRepositories[i].title);
             }
+            */
 
         }
 

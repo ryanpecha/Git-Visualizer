@@ -49,7 +49,7 @@ namespace GitVisualizer.UI.UI_Forms
                 ShowControlInMainPanel(repositoriesControl);
                 
             }
-            repositoriesControl.PopulateReposDataGrid();
+            repositoriesControl.EnterControl();
         }
 
         public void OnRepositoriesButtonPress(object sender, EventArgs e)
