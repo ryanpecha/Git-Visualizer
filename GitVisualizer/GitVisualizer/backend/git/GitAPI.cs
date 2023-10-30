@@ -74,17 +74,17 @@ public static class GitAPI
                     }
                     // getting repo folder abs path
                     string repoDirPath = repoDirInfo.FullName;
+                    // TODO extract repo name from .git via git command
+                    string repoName = repoDirInfo.Name;
+                    RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
                     // skipping already loaded repositories
-                    if (localRepositories.Keys.Contains(repoDirPath))
+                    if (localRepositories.Keys.Contains(newLocalRepo.title))
                     {
                         continue;
                     }
                     // 
-                    string repoName = repoDirInfo.Name;
                     Debug.WriteLine($"LOCATED REPO title={repoName} path={repoDirPath}");
-                    // TODO extract repo name from .git via git command
-                    RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
-                    localRepositories[repoName] = newLocalRepo;
+                    localRepositories[newLocalRepo.title] = newLocalRepo;
                 }
             }
             if (callback != null) {
@@ -379,16 +379,17 @@ public static class GitAPI
             HashSet<string> repoNames = [.. localRepositories.Keys, .. remoteRepositories.Keys];
             foreach (string repoName in repoNames)
             {
-                Debug.WriteLine("FOUND REPO : " + repoName);
+                string gitFormattedRepoName = repoName.Replace(" ", "-");
+                Debug.WriteLine("FOUND REPO : " + gitFormattedRepoName);
                 RepositoryLocal? localRepo = null;
-                if (localRepositories.ContainsKey(repoName))
+                if (localRepositories.ContainsKey(gitFormattedRepoName))
                 {
-                    localRepo = localRepositories[repoName];
+                    localRepo = localRepositories[gitFormattedRepoName];
                 }
                 RepositoryRemote? remoteRepo = null;
-                if (remoteRepositories.ContainsKey(repoName))
+                if (remoteRepositories.ContainsKey(gitFormattedRepoName))
                 {
-                    remoteRepo = remoteRepositories[repoName];
+                    remoteRepo = remoteRepositories[gitFormattedRepoName];
                 }
                 Tuple<string, RepositoryLocal?, RepositoryRemote?> repo = new Tuple<string, RepositoryLocal?, RepositoryRemote?>(repoName, localRepo, remoteRepo);
                 repos.Add(repo);
