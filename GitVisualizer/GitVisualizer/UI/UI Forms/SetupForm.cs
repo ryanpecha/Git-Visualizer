@@ -13,7 +13,7 @@ namespace GitVisualizer
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            this.FormClosing += new FormClosingEventHandler(LoadMainAppFormLocal); // Open main window when closing this one, skipping Auth
+            FormClosing += new FormClosingEventHandler(LoadMainAppFormLocal); // Open main window when closing this one, skipping Auth
             Debug.Write("Setup Form opened\n");
         }
 
@@ -72,7 +72,7 @@ namespace GitVisualizer
         {
             userCodeLabel.Text = userCode;
             userCodeLabel.Visible = true;
-            string clipboardCode = string.Join("\r",userCode);
+            string clipboardCode = string.Join("\r", userCode);
             Clipboard.SetText(clipboardCode);
         }
 
@@ -86,7 +86,7 @@ namespace GitVisualizer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void LoadMainAppFormLocal(object sender, EventArgs e)
+        private void LoadMainAppFormLocal(object? sender, EventArgs e)
         {
             this.Hide();
         }
