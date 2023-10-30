@@ -36,11 +36,15 @@
             makeActiveWorkspaceToolStripMenuItem = new ToolStripMenuItem();
             cloneToLocalRepoToolStripMenuItem = new ToolStripMenuItem();
             openOnGithubcomToolStripMenuItem = new ToolStripMenuItem();
-            activeRepoPanel = new Panel();
-            activeRepoHeader = new Label();
+            repositoriesControlPanel = new Panel();
+            buttonsPanel = new Panel();
+            revokeAccessButton = new Button();
+            grantAccessButton = new Button();
+            titleLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
             remoteRepoContextMenuStrip.SuspendLayout();
-            activeRepoPanel.SuspendLayout();
+            repositoriesControlPanel.SuspendLayout();
+            buttonsPanel.SuspendLayout();
             SuspendLayout();
             // 
             // repositoriesGridView
@@ -49,14 +53,15 @@
             repositoriesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             repositoriesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             repositoriesGridView.Columns.AddRange(new DataGridViewColumn[] { localReposColumn, remoteReposColumn });
-            repositoriesGridView.Dock = DockStyle.Left;
-            repositoriesGridView.Location = new Point(0, 0);
+            repositoriesGridView.Dock = DockStyle.Fill;
+            repositoriesGridView.Location = new Point(280, 0);
+            repositoriesGridView.Margin = new Padding(6);
             repositoriesGridView.MultiSelect = false;
             repositoriesGridView.Name = "repositoriesGridView";
             repositoriesGridView.ReadOnly = true;
             repositoriesGridView.RowTemplate.Height = 25;
             repositoriesGridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            repositoriesGridView.Size = new Size(759, 675);
+            repositoriesGridView.Size = new Size(895, 675);
             repositoriesGridView.TabIndex = 0;
             repositoriesGridView.CellContentClick += repositoriesGridView_CellContentClick;
             // 
@@ -80,7 +85,7 @@
             // 
             remoteRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { makeActiveWorkspaceToolStripMenuItem, cloneToLocalRepoToolStripMenuItem, openOnGithubcomToolStripMenuItem });
             remoteRepoContextMenuStrip.Name = "contextMenuStrip1";
-            remoteRepoContextMenuStrip.Size = new Size(201, 92);
+            remoteRepoContextMenuStrip.Size = new Size(201, 70);
             remoteRepoContextMenuStrip.Text = "Remote Actions";
             // 
             // makeActiveWorkspaceToolStripMenuItem
@@ -101,39 +106,82 @@
             openOnGithubcomToolStripMenuItem.Size = new Size(200, 22);
             openOnGithubcomToolStripMenuItem.Text = "Open on Github.com";
             // 
-            // activeRepoPanel
+            // repositoriesControlPanel
             // 
-            activeRepoPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            activeRepoPanel.Controls.Add(activeRepoHeader);
-            activeRepoPanel.Dock = DockStyle.Right;
-            activeRepoPanel.Location = new Point(757, 0);
-            activeRepoPanel.Name = "activeRepoPanel";
-            activeRepoPanel.Size = new Size(418, 675);
-            activeRepoPanel.TabIndex = 1;
+            repositoriesControlPanel.AutoSize = true;
+            repositoriesControlPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            repositoriesControlPanel.BorderStyle = BorderStyle.FixedSingle;
+            repositoriesControlPanel.Controls.Add(buttonsPanel);
+            repositoriesControlPanel.Controls.Add(titleLabel);
+            repositoriesControlPanel.Dock = DockStyle.Left;
+            repositoriesControlPanel.Location = new Point(0, 0);
+            repositoriesControlPanel.MinimumSize = new Size(280, 280);
+            repositoriesControlPanel.Name = "repositoriesControlPanel";
+            repositoriesControlPanel.Size = new Size(280, 675);
+            repositoriesControlPanel.TabIndex = 1;
+            repositoriesControlPanel.Paint += repositoriesControlPanel_Paint;
             // 
-            // activeRepoHeader
+            // buttonsPanel
             // 
-            activeRepoHeader.AutoSize = true;
-            activeRepoHeader.Font = new Font("Segoe UI", 32F, FontStyle.Regular, GraphicsUnit.Point);
-            activeRepoHeader.Location = new Point(25, 15);
-            activeRepoHeader.Name = "activeRepoHeader";
-            activeRepoHeader.Size = new Size(354, 59);
-            activeRepoHeader.TabIndex = 0;
-            activeRepoHeader.Text = "Active Repository";
+            buttonsPanel.AutoSize = true;
+            buttonsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            buttonsPanel.Controls.Add(revokeAccessButton);
+            buttonsPanel.Controls.Add(grantAccessButton);
+            buttonsPanel.Dock = DockStyle.Bottom;
+            buttonsPanel.Location = new Point(0, 493);
+            buttonsPanel.MinimumSize = new Size(0, 180);
+            buttonsPanel.Name = "buttonsPanel";
+            buttonsPanel.Size = new Size(278, 180);
+            buttonsPanel.TabIndex = 2;
+            // 
+            // revokeAccessButton
+            // 
+            revokeAccessButton.FlatStyle = FlatStyle.Flat;
+            revokeAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            revokeAccessButton.Location = new Point(47, 28);
+            revokeAccessButton.Name = "revokeAccessButton";
+            revokeAccessButton.Size = new Size(166, 54);
+            revokeAccessButton.TabIndex = 0;
+            revokeAccessButton.Text = "Revoke Access";
+            revokeAccessButton.UseVisualStyleBackColor = true;
+            // 
+            // grantAccessButton
+            // 
+            grantAccessButton.FlatStyle = FlatStyle.Flat;
+            grantAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            grantAccessButton.Location = new Point(47, 106);
+            grantAccessButton.Name = "grantAccessButton";
+            grantAccessButton.Size = new Size(166, 54);
+            grantAccessButton.TabIndex = 0;
+            grantAccessButton.Text = "Grant Access";
+            grantAccessButton.UseVisualStyleBackColor = true;
+            // 
+            // titleLabel
+            // 
+            titleLabel.AutoSize = true;
+            titleLabel.Dock = DockStyle.Top;
+            titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
+            titleLabel.Location = new Point(0, 0);
+            titleLabel.Name = "titleLabel";
+            titleLabel.Size = new Size(195, 45);
+            titleLabel.TabIndex = 1;
+            titleLabel.Text = "Repositories";
             // 
             // RepositoriesControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(activeRepoPanel);
             Controls.Add(repositoriesGridView);
+            Controls.Add(repositoriesControlPanel);
             Name = "RepositoriesControl";
             Size = new Size(1175, 675);
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).EndInit();
             remoteRepoContextMenuStrip.ResumeLayout(false);
-            activeRepoPanel.ResumeLayout(false);
-            activeRepoPanel.PerformLayout();
+            repositoriesControlPanel.ResumeLayout(false);
+            repositoriesControlPanel.PerformLayout();
+            buttonsPanel.ResumeLayout(false);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -159,6 +207,8 @@
             repositoriesGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
             repositoriesGridView.EnableHeadersVisualStyles = false;
 
+            repositoriesControlPanel.BackColor = theme.PanelBackground;
+            repositoriesControlPanel.ForeColor = theme.TextBright;
 
         }
         public DataGridView repositoriesGridView;
@@ -167,8 +217,11 @@
         private ToolStripMenuItem cloneToLocalRepoToolStripMenuItem;
         private DataGridViewTextBoxColumn localReposColumn;
         private DataGridViewTextBoxColumn remoteReposColumn;
-        private Panel activeRepoPanel;
-        private Label activeRepoHeader;
         private ToolStripMenuItem openOnGithubcomToolStripMenuItem;
+        private Panel repositoriesControlPanel;
+        private Button grantAccessButton;
+        private Button revokeAccessButton;
+        private Label titleLabel;
+        private Panel buttonsPanel;
     }
 }

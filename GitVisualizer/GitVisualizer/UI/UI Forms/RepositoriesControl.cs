@@ -46,7 +46,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> allRepos = GitAPI.Getters.getAllRepositories();
 
-   
+
             repositoriesGridView.Rows.Clear();
 
 
@@ -84,6 +84,11 @@ namespace GitVisualizer.UI.UI_Forms
         }
 
         private void openOnGithubcomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void repositoriesControlPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }

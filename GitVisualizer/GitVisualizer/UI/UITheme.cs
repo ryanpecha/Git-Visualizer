@@ -19,6 +19,7 @@ namespace GitVisualizer.UI
         {
             public Color AppBackground;
             public Color ElementBackground;
+            public Color PanelBackground;
             public Color Border;
             public Color TextSoft;
             public Color TextNormal;
@@ -35,6 +36,7 @@ namespace GitVisualizer.UI
         {
             AppBackground = Color.FromArgb(20, 20, 22),
             ElementBackground = Color.FromArgb(38, 38, 40),
+            PanelBackground = Color.FromArgb(60,60,62),
             Border = Color.FromArgb(80, 80, 84),
             TextSoft = Color.FromArgb(120, 122, 128),
             TextNormal = Color.FromArgb(180, 182, 188),
