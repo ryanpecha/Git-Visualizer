@@ -50,7 +50,7 @@ namespace GitVisualizer.UI.UI_Forms
             Debug.WriteLine("AddReposToTable()");
             List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> allRepos = GitAPI.Getters.getAllRepositories();
 
-            //repositoriesGridView.Rows.Clear();
+            repositoriesGridView.Rows.Clear();
 
             foreach (Tuple<string, RepositoryLocal?, RepositoryRemote?> repoTuple in allRepos)
             {
@@ -77,6 +77,15 @@ namespace GitVisualizer.UI.UI_Forms
             }
             */
 
+        }
+
+        private void TrackDirectory(object sender, EventArgs e)
+        {
+            GitAPI.Actions.LocalActions.userSelectTrackDirectory(false, InitCallback);
+        }
+        private void TrackDirectoryRecursive(object sender, EventArgs e)
+        {
+            GitAPI.Actions.LocalActions.userSelectTrackDirectory(true, InitCallback);
         }
 
         private void RevokeGithubAuthenticationButtonPressed(object sender, EventArgs e)

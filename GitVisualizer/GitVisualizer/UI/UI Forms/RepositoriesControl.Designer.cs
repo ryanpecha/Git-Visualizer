@@ -31,6 +31,9 @@
             components = new System.ComponentModel.Container();
             repositoriesGridView = new DataGridView();
             localReposColumn = new DataGridViewTextBoxColumn();
+            localRepoContextMenuStrip = new ContextMenuStrip(components);
+            trackDirectoryToolStripMenuItem = new ToolStripMenuItem();
+            trackDirectoryRecursiveToolStripMenuItem = new ToolStripMenuItem();
             remoteReposColumn = new DataGridViewTextBoxColumn();
             remoteRepoContextMenuStrip = new ContextMenuStrip(components);
             makeActiveWorkspaceToolStripMenuItem = new ToolStripMenuItem();
@@ -42,6 +45,7 @@
             grantAccessButton = new Button();
             titleLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
+            localRepoContextMenuStrip.SuspendLayout();
             remoteRepoContextMenuStrip.SuspendLayout();
             repositoriesControlPanel.SuspendLayout();
             buttonsPanel.SuspendLayout();
@@ -50,6 +54,8 @@
             // repositoriesGridView
             // 
             repositoriesGridView.AllowUserToDeleteRows = false;
+            repositoriesGridView.AllowUserToOrderColumns = true;
+            repositoriesGridView.AllowUserToResizeRows = false;
             repositoriesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             repositoriesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             repositoriesGridView.Columns.AddRange(new DataGridViewColumn[] { localReposColumn, remoteReposColumn });
@@ -71,10 +77,31 @@
             // localReposColumn
             // 
             localReposColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            localReposColumn.ContextMenuStrip = localRepoContextMenuStrip;
             localReposColumn.HeaderText = "Local Repositories";
             localReposColumn.Name = "localReposColumn";
             localReposColumn.ReadOnly = true;
             localReposColumn.ToolTipText = "Repository Folders stored locally on your device, which hold the files you modify directly on your computer.";
+            // 
+            // localRepoContextMenuStrip
+            // 
+            localRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { trackDirectoryToolStripMenuItem, trackDirectoryRecursiveToolStripMenuItem });
+            localRepoContextMenuStrip.Name = "localRepoContextMenuStrip";
+            localRepoContextMenuStrip.Size = new Size(214, 48);
+            // 
+            // trackDirectoryToolStripMenuItem
+            // 
+            trackDirectoryToolStripMenuItem.Name = "trackDirectoryToolStripMenuItem";
+            trackDirectoryToolStripMenuItem.Size = new Size(213, 22);
+            trackDirectoryToolStripMenuItem.Text = "Track Directory";
+            trackDirectoryToolStripMenuItem.Click += TrackDirectory;
+            // 
+            // trackDirectoryRecursiveToolStripMenuItem
+            // 
+            trackDirectoryRecursiveToolStripMenuItem.Name = "trackDirectoryRecursiveToolStripMenuItem";
+            trackDirectoryRecursiveToolStripMenuItem.Size = new Size(213, 22);
+            trackDirectoryRecursiveToolStripMenuItem.Text = "Track Directory (Recursive)";
+            trackDirectoryRecursiveToolStripMenuItem.Click += TrackDirectoryRecursive;
             // 
             // remoteReposColumn
             // 
@@ -181,6 +208,7 @@
             Name = "RepositoriesControl";
             Size = new Size(1175, 675);
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).EndInit();
+            localRepoContextMenuStrip.ResumeLayout(false);
             remoteRepoContextMenuStrip.ResumeLayout(false);
             repositoriesControlPanel.ResumeLayout(false);
             repositoriesControlPanel.PerformLayout();
@@ -226,6 +254,9 @@
         private Button revokeAccessButton;
         private Label titleLabel;
         private Panel buttonsPanel;
+        private ContextMenuStrip localRepoContextMenuStrip;
+        private ToolStripMenuItem trackDirectoryToolStripMenuItem;
+        private ToolStripMenuItem trackDirectoryRecursiveToolStripMenuItem;
         private DataGridViewTextBoxColumn localReposColumn;
         private DataGridViewTextBoxColumn remoteReposColumn;
     }
