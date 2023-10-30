@@ -32,7 +32,7 @@ namespace GitVisualizer.UI.UI_Forms
             //GetLocalRepositoriesData();
             //GetRemoteRepositoriesData();
             AddReposToTable();
-            GitAPI.initialize(AddReposToTable);
+            GitAPI.initializeAsync(AddReposToTable);
         }
 
 
@@ -43,7 +43,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             Dictionary<string,RepositoryLocal>.ValueCollection localRepos = GitAPI.Getters.getLocalRepositories().Values;
 
-            repositoriesGridView.Rows.Clear();
+            //repositoriesGridView.Rows.Clear();
 
             foreach(RepositoryLocal localRepo in localRepos)
             {

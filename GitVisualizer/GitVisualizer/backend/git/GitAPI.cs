@@ -49,6 +49,7 @@ public static class GitAPI
 
     public async static void initializeAsync(Action callback)
     {
+        Debug.WriteLine("ASYNC INITIALIZING GIT API");
         // loading local repositories
         Scanning.scanDirs();
         // loading remote repositories
