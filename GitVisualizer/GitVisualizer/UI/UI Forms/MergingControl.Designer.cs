@@ -28,10 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
             mergingControlPanel = new Panel();
             titleLabel = new Label();
             mergingPanel = new Panel();
@@ -40,6 +36,10 @@
             diffFile1Group = new GroupBox();
             diffFile2Group = new GroupBox();
             diffControlPanel = new Panel();
+            buttonSplitContainer = new SplitContainer();
+            chooseLocalButton = new Button();
+            chooseRemoteButton = new Button();
+            gitCommandPanel = new Panel();
             mergingControlPanel.SuspendLayout();
             mergingPanel.SuspendLayout();
             diffPanel.SuspendLayout();
@@ -47,48 +47,12 @@
             diffSplitContainer.Panel1.SuspendLayout();
             diffSplitContainer.Panel2.SuspendLayout();
             diffSplitContainer.SuspendLayout();
+            diffControlPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).BeginInit();
+            buttonSplitContainer.Panel1.SuspendLayout();
+            buttonSplitContainer.Panel2.SuspendLayout();
+            buttonSplitContainer.SuspendLayout();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.Location = new Point(33, 524);
-            button1.Margin = new Padding(1);
-            button1.Name = "button1";
-            button1.Size = new Size(79, 21);
-            button1.TabIndex = 0;
-            button1.Text = "Push";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(114, 524);
-            button2.Margin = new Padding(1);
-            button2.Name = "button2";
-            button2.Size = new Size(79, 21);
-            button2.TabIndex = 1;
-            button2.Text = "Pull";
-            button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            button3.Location = new Point(196, 524);
-            button3.Margin = new Padding(1);
-            button3.Name = "button3";
-            button3.Size = new Size(79, 21);
-            button3.TabIndex = 2;
-            button3.Text = "Fetch";
-            button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            button4.Location = new Point(278, 524);
-            button4.Margin = new Padding(1);
-            button4.Name = "button4";
-            button4.Size = new Size(79, 21);
-            button4.TabIndex = 3;
-            button4.Text = "Undo Change";
-            button4.UseVisualStyleBackColor = true;
             // 
             // mergingControlPanel
             // 
@@ -118,10 +82,7 @@
             // mergingPanel
             // 
             mergingPanel.Controls.Add(diffPanel);
-            mergingPanel.Controls.Add(button4);
-            mergingPanel.Controls.Add(button3);
-            mergingPanel.Controls.Add(button2);
-            mergingPanel.Controls.Add(button1);
+            mergingPanel.Controls.Add(gitCommandPanel);
             mergingPanel.Dock = DockStyle.Fill;
             mergingPanel.Location = new Point(280, 0);
             mergingPanel.Name = "mergingPanel";
@@ -132,10 +93,10 @@
             // 
             diffPanel.Controls.Add(diffSplitContainer);
             diffPanel.Controls.Add(diffControlPanel);
-            diffPanel.Dock = DockStyle.Top;
+            diffPanel.Dock = DockStyle.Fill;
             diffPanel.Location = new Point(0, 0);
             diffPanel.Name = "diffPanel";
-            diffPanel.Size = new Size(895, 477);
+            diffPanel.Size = new Size(895, 575);
             diffPanel.TabIndex = 4;
             // 
             // diffSplitContainer
@@ -152,40 +113,99 @@
             // diffSplitContainer.Panel2
             // 
             diffSplitContainer.Panel2.Controls.Add(diffFile2Group);
-            diffSplitContainer.Size = new Size(895, 427);
-            diffSplitContainer.SplitterDistance = 437;
+            diffSplitContainer.Size = new Size(895, 525);
+            diffSplitContainer.SplitterDistance = 438;
             diffSplitContainer.SplitterWidth = 18;
             diffSplitContainer.TabIndex = 1;
             // 
             // diffFile1Group
             // 
+            diffFile1Group.AutoSize = true;
             diffFile1Group.Dock = DockStyle.Fill;
             diffFile1Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             diffFile1Group.Location = new Point(0, 0);
+            diffFile1Group.Margin = new Padding(6);
             diffFile1Group.Name = "diffFile1Group";
-            diffFile1Group.Size = new Size(437, 427);
+            diffFile1Group.Padding = new Padding(6);
+            diffFile1Group.Size = new Size(438, 525);
             diffFile1Group.TabIndex = 0;
             diffFile1Group.TabStop = false;
             diffFile1Group.Text = "Diff_File1.txt";
             // 
             // diffFile2Group
             // 
+            diffFile2Group.AutoSize = true;
             diffFile2Group.Dock = DockStyle.Fill;
             diffFile2Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             diffFile2Group.Location = new Point(0, 0);
             diffFile2Group.Name = "diffFile2Group";
-            diffFile2Group.Size = new Size(440, 427);
+            diffFile2Group.Size = new Size(439, 525);
             diffFile2Group.TabIndex = 1;
             diffFile2Group.TabStop = false;
             diffFile2Group.Text = "Diff_File2.txt";
             // 
             // diffControlPanel
             // 
+            diffControlPanel.Controls.Add(buttonSplitContainer);
             diffControlPanel.Dock = DockStyle.Top;
             diffControlPanel.Location = new Point(0, 0);
             diffControlPanel.Name = "diffControlPanel";
             diffControlPanel.Size = new Size(895, 50);
             diffControlPanel.TabIndex = 0;
+            // 
+            // buttonSplitContainer
+            // 
+            buttonSplitContainer.Dock = DockStyle.Top;
+            buttonSplitContainer.Location = new Point(0, 0);
+            buttonSplitContainer.Margin = new Padding(8);
+            buttonSplitContainer.Name = "buttonSplitContainer";
+            // 
+            // buttonSplitContainer.Panel1
+            // 
+            buttonSplitContainer.Panel1.Controls.Add(chooseLocalButton);
+            // 
+            // buttonSplitContainer.Panel2
+            // 
+            buttonSplitContainer.Panel2.Controls.Add(chooseRemoteButton);
+            buttonSplitContainer.Size = new Size(895, 50);
+            buttonSplitContainer.SplitterDistance = 438;
+            buttonSplitContainer.SplitterWidth = 18;
+            buttonSplitContainer.TabIndex = 2;
+            // 
+            // chooseLocalButton
+            // 
+            chooseLocalButton.Dock = DockStyle.Fill;
+            chooseLocalButton.FlatStyle = FlatStyle.Flat;
+            chooseLocalButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            chooseLocalButton.Location = new Point(0, 0);
+            chooseLocalButton.Name = "chooseLocalButton";
+            chooseLocalButton.Size = new Size(438, 50);
+            chooseLocalButton.TabIndex = 1;
+            chooseLocalButton.Text = "Choose All Changes From Your File";
+            chooseLocalButton.UseVisualStyleBackColor = true;
+            chooseLocalButton.Click += revokeAccessButton_Click;
+            // 
+            // chooseRemoteButton
+            // 
+            chooseRemoteButton.Dock = DockStyle.Fill;
+            chooseRemoteButton.FlatStyle = FlatStyle.Flat;
+            chooseRemoteButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            chooseRemoteButton.Location = new Point(0, 0);
+            chooseRemoteButton.Name = "chooseRemoteButton";
+            chooseRemoteButton.Size = new Size(439, 50);
+            chooseRemoteButton.TabIndex = 1;
+            chooseRemoteButton.Text = "Choose All Changes From Source File";
+            chooseRemoteButton.UseVisualStyleBackColor = true;
+            chooseRemoteButton.Click += revokeAccessButton_Click;
+            // 
+            // gitCommandPanel
+            // 
+            gitCommandPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            gitCommandPanel.Dock = DockStyle.Bottom;
+            gitCommandPanel.Location = new Point(0, 575);
+            gitCommandPanel.Name = "gitCommandPanel";
+            gitCommandPanel.Size = new Size(895, 100);
+            gitCommandPanel.TabIndex = 5;
             // 
             // MergingControl
             // 
@@ -202,25 +222,47 @@
             mergingPanel.ResumeLayout(false);
             diffPanel.ResumeLayout(false);
             diffSplitContainer.Panel1.ResumeLayout(false);
+            diffSplitContainer.Panel1.PerformLayout();
             diffSplitContainer.Panel2.ResumeLayout(false);
+            diffSplitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)diffSplitContainer).EndInit();
             diffSplitContainer.ResumeLayout(false);
+            diffControlPanel.ResumeLayout(false);
+            buttonSplitContainer.Panel1.ResumeLayout(false);
+            buttonSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).EndInit();
+            buttonSplitContainer.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private void ApplyColorTheme(UITheme.AppTheme theme)
+        {
+            mergingControlPanel.BackColor = theme.PanelBackground;
+            mergingControlPanel.ForeColor = theme.TextBright;
+
+
+            gitCommandPanel.BackColor = theme.ElementBackground;
+            diffFile1Group.ForeColor = theme.TextHeader;
+            diffFile2Group.ForeColor = theme.TextHeader;
+
+            chooseLocalButton.BackColor = theme.ElementBackground;
+            chooseRemoteButton.BackColor = theme.ElementBackground;
+            chooseLocalButton.ForeColor = theme.TextSelectable;
+            chooseRemoteButton.ForeColor = theme.TextSelectable;
+        }
         private Panel mergingControlPanel;
         private Label titleLabel;
         private Panel mergingPanel;
         private Panel diffPanel;
-        private Panel diffControlPanel;
         private SplitContainer diffSplitContainer;
         private GroupBox diffFile1Group;
         private GroupBox diffFile2Group;
+        private Panel gitCommandPanel;
+        private Button chooseLocalButton;
+        private Button chooseRemoteButton;
+        private Panel diffControlPanel;
+        private SplitContainer buttonSplitContainer;
     }
 }

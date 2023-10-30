@@ -35,6 +35,10 @@
             branchesPageButton = new Button();
             mergingPageButton = new Button();
             mainPanel = new Panel();
+            button4 = new Button();
+            button3 = new Button();
+            button2 = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)githubBindingSource).BeginInit();
             SuspendLayout();
             // 
@@ -88,11 +92,55 @@
             mainPanel.Size = new Size(1001, 579);
             mainPanel.TabIndex = 3;
             // 
+            // button4
+            // 
+            button4.Location = new Point(897, 10);
+            button4.Margin = new Padding(1);
+            button4.Name = "button4";
+            button4.Size = new Size(79, 21);
+            button4.TabIndex = 7;
+            button4.Text = "Undo Change";
+            button4.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(815, 10);
+            button3.Margin = new Padding(1);
+            button3.Name = "button3";
+            button3.Size = new Size(79, 21);
+            button3.TabIndex = 6;
+            button3.Text = "Fetch";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(733, 10);
+            button2.Margin = new Padding(1);
+            button2.Name = "button2";
+            button2.Size = new Size(79, 21);
+            button2.TabIndex = 5;
+            button2.Text = "Pull";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(652, 10);
+            button1.Margin = new Padding(1);
+            button1.Name = "button1";
+            button1.Size = new Size(79, 21);
+            button1.TabIndex = 4;
+            button1.Text = "Push";
+            button1.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1001, 621);
+            Controls.Add(button4);
+            Controls.Add(button3);
+            Controls.Add(button2);
+            Controls.Add(button1);
             Controls.Add(mainPanel);
             Controls.Add(mergingPageButton);
             Controls.Add(branchesPageButton);
@@ -124,5 +172,9 @@
         private Button branchesPageButton;
         private Button mergingPageButton;
         private Panel mainPanel;
+        private Button button4;
+        private Button button3;
+        private Button button2;
+        private Button button1;
     }
 }
