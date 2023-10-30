@@ -21,7 +21,7 @@ public class Github
     /// </summary>
     private static class CredentialStore
     {
-        private static String userTarget = "VisualizerGitHub_user";
+        private static string userTarget = "VisualizerGitHub_user";
 
         /// <summary>
         /// Saves GitHub user's credential to Windows Credential Manager.
@@ -29,7 +29,7 @@ public class Github
         /// <param name="username">The GitHub username.</param>
         /// <param name="token">The token.</param>
         /// <returns>true if credential is saved. false otherwise.</returns>
-        public static bool SaveCredential(String username, String token)
+        public static bool SaveCredential(string username, string token)
         {
             Credential credential = new Credential();
             credential.Target = userTarget;
@@ -52,7 +52,7 @@ public class Github
         /// Retrieves user's token from Windows Credential Manager.
         /// </summary>
         /// <returns>A String for the token. null if retrieval fails.</returns>
-        public static String GetToken()
+        public static string? GetToken()
         {
             Credential credential = new Credential();
             credential.Target = userTarget;
@@ -68,7 +68,7 @@ public class Github
         /// Retrieves user's username from Windows Credential Manager.
         /// </summary>
         /// <returns>A String for the username. empty string if retrieval fails.</returns>
-        public static String GetUserName()
+        public static string? GetUserName()
         {
             Credential credential = new Credential();
             credential.Target = userTarget;
@@ -98,75 +98,56 @@ public class Github
         }
     }
 
-    /// <summary>
-    /// Gets or Sets the user code.
-    /// </summary>
-    public static String? userCode { get; private set; }
-    public static String? deviceCode;
+    /// <summary> Gets or Sets the user code. </summary>
+    public static string? userCode { get; private set; } = null;
+    public static string? deviceCode = null;
 
-    /// <summary>
-    /// Gets or Sets the access token.
-    /// </summary>
-    public static String? accessToken { get; private set; }
+    /// <summary> Gets or Sets the access token. </summary>
+    public static string? accessToken { get; private set; } = null;
 
-    /// <summary>
-    /// URL for login with code page on github
-    /// </summary>
-    public const String deviceLoginCodeURL = "https://github.com/login/device";
+    /// <summary> URL for login with code page on github </summary>
+    public const string API_DEVICE_LOGIN_CODE_URL = "https://github.com/login/device";
+    private static readonly ProductInfoHeaderValue API_PRODUCT = new ProductInfoHeaderValue(
+        "product",
+        "1"
+    );
+    private static readonly MediaTypeWithQualityHeaderValue API_GITHUB_TYPE =
+        new MediaTypeWithQualityHeaderValue("application/vnd.github+json");
 
-    // end section
+    //
+    private static readonly string API_TEMP_CLIENT_ID = "a6b32f8800218e8eab39";
+    private static readonly string API_TEMP_CLIENT_SECRET =
+        "15b4419077375217ebfcc678d0b106b002bff374";
 
-    private static String tempClientID = "a6b32f8800218e8eab39";
-    private static String tempClientSecret = "15b4419077375217ebfcc678d0b106b002bff374";
-
-    private static int interval = 1;
-
-    private static readonly HttpClient sharedClient =
+    //
+    private static readonly HttpClient API_SHARED_CLIENT =
         new() { BaseAddress = new Uri("https://api.github.com/"), };
-    private static ProductInfoHeaderValue product = new ProductInfoHeaderValue("product", "1");
-    private static MediaTypeWithQualityHeaderValue jsonType = new MediaTypeWithQualityHeaderValue(
-        "application/json"
-    );
-    private static MediaTypeWithQualityHeaderValue githubType = new MediaTypeWithQualityHeaderValue(
-        "application/vnd.github+json"
-    );
+    private static MediaTypeWithQualityHeaderValue API_JSON_TYPE =
+        new MediaTypeWithQualityHeaderValue("application/json");
 
-    private bool rememberUserAccess = false;
+    //
+    private static readonly int MAX_AUTH_WAIT_DUR = 30;
+    private static double authTryInterval = 1;
 
     /// <summary>
     /// Gets or Sets the repo list.
     /// </summary>
-    public List<RepositoryRemote>? repos { get; private set; }
+    //public List<RepositoryRemote> repos { get; private set; }
 
     /// <summary>
     /// Gets or Sets the username.
     /// </summary>
-    public String? username { get; private set; }
+    public string? username { get; private set; }
 
     /// <summary>
     /// Gets or Sets the avatar u r l.
     /// </summary>
-    public String? avatarURL { get; private set; }
+    public string? avatarURL { get; private set; }
 
     /// <summary>
     /// Gets or Sets the user git hub u r l.
     /// </summary>
-    public String? userGitHubURL { get; private set; }
-
-    /// <summary>
-    /// Gets or Sets the repo list.
-    /// </summary>
-    public String repoList { get; private set; }
-
-    /// <summary>
-    /// True if user wants to store access key in app, false if it wants to revoke it when app ends
-    /// </summary>
-    public bool RememberUserAccess => rememberUserAccess;
-
-    /// <summary>
-    /// The .ctor.
-    /// </summary>
-    public Github() { }
+    public string? userGitHubURL { get; private set; }
 
     /// <summary>
     /// Attempts to ask user to grant the app permission to read/write public repositories.
@@ -190,10 +171,10 @@ public class Github
     /// The method gets a list of the user repository as JSON.
     /// </summary>
     /// <returns>The task object.</returns>
-    public async Task GetRepositories()
+    public async Task<List<RepositoryRemote>?> FetchReposAsync()
     {
         // TODO: Format the JSON to make it easier to work in frontend.
-        await Task.Run(GetRepoList);
+        return await Task.Run(FetchApiRepos);
     }
 
     /// <summary>
@@ -215,81 +196,13 @@ public class Github
     }
 
     /// <summary>
-    /// Testing method for Nam. Do not call.
-    /// </summary>
-    public async void TestAsync()
-    {
-        // GitHub API code you can change.
-
-        await GivePermission();
-
-        //Debug.Write("userCode: " + userCode);
-
-        // BEGIN of SECTION: this section is not necessary if retrieving from Windows Credential Manager
-        if (userCode != null)
-            await WaitForAuthorization();
-
-        await GetUserInfo();
-        // END of SECTION
-
-
-        // have only 1 of the following 2 function calls run. SaveUser() saves credentials and ReadTokenAndUserName() read stored credential.
-        // from storage.
-        //SaveUser();
-        //ReadTokenAndUserName();
-
-        await GetRepoList();
-        int i = 0;
-        /*
-        foreach (Repo x in repos)
-        {
-            Debug.WriteLine(i + " " + x.name + " " + x.git_url);
-            Debug.WriteLine(CreateAuthenticatedGit(i));
-            i++;
-        }*/
-
-        String repo_url = await CreateRepo("testingCreatingARepo");
-        Debug.WriteLine(CreateAuthenticatedGit(repo_url));
-
-        // delete stored storage credential
-        DeleteStoredCredential();
-
-        bool tokenRemoveSuccess = DeleteToken();
-        Debug.WriteLine($"TOKEN REMOVED: {tokenRemoveSuccess}");
-    }
-
-    /// <summary>
     /// Returns an authenticated string good for git cloning.
     /// </summary>
     /// <param name="i">An int to grab index of the repo.</param>
     /// <returns>The string URL for git cloning.</returns>
-    public String CreateAuthenticatedGit(int i)
+    public string? CreateAuthenticatedGit(string cloneUrlHTTPS)
     {
-        if (repos == null)
-            return null;
-        else if (i < 0 || i > repos.Count)
-            return "createAuthenticatedGit(): Invalid index: " + i;
-
-        return "https://" + accessToken + "@" + repos[i].cloneUrlHTTPS;
-    }
-
-    /// <summary>
-    /// Returns an authenticated string good for git cloning.
-    /// </summary>
-    /// <returns>The string URL for git cloning.</returns>
-    public String CreateAuthenticatedGit(String url)
-    {
-        return "https://" + accessToken + "@" + url;
-    }
-
-    /// <summary>
-    /// Allows external setting of remember user bool, which saves access token if true or
-    /// revokes it on app close when false.
-    /// </summary>
-    /// <param name="isEnabled">a setter bool.</param>
-    public void SetRememberUserAccessBool(bool isEnabled)
-    {
-        rememberUserAccess = isEnabled;
+        return "https://" + accessToken + "@" + cloneUrlHTTPS;
     }
 
     /// <summary>
@@ -333,39 +246,68 @@ public class Github
     /// The private method to handle registering user with the app.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> RegisterUser()
+    private async Task<string?> RegisterUser()
     {
+        // user registraction request setup
         using StringContent jsonContent =
             new(
                 System.Text.Json.JsonSerializer.Serialize(
-                    new { client_id = tempClientID, scope = "repo" }
+                    new { client_id = API_TEMP_CLIENT_ID, scope = "repo" } // "public_repo" for public only, "repo" for private
                 ),
                 Encoding.UTF8,
-                jsonType
+                API_JSON_TYPE
             );
-
+        // awaiting post of user registration
         CommonHelper();
-        HttpResponseMessage response = await sharedClient.PostAsync(
+        HttpResponseMessage response = await API_SHARED_CLIENT.PostAsync(
             "https://github.com/login/device/code",
             jsonContent
         );
-
+        // parsing content
         if (response.IsSuccessStatusCode)
         {
-            String content = await response.Content.ReadAsStringAsync();
+            string content = await response.Content.ReadAsStringAsync();
             Debug.WriteLine("RegisterUser(): User code generated successfully");
-            JObject json = JObject.Parse(content);
-
-            string s = json["interval"].ToString();
-            interval = int.Parse(s);
-            deviceCode = json["device_code"].ToString();
+            JObject resJson = JObject.Parse(content);
+            //
+            JToken? authTryIntervalToken = resJson.GetValue("interval");
+            if (authTryIntervalToken == null)
+            {
+                Debug.WriteLine("interval not provided by github");
+                return null;
+            }
+            else
+            {
+                Debug.WriteLine($"interval set to {authTryIntervalToken}");
+                authTryInterval = double.Parse(authTryIntervalToken.ToString());
+            }
+            //
+            JToken? deviceCodeToken = resJson.GetValue("device_code");
+            if (deviceCodeToken == null)
+            {
+                Debug.WriteLine("intervalToken not provided by github");
+                return null;
+            }
+            else
+            {
+                deviceCode = deviceCodeToken.ToString();
+            }
+            //
+            JToken? userCodeToken = resJson.GetValue("user_code");
+            if (userCodeToken == null)
+            {
+                Debug.WriteLine("intervalToken not provided by github");
+                return null;
+            }
+            else
+            {
+                userCode = userCodeToken.ToString();
+            }
+            //
             Debug.WriteLine(content);
             Debug.WriteLine("----------------");
-            userCode = json["user_code"].ToString();
-
             return userCode;
         }
-
         Debug.WriteLine("RegisterUser(): User code generation failed");
         return null;
     }
@@ -385,15 +327,17 @@ public class Github
         }
 
         CommonHelper();
-        PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(interval + 5));
-        int max = 10;
 
-        while (await timer.WaitForNextTickAsync() && max > 0)
+        PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(authTryInterval + 5));
+        int triesRemaining = MAX_AUTH_WAIT_DUR / (int)authTryInterval;
+        while (await timer.WaitForNextTickAsync() && triesRemaining > 0)
         {
-            String status = await SendAuthorizationRequest();
+            string? status = await SendAuthorizationRequest();
             if (status != null)
+            {
                 break;
-            max--;
+            }
+            triesRemaining--;
         }
     }
 
@@ -401,7 +345,7 @@ public class Github
     /// The private method to handle polling for the user to grant the app the appropriate permission to read/write to repository.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> SendAuthorizationRequest()
+    private async Task<string?> SendAuthorizationRequest()
     {
         HttpResponseMessage response;
         StringContent jsonContent =
@@ -409,63 +353,80 @@ public class Github
                 System.Text.Json.JsonSerializer.Serialize(
                     new
                     {
-                        client_id = tempClientID,
+                        client_id = API_TEMP_CLIENT_ID,
                         device_code = deviceCode,
                         grant_type = "urn:ietf:params:oauth:grant-type:device_code"
                     }
                 ),
                 Encoding.UTF8,
-                jsonType
+                API_JSON_TYPE
             );
 
-        response = await sharedClient.PostAsync(
+        response = await API_SHARED_CLIENT.PostAsync(
             "https://github.com/login/oauth/access_token",
             jsonContent
         );
 
         if (response.IsSuccessStatusCode)
         {
-            String content = await response.Content.ReadAsStringAsync();
+            string content = await response.Content.ReadAsStringAsync();
             Debug.WriteLine(content);
 
             if (!content.Contains("error"))
             {
-                JObject json = JObject.Parse(content);
-                accessToken = json["access_token"].ToString();
+                JObject resJson = JObject.Parse(content);
+                JToken? jAccessToken = resJson["access_token"];
+                if (jAccessToken != null)
+                {
+                    accessToken = jAccessToken.ToString();
+                    return accessToken;
+                }
             }
         }
-        return accessToken;
+        return null;
     }
 
     /// <summary>
     /// The private method to handle getting the GitHub user's repository list.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> GetRepoList()
+    private async Task<List<RepositoryRemote>?> FetchApiRepos()
     {
         if (accessToken == null)
+        {
+            Debug.WriteLine("Tried to fetch repos without access token");
             return null;
+        }
+
         CommonAuthenticatedHelper();
 
-        HttpResponseMessage response = await sharedClient.GetAsync(
-            $"{sharedClient.BaseAddress}user/repos"
+        HttpResponseMessage response = await API_SHARED_CLIENT.GetAsync(
+            $"{API_SHARED_CLIENT.BaseAddress}user/repos"
         );
 
         if (response.IsSuccessStatusCode)
         {
-            String content = await response.Content.ReadAsStringAsync();
-            JArray array = JArray.Parse(content);
-            int gitEndIndex = 6;
-
-            repos = ((JArray)array)
-                .Select(
-                    repo =>
-                        new RepositoryRemote(
-                            title: (string)repo["name"],
-                            cloneUrlHTTPS: ((string)repo["git_url"]).Substring(gitEndIndex)
-                        )
-                )
-                .ToList();
+            string content = await response.Content.ReadAsStringAsync();
+            JArray jRemotesArray = JArray.Parse(content);
+            List<RepositoryRemote> repositoryRemotes = new List<RepositoryRemote>();
+            foreach (JToken jToken in jRemotesArray)
+            {
+                JToken? titleToken = jToken["name"];
+                JToken? cloneUrlHTTPSToken = jToken["git_url"];
+                if (titleToken == null)
+                {
+                    return null;
+                }
+                if (cloneUrlHTTPSToken == null)
+                {
+                    return null;
+                }
+                string title = titleToken.ToString();
+                string cloneUrlHTTPS = cloneUrlHTTPSToken.ToString().Substring(6);
+                RepositoryRemote remote = new RepositoryRemote(title, cloneUrlHTTPS);
+                repositoryRemotes.Add(remote);
+            }
+            return repositoryRemotes;
         }
 
         return null;
@@ -475,26 +436,49 @@ public class Github
     /// The private method to handle getting the GitHub user's public information.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<String> GetGitHubUser()
+    private async Task<string?> GetGitHubUser()
     {
         if (accessToken == null)
+        {
+            Debug.WriteLine("Tried to get github user without access token");
             return null;
+        }
+
         CommonAuthenticatedHelper();
 
-        HttpResponseMessage response = await sharedClient.GetAsync(
-            $"{sharedClient.BaseAddress}user"
+        HttpResponseMessage response = await API_SHARED_CLIENT.GetAsync(
+            $"{API_SHARED_CLIENT.BaseAddress}user"
         );
 
         if (response.IsSuccessStatusCode)
         {
-            String content = await response.Content.ReadAsStringAsync();
-            JObject json = JObject.Parse(content);
-            username = json["login"].ToString();
-            avatarURL = json["avatar_url"].ToString();
-            userGitHubURL = json["html_url"].ToString();
+            string content = await response.Content.ReadAsStringAsync();
+            JObject resJson = JObject.Parse(content);
+            JToken? usernameToken = resJson["login"];
+            if (usernameToken == null)
+            {
+                Debug.WriteLine("WARNING : github username is null");
+                return null;
+            }
+            JToken? avatarURLToken = resJson["avatar_url"];
+            if (avatarURLToken == null)
+            {
+                Debug.WriteLine("WARNING : github user avatar url is null");
+                return null;
+            }
+            JToken? userGitHubURLToken = resJson["html_url"];
+            if (userGitHubURLToken == null)
+            {
+                Debug.WriteLine("WARNING : github user html url is null");
+                return null;
+            }
+            //
+            username = usernameToken.ToString();
+            avatarURL = avatarURLToken.ToString();
+            userGitHubURL = userGitHubURLToken.ToString();
+            //
             return username;
         }
-
         return null;
     }
 
@@ -517,18 +501,18 @@ public class Github
             new(
                 System.Text.Json.JsonSerializer.Serialize(new { access_token = accessToken, }),
                 Encoding.UTF8,
-                jsonType
+                API_JSON_TYPE
             );
 
         var request = new HttpRequestMessage(
             HttpMethod.Delete,
-            $"{sharedClient.BaseAddress}applications/{tempClientID}/grant"
+            $"{API_SHARED_CLIENT.BaseAddress}applications/{API_TEMP_CLIENT_ID}/grant"
         );
         request.Headers.Add("Accept", "application/vnd.github+json");
-        request.Headers.Add("User-Agent", product.ToString());
+        request.Headers.Add("User-Agent", API_PRODUCT.ToString());
         request.Content = jsonContent;
 
-        var authenticationString = $"{tempClientID}:{tempClientSecret}";
+        var authenticationString = $"{API_TEMP_CLIENT_ID}:{API_TEMP_CLIENT_SECRET}";
         var base64EncodedAuthenticationString = Convert.ToBase64String(
             System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString)
         );
@@ -537,7 +521,7 @@ public class Github
             base64EncodedAuthenticationString
         );
 
-        HttpResponseMessage response = sharedClient.Send(request);
+        HttpResponseMessage response = API_SHARED_CLIENT.Send(request);
 
         if (response.StatusCode.ToString() == "NoContent")
         {
@@ -556,30 +540,39 @@ public class Github
     /// </summary>
     /// <param name="repoName">The repo name.</param>
     /// <returns>The git clone url of the newly created GitHub repo.</returns>
-    private async Task<String> CreateRepo(String repoName)
+    private async Task<string?> CreateRepo(string repoName)
     {
         if (accessToken == null)
+        {
+            Debug.WriteLine("Tried to create remote github repo without access token");
             return null;
+        }
+
         CommonAuthenticatedHelper();
 
         using StringContent jsonContent =
             new(
                 System.Text.Json.JsonSerializer.Serialize(new { name = repoName, }),
                 Encoding.UTF8,
-                jsonType
+                API_JSON_TYPE
             );
 
-        HttpResponseMessage response = await sharedClient.PostAsync(
+        HttpResponseMessage response = await API_SHARED_CLIENT.PostAsync(
             "https://api.github.com/user/repos",
             jsonContent
         );
         if (response.StatusCode.ToString() == "Created")
         {
             Debug.WriteLine($"CreateRepo(): Repo {repoName} created.");
-            String content = await response.Content.ReadAsStringAsync();
-            JObject json = JObject.Parse(content);
-            int gitEndIndex = 8;
-            return username = json["clone_url"].ToString().Substring(gitEndIndex);
+            string content = await response.Content.ReadAsStringAsync();
+            JObject resJson = JObject.Parse(content);
+            JToken? userNameToken = resJson["clone_url"];
+            if (userNameToken == null)
+            {
+                return null;
+            }
+            username = userNameToken.ToString().Substring(8);
+            return username;
         }
 
         Debug.WriteLine($"CreateRepo(): Repo {repoName} creation failed.");
@@ -591,9 +584,9 @@ public class Github
     /// </summary>
     private void CommonHelper()
     {
-        sharedClient.DefaultRequestHeaders.Clear();
-        sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
-        sharedClient.DefaultRequestHeaders.Accept.Add(jsonType);
+        API_SHARED_CLIENT.DefaultRequestHeaders.Clear();
+        API_SHARED_CLIENT.DefaultRequestHeaders.UserAgent.Add(API_PRODUCT);
+        API_SHARED_CLIENT.DefaultRequestHeaders.Accept.Add(API_JSON_TYPE);
     }
 
     /// <summary>
@@ -601,12 +594,12 @@ public class Github
     /// </summary>
     private void CommonAuthenticatedHelper()
     {
-        sharedClient.DefaultRequestHeaders.Clear();
-        sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        API_SHARED_CLIENT.DefaultRequestHeaders.Clear();
+        API_SHARED_CLIENT.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Bearer",
             accessToken
         );
-        sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
-        sharedClient.DefaultRequestHeaders.Accept.Add(githubType);
+        API_SHARED_CLIENT.DefaultRequestHeaders.UserAgent.Add(API_PRODUCT);
+        API_SHARED_CLIENT.DefaultRequestHeaders.Accept.Add(API_GITHUB_TYPE);
     }
 }

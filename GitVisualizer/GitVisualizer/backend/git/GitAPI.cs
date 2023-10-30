@@ -93,15 +93,15 @@ public static class GitAPI
         //
         public static async Task scanRemotesAsync(Action? callback)
         {
-            await github.GetRepositories();
-            if (github.repos == null)
-            {
-                Debug.WriteLine("WARNING : GitHub repo list is null");
-                return;
+            List<RepositoryRemote>? remotes = await github.FetchReposAsync();
+            if (remotes != null) {
+                foreach (RepositoryRemote remoteRepo in remotes)
+                {
+                    remoteRepositories[remoteRepo.title] = remoteRepo;
+                }
             }
-            foreach (RepositoryRemote remoteRepo in github.repos)
-            {
-                remoteRepositories[remoteRepo.title] = remoteRepo;
+            else {
+                Debug.WriteLine("WARNING : GitHub remote fetch returned null");
             }
             if (callback != null) {
                 callback();
@@ -354,6 +354,7 @@ public static class GitAPI
         {
             return localRepositories;
         }
+
 
         public static List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
         {

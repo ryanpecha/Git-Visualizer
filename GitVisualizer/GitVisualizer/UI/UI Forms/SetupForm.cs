@@ -45,7 +45,7 @@ namespace GitVisualizer
         private void LoadMainAppFormRemote(object sender, EventArgs e)
         {
             GetPermissionGithub();
-            OpenExternalWebsite(Github.deviceLoginCodeURL);
+            OpenExternalWebsite(Github.API_DEVICE_LOGIN_CODE_URL);
 
             //this.Hide();
         }
@@ -102,8 +102,8 @@ namespace GitVisualizer
         private void RememberMeCheckboxChanged(object sender, EventArgs e)
         {
             bool toRemember = rememberMeCheckbox.Checked;
-            Program.Github.SetRememberUserAccessBool(toRemember);
-            Debug.WriteLine("Remember user? " + Program.Github.RememberUserAccess);
+            //Program.Github.SetRememberUserAccessBool(toRemember);
+            //Debug.WriteLine("Remember user? " + Program.Github.RememberUserAccess);
         }
 
         private void button1_Click(object sender, EventArgs e)
