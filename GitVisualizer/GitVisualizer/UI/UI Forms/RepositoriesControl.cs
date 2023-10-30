@@ -41,13 +41,13 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         public void AddReposToTable()
         {
-            Dictionary<string,RepositoryLocal>.ValueCollection localRepos = GitAPI.Getters.getLocalRepositories().Values;
+            List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> allRepos = GitAPI.Getters.getAllRepositories();
 
             //repositoriesGridView.Rows.Clear();
 
-            foreach(RepositoryLocal localRepo in localRepos)
+            foreach(Tuple<string, RepositoryLocal?, RepositoryRemote?> repoTuple in allRepos)
             {
-   
+                // repoTile, local, remote
             }
             /*
             for (int i = 0; i < githubRepositories.Count; i++)
