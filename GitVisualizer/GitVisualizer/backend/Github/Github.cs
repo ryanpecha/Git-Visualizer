@@ -121,13 +121,15 @@ public class Github
 
     private static int interval = 1;
 
-    private static readonly HttpClient sharedClient = new()
-    {
-        BaseAddress = new Uri("https://api.github.com/"),
-    };
+    private static readonly HttpClient sharedClient =
+        new() { BaseAddress = new Uri("https://api.github.com/"), };
     private static ProductInfoHeaderValue product = new ProductInfoHeaderValue("product", "1");
-    private static MediaTypeWithQualityHeaderValue jsonType = new MediaTypeWithQualityHeaderValue("application/json");
-    private static MediaTypeWithQualityHeaderValue githubType = new MediaTypeWithQualityHeaderValue("application/vnd.github+json");
+    private static MediaTypeWithQualityHeaderValue jsonType = new MediaTypeWithQualityHeaderValue(
+        "application/json"
+    );
+    private static MediaTypeWithQualityHeaderValue githubType = new MediaTypeWithQualityHeaderValue(
+        "application/vnd.github+json"
+    );
 
     private bool rememberUserAccess = false;
 
@@ -164,9 +166,7 @@ public class Github
     /// <summary>
     /// The .ctor.
     /// </summary>
-    public Github()
-    {
-    }
+    public Github() { }
 
     /// <summary>
     /// Attempts to ask user to grant the app permission to read/write public repositories.
@@ -219,7 +219,6 @@ public class Github
     /// </summary>
     public async void TestAsync()
     {
-
         // GitHub API code you can change.
 
         await GivePermission();
@@ -301,7 +300,9 @@ public class Github
     {
         if (username == null || accessToken == null)
         {
-            Debug.WriteLine("SaveUser(): accessToken is null OR please call GetGitHubUser() before trying to save user credentials.");
+            Debug.WriteLine(
+                "SaveUser(): accessToken is null OR please call GetGitHubUser() before trying to save user credentials."
+            );
             return false;
         }
 
@@ -334,17 +335,20 @@ public class Github
     /// <returns>The Task<String> object that can be awaited for the String</returns>
     private async Task<String> RegisterUser()
     {
-        using StringContent jsonContent = new(
-            System.Text.Json.JsonSerializer.Serialize(new
-            {
-                client_id = tempClientID,
-                scope = "public_repo"
-            }),
-            Encoding.UTF8,
-             jsonType);
+        using StringContent jsonContent =
+            new(
+                System.Text.Json.JsonSerializer.Serialize(
+                    new { client_id = tempClientID, scope = "repo" }
+                ),
+                Encoding.UTF8,
+                jsonType
+            );
 
         CommonHelper();
-        HttpResponseMessage response = await sharedClient.PostAsync("https://github.com/login/device/code", jsonContent);
+        HttpResponseMessage response = await sharedClient.PostAsync(
+            "https://github.com/login/device/code",
+            jsonContent
+        );
 
         if (response.IsSuccessStatusCode)
         {
@@ -374,7 +378,9 @@ public class Github
     {
         if (userCode == null)
         {
-            Debug.WriteLine("PollAuthorizationDevice(): No user code. Cannot poll until we know user have access to a user code.");
+            Debug.WriteLine(
+                "PollAuthorizationDevice(): No user code. Cannot poll until we know user have access to a user code."
+            );
             return;
         }
 
@@ -398,21 +404,27 @@ public class Github
     private async Task<String> SendAuthorizationRequest()
     {
         HttpResponseMessage response;
-        StringContent jsonContent = new(
-            System.Text.Json.JsonSerializer.Serialize(new
-            {
-                client_id = tempClientID,
-                device_code = deviceCode,
-                grant_type = "urn:ietf:params:oauth:grant-type:device_code"
-            }),
-            Encoding.UTF8,
-            jsonType);
+        StringContent jsonContent =
+            new(
+                System.Text.Json.JsonSerializer.Serialize(
+                    new
+                    {
+                        client_id = tempClientID,
+                        device_code = deviceCode,
+                        grant_type = "urn:ietf:params:oauth:grant-type:device_code"
+                    }
+                ),
+                Encoding.UTF8,
+                jsonType
+            );
 
-        response = await sharedClient.PostAsync("https://github.com/login/oauth/access_token", jsonContent);
+        response = await sharedClient.PostAsync(
+            "https://github.com/login/oauth/access_token",
+            jsonContent
+        );
 
         if (response.IsSuccessStatusCode)
         {
-
             String content = await response.Content.ReadAsStringAsync();
             Debug.WriteLine(content);
 
@@ -435,7 +447,9 @@ public class Github
             return null;
         CommonAuthenticatedHelper();
 
-        HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user/repos");
+        HttpResponseMessage response = await sharedClient.GetAsync(
+            $"{sharedClient.BaseAddress}user/repos"
+        );
 
         if (response.IsSuccessStatusCode)
         {
@@ -443,10 +457,15 @@ public class Github
             JArray array = JArray.Parse(content);
             int gitEndIndex = 6;
 
-            repos = ((JArray)array).Select(repo => new RepositoryRemote(
-                title: (string)repo["name"],
-                cloneUrlHTTPS: ((string)repo["git_url"]).Substring(gitEndIndex)
-            )).ToList();
+            repos = ((JArray)array)
+                .Select(
+                    repo =>
+                        new RepositoryRemote(
+                            title: (string)repo["name"],
+                            cloneUrlHTTPS: ((string)repo["git_url"]).Substring(gitEndIndex)
+                        )
+                )
+                .ToList();
         }
 
         return null;
@@ -462,7 +481,9 @@ public class Github
             return null;
         CommonAuthenticatedHelper();
 
-        HttpResponseMessage response = await sharedClient.GetAsync($"{sharedClient.BaseAddress}user");
+        HttpResponseMessage response = await sharedClient.GetAsync(
+            $"{sharedClient.BaseAddress}user"
+        );
 
         if (response.IsSuccessStatusCode)
         {
@@ -477,14 +498,12 @@ public class Github
         return null;
     }
 
-
     /// <summary>
     /// The private method to revoke a user access token. Method will also call DeleteStoredCredential().
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
     private bool RevokeAccessToken()
     {
-
         if (accessToken == null)
         {
             Debug.WriteLine("RevokeAccessToken(): Access token is already deleted or null.");
@@ -494,22 +513,29 @@ public class Github
         Debug.WriteLine("Removing User token: " + accessToken);
         DeleteStoredCredential();
 
-        StringContent jsonContent = new(
-            System.Text.Json.JsonSerializer.Serialize(new
-            {
-                access_token = accessToken,
-            }),
-            Encoding.UTF8,
-            jsonType);
+        StringContent jsonContent =
+            new(
+                System.Text.Json.JsonSerializer.Serialize(new { access_token = accessToken, }),
+                Encoding.UTF8,
+                jsonType
+            );
 
-        var request = new HttpRequestMessage(HttpMethod.Delete, $"{sharedClient.BaseAddress}applications/{tempClientID}/grant");
+        var request = new HttpRequestMessage(
+            HttpMethod.Delete,
+            $"{sharedClient.BaseAddress}applications/{tempClientID}/grant"
+        );
         request.Headers.Add("Accept", "application/vnd.github+json");
         request.Headers.Add("User-Agent", product.ToString());
         request.Content = jsonContent;
 
         var authenticationString = $"{tempClientID}:{tempClientSecret}";
-        var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
-        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
+        var base64EncodedAuthenticationString = Convert.ToBase64String(
+            System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString)
+        );
+        request.Headers.Authorization = new AuthenticationHeaderValue(
+            "Basic",
+            base64EncodedAuthenticationString
+        );
 
         HttpResponseMessage response = sharedClient.Send(request);
 
@@ -536,15 +562,17 @@ public class Github
             return null;
         CommonAuthenticatedHelper();
 
-        using StringContent jsonContent = new(
-            System.Text.Json.JsonSerializer.Serialize(new
-            {
-                name = repoName,
-            }),
-            Encoding.UTF8,
-             jsonType);
+        using StringContent jsonContent =
+            new(
+                System.Text.Json.JsonSerializer.Serialize(new { name = repoName, }),
+                Encoding.UTF8,
+                jsonType
+            );
 
-        HttpResponseMessage response = await sharedClient.PostAsync("https://api.github.com/user/repos", jsonContent);
+        HttpResponseMessage response = await sharedClient.PostAsync(
+            "https://api.github.com/user/repos",
+            jsonContent
+        );
         if (response.StatusCode.ToString() == "Created")
         {
             Debug.WriteLine($"CreateRepo(): Repo {repoName} created.");
@@ -552,7 +580,6 @@ public class Github
             JObject json = JObject.Parse(content);
             int gitEndIndex = 8;
             return username = json["clone_url"].ToString().Substring(gitEndIndex);
-
         }
 
         Debug.WriteLine($"CreateRepo(): Repo {repoName} creation failed.");
@@ -575,7 +602,10 @@ public class Github
     private void CommonAuthenticatedHelper()
     {
         sharedClient.DefaultRequestHeaders.Clear();
-        sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            "Bearer",
+            accessToken
+        );
         sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
         sharedClient.DefaultRequestHeaders.Accept.Add(githubType);
     }

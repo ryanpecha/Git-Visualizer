@@ -35,7 +35,8 @@ public static class GVSettings
         {
             throw new Exception("Settings file is invalid json");
         }
-        else {
+        else
+        {
             data = nullableData;
         }
     }
@@ -49,15 +50,24 @@ public static class GVSettings
     public class GVSettingsData
     {
         public string githubAppToken { get; set; }
+        public bool githubAppHasAuth { get; set; }
         public List<LocalTrackedDir> trackedLocalDirs { get; set; }
-        public GVSettingsData(string githubAppToken, List<LocalTrackedDir> trackedLocalDirs)
+
+        public GVSettingsData(
+            string githubAppToken,
+            bool githubAppHasAuth,
+            List<LocalTrackedDir> trackedLocalDirs
+        )
         {
             this.githubAppToken = githubAppToken;
+            this.githubAppHasAuth = githubAppHasAuth;
             this.trackedLocalDirs = trackedLocalDirs;
         }
+
         public GVSettingsData()
         {
             githubAppToken = "";
+            githubAppHasAuth = false;
             trackedLocalDirs = new List<LocalTrackedDir>();
         }
     }
@@ -67,6 +77,7 @@ public class LocalTrackedDir
 {
     public string path { get; set; }
     public bool recursive { get; set; }
+
     public LocalTrackedDir(string path, bool recursive)
     {
         this.path = path;

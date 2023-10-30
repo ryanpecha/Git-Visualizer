@@ -47,22 +47,11 @@ public static class GitAPI
 
 
 
-    public async static void initializeAsync(Action callback)
-    {
-        Debug.WriteLine("ASYNC INITIALIZING GIT API");
-        // loading local repositories
-        Scanning.scanDirs();
-        // loading remote repositories
-        await Scanning.scanRemotesAsync(callback);
-    }
-
-
-
     public class Scanning
     {
-        //Debug.WriteLine($"SCANNING recursive={trackedDir.recursive} path={trackedDir.path}");
+
         //
-        public static void scanDirs()
+        public static void scanDirs(Action? callback)
         {
             foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
             {
@@ -95,10 +84,14 @@ public static class GitAPI
                     localRepositories[repoName] = newLocalRepo;
                 }
             }
+            if (callback != null) {
+                callback();
+            }
         }
 
+
         //
-        public static async Task scanRemotesAsync(Action callback)
+        public static async Task scanRemotesAsync(Action? callback)
         {
             await github.GetRepositories();
             if (github.repos == null)
@@ -110,6 +103,20 @@ public static class GitAPI
             {
                 remoteRepositories[remoteRepo.title] = remoteRepo;
             }
+            if (callback != null) {
+                callback();
+            }
+        }
+
+
+        //
+        public async static void scanAllAsync(Action callback)
+        {
+            Debug.WriteLine("ASYNC INITIALIZING GIT API");
+            // loading local repositories
+            scanDirs(null);
+            // loading remote repositories
+            await scanRemotesAsync(null);
             callback();
         }
     }
@@ -275,7 +282,7 @@ public static class GitAPI
 
 
             public readonly static string trackDirectory_description = "";
-            public static void trackDirectory(string dirPath, bool recursive)
+            public static void trackDirectory(string dirPath, bool recursive, Action? callback)
             {
                 foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
                 {
@@ -288,7 +295,7 @@ public static class GitAPI
                 LocalTrackedDir newTrackedDir = new LocalTrackedDir(dirPath, recursive);
                 GVSettings.data.trackedLocalDirs.Add(newTrackedDir);
                 GVSettings.saveSettings();
-                Scanning.scanDirs();
+                Scanning.scanDirs(callback);
             }
         }
 
