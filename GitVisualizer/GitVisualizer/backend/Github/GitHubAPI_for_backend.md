@@ -32,11 +32,11 @@ You might prefer to NOT use this method and have the user be prompted to enter t
 - None of the methods below should block. Hopefully, your frontend UI won't freeze due to the following methods:
 
 - Github(): creates the Github object. Nothing in it for now.
-- GivePermission(): Used along with WaitForAuthorization(). Starts the process to get user's permission to view/write to their repositories.
+- GivePermission(string scope = "public"): Used along with WaitForAuthorization(). Starts the process to get user's permission to view/write to their repositories.
+For the parameter **scope**, "public" grants the app permission to read/write ONLY public repositories. "private" grants permission for ALL repositories. There is no option to choose only private repositories.
 - WaitForAuthorization(): Used along with GivePermission(). Polls website for authorization from user.
-- GetRepositories(): Retrieve user's repository list. See **repos** member.
+- GetRepositories(string scope = "public"): Retrieve user's repository list based on scope ("public", "private", or "all" as argument in **scope**). See **repos** member.
 - DeleteToken(): Deletes user access token, essentially disassociating user from the API.
-- GetRepositories(): Retrieve user's repository into **repos** member variable.
 
 ## Pushing a local-only repository to GitHub:
 - CreateRepo(String name): Creates a public repository with the specified name on the user's GitHub page. IMPORTANT: use await when calling method to retrieve git clone's url.
