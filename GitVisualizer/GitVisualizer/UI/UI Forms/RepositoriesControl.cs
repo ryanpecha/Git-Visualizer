@@ -32,7 +32,7 @@ namespace GitVisualizer.UI.UI_Forms
             //GetLocalRepositoriesData();
             //GetRemoteRepositoriesData();
             //AddReposToTable();
-            GitAPI.Scanning.scanAllAsync(InitCallback);
+            GitAPI.Scanning.scanForAllReposAsync(InitCallback);
         }
 
         private void InitCallback()

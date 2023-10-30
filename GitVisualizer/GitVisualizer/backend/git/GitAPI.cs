@@ -40,7 +40,7 @@ public static class GitAPI
         // ref to program GitHub api
         github = Program.Github;
 
-        // TODO load tracked repos and previous program state from config file
+        // TODO load previous program state from config file
         liveCommit = null;
         liveRepository = null;
 
@@ -53,7 +53,7 @@ public static class GitAPI
     {
 
         //
-        public static void scanDirs(Action? callback)
+        public static void scanForLocalRepos(Action? callback)
         {
             Debug.WriteLine("scanDirs()");
             foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
@@ -95,10 +95,10 @@ public static class GitAPI
 
 
         //
-        public static async Task scanRemotesAsync(Action? callback)
+        public static async Task scanForRemoteReposAsync(Action? callback)
         {
             Debug.WriteLine("scanRemotesAsync()");
-            List<RepositoryRemote>? remotes = await github.FetchReposAsync();
+            List<RepositoryRemote>? remotes = await github.ScanReposAsync();
             if (remotes != null) {
                 foreach (RepositoryRemote remoteRepo in remotes)
                 {
@@ -116,14 +116,17 @@ public static class GitAPI
 
 
         //
-        public static async void scanAllAsync(Action callback)
+        public static async void scanForAllReposAsync(Action? callback)
         {
             Debug.WriteLine("scanAllAsync()");
             // loading local repositories
-            scanDirs(null);
+            scanForLocalRepos(null);
             // loading remote repositories
-            await scanRemotesAsync(null);
-            callback();
+            await scanForRemoteReposAsync(null);
+            if (callback != null) {
+                Debug.WriteLine("scanAllAsync() calling callback");
+                callback();
+            }
         }
     }
 
@@ -151,6 +154,28 @@ public static class GitAPI
             {
 
             }
+
+
+            public readonly static string addLocalBranchToRemote_description = "";
+            public static void addLocalBranchToRemote()
+            {
+                // git push -u origin <branch>
+            }
+
+
+            public readonly static string deleteRemoteBranch_description = "";
+            public static void deleteRemoteBranch(Branch branch)
+            {
+
+            }
+
+
+            public readonly static string cloneRemoteRepository_description = "";
+            public static void cloneRemoteRepository(RepositoryRemote repositoryRemote, string localCloneDirPath)
+            {
+
+            }
+
         }
 
 
@@ -231,12 +256,6 @@ public static class GitAPI
             }
 
 
-            public readonly static string addLocalBranchToRemote_description = "";
-            public static void addLocalBranchToRemote()
-            {
-                // git push -u origin <branch>
-            }
-
 
             public readonly static string deleteBranchLocal_description = "";
             public static void deleteBranchLocal(Branch branch)
@@ -244,19 +263,6 @@ public static class GitAPI
 
             }
 
-
-            public readonly static string deleteRemoteBranch_description = "";
-            public static void deleteRemoteBranch(Branch branch)
-            {
-
-            }
-
-
-            public readonly static string cloneRemoteRepository_description = "";
-            public static void cloneRemoteRepository(RepositoryRemote repositoryRemote, string localCloneDirPath)
-            {
-
-            }
 
 
             public readonly static string merge_description = "";
@@ -290,7 +296,6 @@ public static class GitAPI
             public readonly static string trackDirectory_description = "";
             public static void trackDirectory(string dirPath, bool recursive, Action? callback)
             {
-
                 foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
                 {
                     if (trackedDir.path == dirPath)
@@ -302,7 +307,7 @@ public static class GitAPI
                 LocalTrackedDir newTrackedDir = new LocalTrackedDir(dirPath, recursive);
                 GVSettings.data.trackedLocalDirs.Add(newTrackedDir);
                 GVSettings.saveSettings();
-                Scanning.scanDirs(callback);
+                Scanning.scanForLocalRepos(callback);
             }
 
             public static void userSelectTrackDirectory(bool recursive, Action? callback) {
@@ -323,7 +328,7 @@ public static class GitAPI
             public readonly static string clean_description = "";
             public static void clean()
             {
-
+                
             }
 
             public readonly static string add_description = "";
@@ -335,7 +340,7 @@ public static class GitAPI
             public readonly static string undoAdd_description = "";
             public static void undoAdd(List<string> fpaths)
             {
-
+                
             }
 
             public readonly static string commit_description = "";
@@ -347,7 +352,7 @@ public static class GitAPI
             public readonly static string undoCommit_description = "";
             public static void undoCommit()
             {
-
+                
             }
         }
     }
@@ -379,7 +384,7 @@ public static class GitAPI
             HashSet<string> repoNames = [.. localRepositories.Keys, .. remoteRepositories.Keys];
             foreach (string repoName in repoNames)
             {
-                string gitFormattedRepoName = repoName.Replace(" ", "-");
+                string gitFormattedRepoName = Repository.formatTitle(repoName);
                 Debug.WriteLine("FOUND REPO : " + gitFormattedRepoName);
                 RepositoryLocal? localRepo = null;
                 if (localRepositories.ContainsKey(gitFormattedRepoName))

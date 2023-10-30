@@ -172,10 +172,10 @@ public class Github
     /// The method gets a list of the user repository as JSON.
     /// </summary>
     /// <returns>The task object.</returns>
-    public async Task<List<RepositoryRemote>?> FetchReposAsync()
+    public async Task<List<RepositoryRemote>?> ScanReposAsync()
     {
         // TODO: Format the JSON to make it easier to work in frontend.
-        return await Task.Run(FetchApiRepos);
+        return await Task.Run(ScanApiRepos);
     }
 
     /// <summary>
@@ -396,7 +396,7 @@ public class Github
     /// The private method to handle getting the GitHub user's repository list.
     /// </summary>
     /// <returns>The Task<String> object that can be awaited for the String</returns>
-    private async Task<List<RepositoryRemote>?> FetchApiRepos()
+    private async Task<List<RepositoryRemote>?> ScanApiRepos()
     {
         if (accessToken == null)
         {
@@ -407,7 +407,7 @@ public class Github
         CommonAuthenticatedHelper();
 
         HttpResponseMessage response = await API_SHARED_CLIENT.GetAsync(
-            $"{API_SHARED_CLIENT.BaseAddress}user/repos"
+            $"{API_SHARED_CLIENT.BaseAddress}user/repos?per_page=100"
         );
 
         if (response.IsSuccessStatusCode)
@@ -430,6 +430,7 @@ public class Github
                 string title = titleToken.ToString();
                 string cloneUrlHTTPS = cloneUrlHTTPSToken.ToString().Substring(6);
                 RepositoryRemote remote = new RepositoryRemote(title, cloneUrlHTTPS);
+                Debug.WriteLine($"Scanned Remote Repo : {remote.title}");
                 repositoryRemotes.Add(remote);
             }
             return repositoryRemotes;
