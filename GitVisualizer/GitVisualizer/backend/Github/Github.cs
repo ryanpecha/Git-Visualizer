@@ -5,10 +5,12 @@ using System.Text.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Net.Http;
 using System.Numerics;
+using System.IO;
 
 using CredentialManagement;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 /// <summary>
 /// Class <c>Github</c> contains methods to abstract the interaction with the GitHub API and contain many of Github user's data.
@@ -115,9 +117,8 @@ public class Github
 
     // end section
 
-    private static String tempClientID = "a6b32f8800218e8eab39";
-    private static String tempClientSecret = "15b4419077375217ebfcc678d0b106b002bff374";
-    
+    private static String key = "YmFiYTZiMzJmODgwMDIxOGU4ZWFiMzk6MTViNDQxOTA3NzM3NTIxN2ViZmNjNjc4ZDBiMTA2YjAwMmJmZjM3NGRhZA==";
+
     private static int interval = 5;
 
     private static readonly HttpClient sharedClient = new()
@@ -344,7 +345,7 @@ public class Github
         using StringContent jsonContent = new(
             System.Text.Json.JsonSerializer.Serialize(new
             {
-                client_id = tempClientID,
+                client_id = getClientID(),
                 scope = actualScope
             }),
             Encoding.UTF8,
@@ -408,7 +409,7 @@ public class Github
         StringContent jsonContent = new(
             System.Text.Json.JsonSerializer.Serialize(new
             {
-                client_id = tempClientID,
+                client_id = getClientID(),
                 device_code = deviceCode,
                 grant_type = "urn:ietf:params:oauth:grant-type:device_code"
             }),
@@ -521,14 +522,12 @@ public class Github
             Encoding.UTF8,
             jsonType);
 
-        var request = new HttpRequestMessage(HttpMethod.Delete, $"{sharedClient.BaseAddress}applications/{tempClientID}/grant");
+        var request = new HttpRequestMessage(HttpMethod.Delete, $"{sharedClient.BaseAddress}applications/{getClientID()}/grant");
         request.Headers.Add("Accept", "application/vnd.github+json");
         request.Headers.Add("User-Agent", product.ToString());
         request.Content = jsonContent;
 
-        var authenticationString = $"{tempClientID}:{tempClientSecret}";
-        var base64EncodedAuthenticationString = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(authenticationString));
-        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64EncodedAuthenticationString);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", getBasic());
 
         HttpResponseMessage response = sharedClient.Send(request);
 
@@ -597,5 +596,29 @@ public class Github
         sharedClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         sharedClient.DefaultRequestHeaders.UserAgent.Add(product);
         sharedClient.DefaultRequestHeaders.Accept.Add(githubType);
+    }
+
+    /// <summary>
+    /// Get the app's client ID.
+    /// </summary>
+    /// <returns>The string for the app's client ID.</returns>
+    private String getClientID()
+    {
+        var key64Decoded = System.Convert.FromBase64String(key);
+        string keyDecoded = System.Text.Encoding.UTF8.GetString(key64Decoded);
+        return keyDecoded.Substring(3, 20);
+    }
+
+    /// <summary>
+    /// Get the basic authenticated string.
+    /// </summary>
+    /// <returns>The basic authenticated string.</returns>
+    private String getBasic()
+    {
+        var key64Decoded = System.Convert.FromBase64String(key);
+        string keyDecoded = System.Text.Encoding.UTF8.GetString(key64Decoded);
+
+        var basic = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{keyDecoded.Substring(3, 20)}:{keyDecoded.Substring(24, 40)}"));
+        return basic;
     }
 }
