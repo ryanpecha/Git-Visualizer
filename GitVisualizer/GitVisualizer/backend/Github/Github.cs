@@ -393,7 +393,7 @@ public class Github
         while (await timer.WaitForNextTickAsync() && max > 0)
         {
             String status = await SendAuthorizationRequest();
-            if (status != null)
+            if (status != null || status == "denied")
                 break;
             max--;
         }
@@ -402,7 +402,8 @@ public class Github
     /// <summary>
     /// The private method to handle polling for the user to grant the app the appropriate permission to read/write to repository.
     /// </summary>
-    /// <returns>The Task<String> object that can be awaited for the String</returns>
+    /// <returns>The Task<String> object that can be awaited for the String. "denied" means the user rejects the permission grant request.
+    /// Any code returned means the user accepted the request.</returns>
     private async Task<String> SendAuthorizationRequest()
     {
         HttpResponseMessage response;
@@ -424,7 +425,9 @@ public class Github
             String content = await response.Content.ReadAsStringAsync();
             Debug.WriteLine(content);
 
-            if (!content.Contains("error"))
+            if (content.Contains("access_denied"))
+                return "denied";
+            else if (!content.Contains("error"))
             {
                 JObject json = JObject.Parse(content);
                 accessToken = json["access_token"].ToString();
