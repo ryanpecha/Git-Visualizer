@@ -129,5 +129,10 @@ namespace GitVisualizer
         private void radioButton3_CheckedChanged(object sender, EventArgs e) { }
 
         private void rememberMeLabel_Click_1(object sender, EventArgs e) { }
+
+        private void userCodeLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

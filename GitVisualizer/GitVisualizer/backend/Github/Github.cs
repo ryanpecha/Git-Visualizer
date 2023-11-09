@@ -319,6 +319,7 @@ public class Github
     /// <returns>The task object.</returns>
     private async Task PollAuthorizationDevice()
     {
+        Debug.WriteLine("poll");
         if (userCode == null)
         {
             Debug.WriteLine(

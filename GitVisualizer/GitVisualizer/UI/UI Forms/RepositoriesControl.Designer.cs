@@ -61,16 +61,17 @@
             repositoriesGridView.Columns.AddRange(new DataGridViewColumn[] { localReposColumn, remoteReposColumn });
             repositoriesGridView.Dock = DockStyle.Fill;
             repositoriesGridView.ImeMode = ImeMode.Off;
-            repositoriesGridView.Location = new Point(280, 0);
-            repositoriesGridView.Margin = new Padding(6);
+            repositoriesGridView.Location = new Point(320, 0);
+            repositoriesGridView.Margin = new Padding(7, 8, 7, 8);
             repositoriesGridView.MultiSelect = false;
             repositoriesGridView.Name = "repositoriesGridView";
             repositoriesGridView.ReadOnly = true;
             repositoriesGridView.RowHeadersVisible = false;
+            repositoriesGridView.RowHeadersWidth = 51;
             repositoriesGridView.RowTemplate.Height = 25;
             repositoriesGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             repositoriesGridView.ShowEditingIcon = false;
-            repositoriesGridView.Size = new Size(895, 675);
+            repositoriesGridView.Size = new Size(1023, 900);
             repositoriesGridView.TabIndex = 0;
             repositoriesGridView.CellContentClick += repositoriesGridView_CellContentClick;
             // 
@@ -79,27 +80,29 @@
             localReposColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             localReposColumn.ContextMenuStrip = localRepoContextMenuStrip;
             localReposColumn.HeaderText = "Local Repositories";
+            localReposColumn.MinimumWidth = 6;
             localReposColumn.Name = "localReposColumn";
             localReposColumn.ReadOnly = true;
             localReposColumn.ToolTipText = "Repository Folders stored locally on your device, which hold the files you modify directly on your computer.";
             // 
             // localRepoContextMenuStrip
             // 
+            localRepoContextMenuStrip.ImageScalingSize = new Size(20, 20);
             localRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { trackDirectoryToolStripMenuItem, trackDirectoryRecursiveToolStripMenuItem });
             localRepoContextMenuStrip.Name = "localRepoContextMenuStrip";
-            localRepoContextMenuStrip.Size = new Size(214, 48);
+            localRepoContextMenuStrip.Size = new Size(254, 52);
             // 
             // trackDirectoryToolStripMenuItem
             // 
             trackDirectoryToolStripMenuItem.Name = "trackDirectoryToolStripMenuItem";
-            trackDirectoryToolStripMenuItem.Size = new Size(213, 22);
+            trackDirectoryToolStripMenuItem.Size = new Size(253, 24);
             trackDirectoryToolStripMenuItem.Text = "Track Directory";
             trackDirectoryToolStripMenuItem.Click += TrackDirectory;
             // 
             // trackDirectoryRecursiveToolStripMenuItem
             // 
             trackDirectoryRecursiveToolStripMenuItem.Name = "trackDirectoryRecursiveToolStripMenuItem";
-            trackDirectoryRecursiveToolStripMenuItem.Size = new Size(213, 22);
+            trackDirectoryRecursiveToolStripMenuItem.Size = new Size(253, 24);
             trackDirectoryRecursiveToolStripMenuItem.Text = "Track Directory (Recursive)";
             trackDirectoryRecursiveToolStripMenuItem.Click += TrackDirectoryRecursive;
             // 
@@ -108,33 +111,35 @@
             remoteReposColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             remoteReposColumn.ContextMenuStrip = remoteRepoContextMenuStrip;
             remoteReposColumn.HeaderText = "Remote Repositories";
+            remoteReposColumn.MinimumWidth = 6;
             remoteReposColumn.Name = "remoteReposColumn";
             remoteReposColumn.ReadOnly = true;
             remoteReposColumn.Resizable = DataGridViewTriState.True;
             // 
             // remoteRepoContextMenuStrip
             // 
+            remoteRepoContextMenuStrip.ImageScalingSize = new Size(20, 20);
             remoteRepoContextMenuStrip.Items.AddRange(new ToolStripItem[] { makeActiveWorkspaceToolStripMenuItem, cloneToLocalRepoToolStripMenuItem, openOnGithubcomToolStripMenuItem });
             remoteRepoContextMenuStrip.Name = "contextMenuStrip1";
-            remoteRepoContextMenuStrip.Size = new Size(201, 70);
+            remoteRepoContextMenuStrip.Size = new Size(236, 76);
             remoteRepoContextMenuStrip.Text = "Remote Actions";
             // 
             // makeActiveWorkspaceToolStripMenuItem
             // 
             makeActiveWorkspaceToolStripMenuItem.Name = "makeActiveWorkspaceToolStripMenuItem";
-            makeActiveWorkspaceToolStripMenuItem.Size = new Size(200, 22);
+            makeActiveWorkspaceToolStripMenuItem.Size = new Size(235, 24);
             makeActiveWorkspaceToolStripMenuItem.Text = "Make Active Workspace";
             // 
             // cloneToLocalRepoToolStripMenuItem
             // 
             cloneToLocalRepoToolStripMenuItem.Name = "cloneToLocalRepoToolStripMenuItem";
-            cloneToLocalRepoToolStripMenuItem.Size = new Size(200, 22);
+            cloneToLocalRepoToolStripMenuItem.Size = new Size(235, 24);
             cloneToLocalRepoToolStripMenuItem.Text = "Clone to Local Repo";
             // 
             // openOnGithubcomToolStripMenuItem
             // 
             openOnGithubcomToolStripMenuItem.Name = "openOnGithubcomToolStripMenuItem";
-            openOnGithubcomToolStripMenuItem.Size = new Size(200, 22);
+            openOnGithubcomToolStripMenuItem.Size = new Size(235, 24);
             openOnGithubcomToolStripMenuItem.Text = "Open on Github.com";
             // 
             // repositoriesControlPanel
@@ -146,9 +151,10 @@
             repositoriesControlPanel.Controls.Add(titleLabel);
             repositoriesControlPanel.Dock = DockStyle.Left;
             repositoriesControlPanel.Location = new Point(0, 0);
-            repositoriesControlPanel.MinimumSize = new Size(280, 280);
+            repositoriesControlPanel.Margin = new Padding(3, 4, 3, 4);
+            repositoriesControlPanel.MinimumSize = new Size(320, 373);
             repositoriesControlPanel.Name = "repositoriesControlPanel";
-            repositoriesControlPanel.Size = new Size(280, 675);
+            repositoriesControlPanel.Size = new Size(320, 900);
             repositoriesControlPanel.TabIndex = 1;
             repositoriesControlPanel.Paint += repositoriesControlPanel_Paint;
             // 
@@ -159,19 +165,21 @@
             buttonsPanel.Controls.Add(revokeAccessButton);
             buttonsPanel.Controls.Add(grantAccessButton);
             buttonsPanel.Dock = DockStyle.Bottom;
-            buttonsPanel.Location = new Point(0, 493);
-            buttonsPanel.MinimumSize = new Size(0, 180);
+            buttonsPanel.Location = new Point(0, 658);
+            buttonsPanel.Margin = new Padding(3, 4, 3, 4);
+            buttonsPanel.MinimumSize = new Size(0, 240);
             buttonsPanel.Name = "buttonsPanel";
-            buttonsPanel.Size = new Size(278, 180);
+            buttonsPanel.Size = new Size(318, 240);
             buttonsPanel.TabIndex = 2;
             // 
             // revokeAccessButton
             // 
             revokeAccessButton.FlatStyle = FlatStyle.Flat;
             revokeAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            revokeAccessButton.Location = new Point(47, 28);
+            revokeAccessButton.Location = new Point(54, 37);
+            revokeAccessButton.Margin = new Padding(3, 4, 3, 4);
             revokeAccessButton.Name = "revokeAccessButton";
-            revokeAccessButton.Size = new Size(166, 54);
+            revokeAccessButton.Size = new Size(190, 72);
             revokeAccessButton.TabIndex = 0;
             revokeAccessButton.Text = "Revoke Access";
             revokeAccessButton.UseVisualStyleBackColor = true;
@@ -181,9 +189,10 @@
             // 
             grantAccessButton.FlatStyle = FlatStyle.Flat;
             grantAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            grantAccessButton.Location = new Point(47, 106);
+            grantAccessButton.Location = new Point(54, 141);
+            grantAccessButton.Margin = new Padding(3, 4, 3, 4);
             grantAccessButton.Name = "grantAccessButton";
-            grantAccessButton.Size = new Size(166, 54);
+            grantAccessButton.Size = new Size(190, 72);
             grantAccessButton.TabIndex = 0;
             grantAccessButton.Text = "Grant Access";
             grantAccessButton.UseVisualStyleBackColor = true;
@@ -195,18 +204,19 @@
             titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
             titleLabel.Location = new Point(0, 0);
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(195, 45);
+            titleLabel.Size = new Size(240, 54);
             titleLabel.TabIndex = 1;
             titleLabel.Text = "Repositories";
             // 
             // RepositoriesControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(repositoriesGridView);
             Controls.Add(repositoriesControlPanel);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "RepositoriesControl";
-            Size = new Size(1175, 675);
+            Size = new Size(1343, 900);
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).EndInit();
             localRepoContextMenuStrip.ResumeLayout(false);
             remoteRepoContextMenuStrip.ResumeLayout(false);

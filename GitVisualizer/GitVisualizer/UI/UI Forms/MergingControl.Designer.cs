@@ -61,9 +61,10 @@
             mergingControlPanel.Controls.Add(titleLabel);
             mergingControlPanel.Dock = DockStyle.Left;
             mergingControlPanel.Location = new Point(0, 0);
-            mergingControlPanel.MinimumSize = new Size(280, 280);
+            mergingControlPanel.Margin = new Padding(3, 4, 3, 4);
+            mergingControlPanel.MinimumSize = new Size(320, 373);
             mergingControlPanel.Name = "mergingControlPanel";
-            mergingControlPanel.Size = new Size(280, 675);
+            mergingControlPanel.Size = new Size(320, 900);
             mergingControlPanel.TabIndex = 4;
             // 
             // titleLabel
@@ -73,9 +74,9 @@
             titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
             titleLabel.Location = new Point(0, 0);
             titleLabel.Margin = new Padding(0);
-            titleLabel.MinimumSize = new Size(280, 50);
+            titleLabel.MinimumSize = new Size(320, 67);
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(280, 50);
+            titleLabel.Size = new Size(320, 67);
             titleLabel.TabIndex = 1;
             titleLabel.Text = "Merging";
             // 
@@ -84,9 +85,10 @@
             mergingPanel.Controls.Add(diffPanel);
             mergingPanel.Controls.Add(gitCommandPanel);
             mergingPanel.Dock = DockStyle.Fill;
-            mergingPanel.Location = new Point(280, 0);
+            mergingPanel.Location = new Point(320, 0);
+            mergingPanel.Margin = new Padding(3, 4, 3, 4);
             mergingPanel.Name = "mergingPanel";
-            mergingPanel.Size = new Size(895, 675);
+            mergingPanel.Size = new Size(1023, 900);
             mergingPanel.TabIndex = 5;
             // 
             // diffPanel
@@ -95,15 +97,16 @@
             diffPanel.Controls.Add(diffControlPanel);
             diffPanel.Dock = DockStyle.Fill;
             diffPanel.Location = new Point(0, 0);
+            diffPanel.Margin = new Padding(3, 4, 3, 4);
             diffPanel.Name = "diffPanel";
-            diffPanel.Size = new Size(895, 575);
+            diffPanel.Size = new Size(1023, 767);
             diffPanel.TabIndex = 4;
             // 
             // diffSplitContainer
             // 
             diffSplitContainer.Dock = DockStyle.Fill;
-            diffSplitContainer.Location = new Point(0, 50);
-            diffSplitContainer.Margin = new Padding(8);
+            diffSplitContainer.Location = new Point(0, 67);
+            diffSplitContainer.Margin = new Padding(9, 11, 9, 11);
             diffSplitContainer.Name = "diffSplitContainer";
             // 
             // diffSplitContainer.Panel1
@@ -113,9 +116,9 @@
             // diffSplitContainer.Panel2
             // 
             diffSplitContainer.Panel2.Controls.Add(diffFile2Group);
-            diffSplitContainer.Size = new Size(895, 525);
-            diffSplitContainer.SplitterDistance = 438;
-            diffSplitContainer.SplitterWidth = 18;
+            diffSplitContainer.Size = new Size(1023, 700);
+            diffSplitContainer.SplitterDistance = 500;
+            diffSplitContainer.SplitterWidth = 21;
             diffSplitContainer.TabIndex = 1;
             // 
             // diffFile1Group
@@ -124,10 +127,10 @@
             diffFile1Group.Dock = DockStyle.Fill;
             diffFile1Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             diffFile1Group.Location = new Point(0, 0);
-            diffFile1Group.Margin = new Padding(6);
+            diffFile1Group.Margin = new Padding(7, 8, 7, 8);
             diffFile1Group.Name = "diffFile1Group";
-            diffFile1Group.Padding = new Padding(6);
-            diffFile1Group.Size = new Size(438, 525);
+            diffFile1Group.Padding = new Padding(7, 8, 7, 8);
+            diffFile1Group.Size = new Size(500, 700);
             diffFile1Group.TabIndex = 0;
             diffFile1Group.TabStop = false;
             diffFile1Group.Text = "Diff_File1.txt";
@@ -138,8 +141,10 @@
             diffFile2Group.Dock = DockStyle.Fill;
             diffFile2Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             diffFile2Group.Location = new Point(0, 0);
+            diffFile2Group.Margin = new Padding(3, 4, 3, 4);
             diffFile2Group.Name = "diffFile2Group";
-            diffFile2Group.Size = new Size(439, 525);
+            diffFile2Group.Padding = new Padding(3, 4, 3, 4);
+            diffFile2Group.Size = new Size(502, 700);
             diffFile2Group.TabIndex = 1;
             diffFile2Group.TabStop = false;
             diffFile2Group.Text = "Diff_File2.txt";
@@ -149,15 +154,16 @@
             diffControlPanel.Controls.Add(buttonSplitContainer);
             diffControlPanel.Dock = DockStyle.Top;
             diffControlPanel.Location = new Point(0, 0);
+            diffControlPanel.Margin = new Padding(3, 4, 3, 4);
             diffControlPanel.Name = "diffControlPanel";
-            diffControlPanel.Size = new Size(895, 50);
+            diffControlPanel.Size = new Size(1023, 67);
             diffControlPanel.TabIndex = 0;
             // 
             // buttonSplitContainer
             // 
             buttonSplitContainer.Dock = DockStyle.Top;
             buttonSplitContainer.Location = new Point(0, 0);
-            buttonSplitContainer.Margin = new Padding(8);
+            buttonSplitContainer.Margin = new Padding(9, 11, 9, 11);
             buttonSplitContainer.Name = "buttonSplitContainer";
             // 
             // buttonSplitContainer.Panel1
@@ -167,9 +173,9 @@
             // buttonSplitContainer.Panel2
             // 
             buttonSplitContainer.Panel2.Controls.Add(chooseRemoteButton);
-            buttonSplitContainer.Size = new Size(895, 50);
-            buttonSplitContainer.SplitterDistance = 438;
-            buttonSplitContainer.SplitterWidth = 18;
+            buttonSplitContainer.Size = new Size(1023, 67);
+            buttonSplitContainer.SplitterDistance = 500;
+            buttonSplitContainer.SplitterWidth = 21;
             buttonSplitContainer.TabIndex = 2;
             // 
             // chooseLocalButton
@@ -178,8 +184,9 @@
             chooseLocalButton.FlatStyle = FlatStyle.Flat;
             chooseLocalButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             chooseLocalButton.Location = new Point(0, 0);
+            chooseLocalButton.Margin = new Padding(3, 4, 3, 4);
             chooseLocalButton.Name = "chooseLocalButton";
-            chooseLocalButton.Size = new Size(438, 50);
+            chooseLocalButton.Size = new Size(500, 67);
             chooseLocalButton.TabIndex = 1;
             chooseLocalButton.Text = "Choose All Changes From Your File";
             chooseLocalButton.UseVisualStyleBackColor = true;
@@ -191,8 +198,9 @@
             chooseRemoteButton.FlatStyle = FlatStyle.Flat;
             chooseRemoteButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             chooseRemoteButton.Location = new Point(0, 0);
+            chooseRemoteButton.Margin = new Padding(3, 4, 3, 4);
             chooseRemoteButton.Name = "chooseRemoteButton";
-            chooseRemoteButton.Size = new Size(439, 50);
+            chooseRemoteButton.Size = new Size(502, 67);
             chooseRemoteButton.TabIndex = 1;
             chooseRemoteButton.Text = "Choose All Changes From Source File";
             chooseRemoteButton.UseVisualStyleBackColor = true;
@@ -202,20 +210,21 @@
             // 
             gitCommandPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             gitCommandPanel.Dock = DockStyle.Bottom;
-            gitCommandPanel.Location = new Point(0, 575);
+            gitCommandPanel.Location = new Point(0, 767);
+            gitCommandPanel.Margin = new Padding(3, 4, 3, 4);
             gitCommandPanel.Name = "gitCommandPanel";
-            gitCommandPanel.Size = new Size(895, 100);
+            gitCommandPanel.Size = new Size(1023, 133);
             gitCommandPanel.TabIndex = 5;
             // 
             // MergingControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(mergingPanel);
             Controls.Add(mergingControlPanel);
             Margin = new Padding(1);
             Name = "MergingControl";
-            Size = new Size(1175, 675);
+            Size = new Size(1343, 900);
             Load += MergingControl_Load;
             mergingControlPanel.ResumeLayout(false);
             mergingControlPanel.PerformLayout();

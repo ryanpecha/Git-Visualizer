@@ -63,7 +63,7 @@ namespace GitVisualizer
             label1.Font = new Font("Segoe UI Semibold", 32.25F, FontStyle.Bold, GraphicsUnit.Point);
             label1.Location = new Point(12, 9);
             label1.Name = "label1";
-            label1.Size = new Size(365, 59);
+            label1.Size = new Size(456, 72);
             label1.TabIndex = 0;
             label1.Text = "Workspace Setup";
             // 
@@ -93,7 +93,7 @@ namespace GitVisualizer
             radioButton1.AutoSize = true;
             radioButton1.Location = new Point(30, 436);
             radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(296, 19);
+            radioButton1.Size = new Size(371, 24);
             radioButton1.TabIndex = 3;
             radioButton1.TabStop = true;
             radioButton1.Text = "Joining or hosting a collaborative project on Github";
@@ -105,7 +105,7 @@ namespace GitVisualizer
             radioButton2.AutoSize = true;
             radioButton2.Location = new Point(30, 474);
             radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(285, 19);
+            radioButton2.Size = new Size(355, 24);
             radioButton2.TabIndex = 4;
             radioButton2.TabStop = true;
             radioButton2.Text = "Creating or cloning a project on the Github cloud";
@@ -117,7 +117,7 @@ namespace GitVisualizer
             radioButton3.AutoSize = true;
             radioButton3.Location = new Point(30, 511);
             radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(361, 19);
+            radioButton3.Size = new Size(452, 24);
             radioButton3.TabIndex = 5;
             radioButton3.TabStop = true;
             radioButton3.Text = "Using a local folder to handle version control on my own device\r\n";
@@ -148,7 +148,7 @@ namespace GitVisualizer
             label3.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point);
             label3.Location = new Point(16, 340);
             label3.Name = "label3";
-            label3.Size = new Size(189, 45);
+            label3.Size = new Size(233, 54);
             label3.TabIndex = 7;
             label3.Text = "Need Help?";
             label3.Click += label3_Click;
@@ -174,7 +174,7 @@ namespace GitVisualizer
             // 
             // userCodeLabel
             // 
-            userCodeLabel.Font = new Font("Segoe UI", 48F, FontStyle.Regular, GraphicsUnit.Point);
+            userCodeLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
             userCodeLabel.Location = new Point(33, 199);
             userCodeLabel.Name = "userCodeLabel";
             userCodeLabel.Size = new Size(343, 86);
@@ -182,6 +182,7 @@ namespace GitVisualizer
             userCodeLabel.Text = "1234-5678";
             userCodeLabel.TextAlign = ContentAlignment.MiddleCenter;
             userCodeLabel.Visible = false;
+            userCodeLabel.Click += userCodeLabel_Click;
             // 
             // rememberMeCheckbox
             // 
@@ -191,7 +192,7 @@ namespace GitVisualizer
             rememberMeCheckbox.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
             rememberMeCheckbox.Location = new Point(12, 351);
             rememberMeCheckbox.Name = "rememberMeCheckbox";
-            rememberMeCheckbox.Size = new Size(177, 34);
+            rememberMeCheckbox.Size = new Size(212, 41);
             rememberMeCheckbox.TabIndex = 11;
             rememberMeCheckbox.Text = "Remember Me";
             rememberMeCheckbox.UseVisualStyleBackColor = true;
@@ -228,7 +229,7 @@ namespace GitVisualizer
             showCodeCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             showCodeCheckBox.Location = new Point(62, 288);
             showCodeCheckBox.Name = "showCodeCheckBox";
-            showCodeCheckBox.Size = new Size(215, 25);
+            showCodeCheckBox.Size = new Size(266, 32);
             showCodeCheckBox.TabIndex = 13;
             showCodeCheckBox.Text = "Show Code (Sensitive Info)";
             showCodeCheckBox.UseVisualStyleBackColor = true;

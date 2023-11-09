@@ -108,6 +108,7 @@
             undoButton.TabIndex = 7;
             undoButton.Text = "Undo";
             undoButton.UseVisualStyleBackColor = true;
+            undoButton.Click += undoButton_Click;
             // 
             // fetchButton
             // 
@@ -119,6 +120,7 @@
             fetchButton.TabIndex = 6;
             fetchButton.Text = "Fetch";
             fetchButton.UseVisualStyleBackColor = true;
+            fetchButton.Click += fetchButton_Click;
             // 
             // pullButton
             // 
@@ -130,6 +132,7 @@
             pullButton.TabIndex = 5;
             pullButton.Text = "Pull";
             pullButton.UseVisualStyleBackColor = true;
+            pullButton.Click += pullButton_Click;
             // 
             // pushButton
             // 
@@ -141,6 +144,7 @@
             pushButton.TabIndex = 4;
             pushButton.Text = "Push";
             pushButton.UseVisualStyleBackColor = true;
+            pushButton.Click += pushButton_Click;
             // 
             // gitButtonsPanel
             // 

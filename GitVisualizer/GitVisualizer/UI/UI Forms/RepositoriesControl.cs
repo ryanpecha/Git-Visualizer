@@ -14,9 +14,11 @@ namespace GitVisualizer.UI.UI_Forms
     public partial class RepositoriesControl : UserControl
     {
         private Github githubAPI;
+        private String selected_repo;
         public RepositoriesControl()
         {
             githubAPI = Program.Github;
+            selected_repo = "";
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
         }
@@ -33,6 +35,11 @@ namespace GitVisualizer.UI.UI_Forms
             //GetRemoteRepositoriesData();
             //AddReposToTable();
             GitAPI.Scanning.scanForAllReposAsync(InitCallback);
+        }
+
+        public String GetSelectedRepo()
+        {
+            return selected_repo;
         }
 
         private void InitCallback()
@@ -95,7 +102,30 @@ namespace GitVisualizer.UI.UI_Forms
         }
         private void repositoriesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            DataGridViewTextBoxCell local = (DataGridViewTextBoxCell)
+                repositoriesGridView.Rows[e.RowIndex].Cells[0];
+            DataGridViewTextBoxCell remote = (DataGridViewTextBoxCell)
+                repositoriesGridView.Rows[e.RowIndex].Cells[1];
 
+            if (local != null && remote != null)
+            {
+                // select remote without local copy
+                if (local.Value.ToString() == "Clone to Local")
+                {
+                    selected_repo = remote.Value.ToString();
+                }
+                // select local without remote copy
+                else if (remote.Value.ToString() == "Push to remote")
+                {
+                    selected_repo = local.Value.ToString();
+                }
+                // select both
+                else
+                {
+                    selected_repo = remote.Value.ToString();
+                }
+                Debug.WriteLine(selected_repo);
+            }
         }
 
         private void openOnGithubcomToolStripMenuItem_Click(object sender, EventArgs e)
