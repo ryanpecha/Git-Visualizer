@@ -7,4 +7,9 @@ public class RepositoryLocal : Repository
     {
         this.dirPath = dirPath;
     }
+
+    public override string ToString()
+    {
+        return dirPath;
+    }
 }
