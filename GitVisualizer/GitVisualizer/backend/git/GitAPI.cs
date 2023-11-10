@@ -177,10 +177,11 @@ public static class GitAPI
                 FolderBrowserDialog dialog = new FolderBrowserDialog();
                 DialogResult fdResult = dialog.ShowDialog();
                 if (fdResult == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath)) {
-                    string fullPath = Path.GetFullPath(dialog.SelectedPath);
+                    string cloneDirPath = Path.GetFullPath(dialog.SelectedPath);
+                    string clonedRepoPath = cloneDirPath + "/" + repositoryRemote.title;
                     //
                     Command com = new Command("cd");
-                    com.Parameters.Add(fullPath);
+                    com.Parameters.Add(cloneDirPath);
                     ShellComRes comResult = Shell.exec(com);
                     // TODO check for command success
 
@@ -190,7 +191,7 @@ public static class GitAPI
                     com.Parameters.Add(repositoryRemote.cloneUrlHTTPS);
                     comResult = Shell.exec(com);
                     // TODO check for command success
-                    
+
                     //com = new Command("git");
                     //com.Parameters.Add("init");
                     //comResult = Shell.exec(com);
@@ -198,6 +199,9 @@ public static class GitAPI
 
                     // TODO set commit to currently checked out repo commit
                     //liveCommit = ;
+
+                    // TODO callback?
+                    LocalActions.trackDirectory(clonedRepoPath,false,null);
                 }
             }
 
