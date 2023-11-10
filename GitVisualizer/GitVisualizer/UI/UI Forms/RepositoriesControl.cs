@@ -102,6 +102,7 @@ namespace GitVisualizer.UI.UI_Forms
         }
         private void repositoriesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) { return; }
             DataGridViewTextBoxCell local = (DataGridViewTextBoxCell)
                 repositoriesGridView.Rows[e.RowIndex].Cells[0];
             DataGridViewTextBoxCell remote = (DataGridViewTextBoxCell)
@@ -128,12 +129,18 @@ namespace GitVisualizer.UI.UI_Forms
             }
         }
 
-        private void openOnGithubcomToolStripMenuItem_Click(object sender, EventArgs e)
+
+        private void repositoriesControlPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void repositoriesControlPanel_Paint(object sender, PaintEventArgs e)
+        private void RepositoriesControl_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void remoteRepositoryActionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
