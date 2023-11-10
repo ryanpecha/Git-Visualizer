@@ -23,4 +23,9 @@ public class Repository
     public static implicit operator Repository(string title) {
         return new Repository(title);
     }
+
+    public override string ToString()
+   {
+      return title;
+   }
 }
