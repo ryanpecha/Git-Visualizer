@@ -450,7 +450,6 @@ public static class GitAPI
             return localRepositories;
         }
 
-
         public readonly static string description_getAllRepositories = "";
         public static List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
         {
@@ -476,6 +475,5 @@ public static class GitAPI
             }
             return repos;
         }
-
     }
 }

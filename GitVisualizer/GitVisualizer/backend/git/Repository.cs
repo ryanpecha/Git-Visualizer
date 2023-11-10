@@ -15,4 +15,8 @@ public class Repository
     {
         return title.Replace(" ", "-");
     }
+
+    public static implicit operator string(Repository repo) {
+        return repo.title;
+    }
 }
