@@ -83,13 +83,27 @@ namespace GitVisualizer.UI.UI_Forms
             if (e.RowIndex < 0 || e.ColumnIndex < 0) { return; }
 
             activeRepo = (Tuple<RepositoryLocal?, RepositoryRemote?>)repositoriesGridView.Rows[e.RowIndex].DataBoundItem;
-            Debug.WriteLine(activeRepo.Item2.title);
-            if (activeRepo.Item1 == null)
+
+
+            if (activeRepo.Item1 != null)
+            {
+                localRepoButtonsLabel.Text = "Local: " + activeRepo.Item1.title;
+            }
+            else
             {
                 Debug.WriteLine("Need to Clone a remote first!");
                 return;
             }
-            GitAPI.Actions.LocalActions.setLiveRepository(activeRepo.Item1);
+            if (activeRepo.Item2 != null)
+            {
+                Debug.WriteLine(activeRepo.Item2.title);
+                activeRepositoryTextLabel.Text = activeRepo.Item2.title;
+                GitAPI.Actions.LocalActions.setLiveRepository(activeRepo.Item1);
+            }
+
+
+
+            //
         }
 
 
@@ -104,6 +118,16 @@ namespace GitVisualizer.UI.UI_Forms
         }
 
         private void remoteRepositoryActionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
         {
 
         }
