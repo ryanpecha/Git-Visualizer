@@ -451,10 +451,10 @@ public static class GitAPI
         }
 
         public readonly static string description_getAllRepositories = "";
-        public static List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
+        public static List<Tuple<RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
         {
             Debug.WriteLine("GETTING ALL REPOS");
-            List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> repos = new List<Tuple<string, RepositoryLocal?, RepositoryRemote?>>();
+            List<Tuple<RepositoryLocal?, RepositoryRemote?>> repos = new List<Tuple<RepositoryLocal?, RepositoryRemote?>>();
             HashSet<string> repoNames = [.. localRepositories.Keys, .. remoteRepositories.Keys];
             foreach (string repoName in repoNames)
             {
@@ -470,7 +470,7 @@ public static class GitAPI
                 {
                     remoteRepo = remoteRepositories[gitFormattedRepoName];
                 }
-                Tuple<string, RepositoryLocal?, RepositoryRemote?> repo = new Tuple<string, RepositoryLocal?, RepositoryRemote?>(repoName, localRepo, remoteRepo);
+                Tuple<RepositoryLocal?, RepositoryRemote?> repo = new Tuple<RepositoryLocal?, RepositoryRemote?>(localRepo, remoteRepo);
                 repos.Add(repo);
             }
             return repos;

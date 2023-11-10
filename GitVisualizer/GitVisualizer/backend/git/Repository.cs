@@ -16,7 +16,11 @@ public class Repository
         return title.Replace(" ", "-");
     }
 
-    public static implicit operator String(Repository repo) {
+    public static implicit operator string(Repository repo) {
         return repo.title;
+    }
+
+    public static implicit operator Repository(string title) {
+        return new Repository(title);
     }
 }
