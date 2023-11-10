@@ -171,9 +171,34 @@ public static class GitAPI
 
 
             public readonly static string cloneRemoteRepository_description = "";
-            public static void cloneRemoteRepository(RepositoryRemote repositoryRemote, string localCloneDirPath)
+            public static void cloneRemoteRepository(RepositoryRemote repositoryRemote)
             {
+                // TODO check that .git folder and repo exist
+                FolderBrowserDialog dialog = new FolderBrowserDialog();
+                DialogResult fdResult = dialog.ShowDialog();
+                if (fdResult == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath)) {
+                    string fullPath = Path.GetFullPath(dialog.SelectedPath);
+                    //
+                    Command com = new Command("cd");
+                    com.Parameters.Add(fullPath);
+                    ShellComRes comResult = Shell.exec(com);
+                    // TODO check for command success
 
+                    //
+                    com = new Command("git");
+                    com.Parameters.Add("clone");
+                    com.Parameters.Add(repositoryRemote.cloneUrlHTTPS);
+                    comResult = Shell.exec(com);
+                    // TODO check for command success
+                    
+                    //com = new Command("git");
+                    //com.Parameters.Add("init");
+                    //comResult = Shell.exec(com);
+                    // TODO check for command success
+
+                    // TODO set commit to currently checked out repo commit
+                    //liveCommit = ;
+                }
             }
 
         }
