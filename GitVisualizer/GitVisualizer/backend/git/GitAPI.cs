@@ -171,7 +171,7 @@ public static class GitAPI
 
 
             public readonly static string cloneRemoteRepository_description = "";
-            public static void cloneRemoteRepository(RepositoryRemote repositoryRemote)
+            public static void cloneRemoteRepository(RepositoryRemote repositoryRemote, Action? callback)
             {
                 // TODO check that .git folder and repo exist
                 FolderBrowserDialog dialog = new FolderBrowserDialog();
@@ -201,7 +201,7 @@ public static class GitAPI
                     //liveCommit = ;
 
                     // TODO callback?
-                    LocalActions.trackDirectory(clonedRepoPath,false,null);
+                    LocalActions.trackDirectory(clonedRepoPath, false, callback);
                 }
             }
 
