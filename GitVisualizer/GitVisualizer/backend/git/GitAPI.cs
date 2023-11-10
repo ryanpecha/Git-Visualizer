@@ -209,11 +209,9 @@ public static class GitAPI
                     string cloneDirPath = Path.GetFullPath(dialog.SelectedPath);
                     string clonedRepoPath = cloneDirPath + "/" + repositoryRemote.title;
                     //
-                    string com = $"cd {cloneDirPath}";
+                    string com = $"cd {cloneDirPath}; ";
+                    com += $"git clone {repositoryRemote.cloneUrlHTTPS}";
                     ShellComRes comResult = Shell.exec(com);
-                    // TODO check for command success
-                    com = $"git clone {repositoryRemote.cloneUrlHTTPS}";
-                    comResult = Shell.exec(com);
                     // TODO check for command success
                     LocalActions.trackDirectory(clonedRepoPath, false, callback);
                 }
@@ -233,11 +231,9 @@ public static class GitAPI
                 if (!ReferenceEquals(repositoryLocal, liveRepository))
                 {
                     // TODO check that .git folder and repo exist
-                    string com = $"cd {repositoryLocal.dirPath}";
+                    string com = $"cd {repositoryLocal.dirPath}; ";
+                    com += $"git init {repositoryLocal.dirPath}";
                     ShellComRes result = Shell.exec(com);
-                    // TODO check for command success
-                    com = $"git init {repositoryLocal.dirPath}";
-                    result = Shell.exec(com);
                     // TODO check for command success
                     liveRepository = repositoryLocal;
                     // TODO set commit to currently checked out repo commit
@@ -252,7 +248,8 @@ public static class GitAPI
                 if (!ReferenceEquals(commit, liveCommit))
                 {
                     // TODO check that commit exists
-                    string com = $"git checkout {commit.longHash}";
+                    string com = $"cd {commit.localRepository.dirPath}; ";
+                    com += $"git checkout {commit.longHash}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     liveCommit = commit;
@@ -267,7 +264,8 @@ public static class GitAPI
                 if (!ReferenceEquals(branch.commit, liveCommit))
                 {
                     // TODO check that branch exists and points to a valid commit
-                    string com = $"git checkout {branch.title}";
+                    string com = $"cd {branch.commit.localRepository.dirPath}; ";
+                    com += $"git checkout {branch.title}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     liveCommit = branch.commit;
@@ -280,7 +278,8 @@ public static class GitAPI
             public static void createLocalBranch(string title, Commit commit)
             {
                 // TODO check that branch does not exist
-                string com = $"git checkout -b {title} {commit.longHash}";
+                string com = $"cd {commit.localRepository.dirPath}; ";
+                com += $"git checkout -b {title} {commit.longHash}";
                 ShellComRes result = Shell.exec(com);
                 // TODO check for command success
                 Branch branch = new Branch(title, commit);
@@ -367,11 +366,9 @@ public static class GitAPI
                     string repoParentDirPath = Path.GetFullPath(dialog.SelectedPath);
                     string repoDirPath = repoParentDirPath + "/" + repoName;
                     //
-                    string com = $"cd {repoParentDirPath}";
+                    string com = $"cd {repoParentDirPath}; ";
+                    com += $"git init --initial-branch=main {repoName}";
                     ShellComRes comResult = Shell.exec(com);
-                    // TODO check for command success
-                    com = $"git init --initial-branch=main {repoName}";
-                    comResult = Shell.exec(com);
                     // TODO check for command success
                     trackDirectory(repoDirPath, false, callback);
                 }
