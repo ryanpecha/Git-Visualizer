@@ -38,8 +38,8 @@
             titleLabel = new Label();
             reposButtonsMainPanel = new Panel();
             repositoriesButtonsSplitContainer = new SplitContainer();
-            createNewRemoteRepoButton = new Button();
             button1 = new Button();
+            createNewRemoteRepoButton = new Button();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
             repositoriesControlPanel.SuspendLayout();
             buttonsPanel.SuspendLayout();
@@ -53,7 +53,6 @@
             // repositoriesGridView
             // 
             repositoriesGridView.AllowUserToDeleteRows = false;
-            repositoriesGridView.AllowUserToOrderColumns = true;
             repositoriesGridView.AllowUserToResizeRows = false;
             repositoriesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             repositoriesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -72,7 +71,7 @@
             repositoriesGridView.ShowEditingIcon = false;
             repositoriesGridView.Size = new Size(895, 555);
             repositoriesGridView.TabIndex = 0;
-            repositoriesGridView.CellContentClick += repositoriesGridView_CellContentClick;
+            repositoriesGridView.CellClick += repositoriesGridView_CellContentClick;
             // 
             // localReposColumn
             // 
@@ -181,18 +180,6 @@
             repositoriesButtonsSplitContainer.SplitterWidth = 2;
             repositoriesButtonsSplitContainer.TabIndex = 0;
             // 
-            // createNewRemoteRepoButton
-            // 
-            createNewRemoteRepoButton.FlatStyle = FlatStyle.Flat;
-            createNewRemoteRepoButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            createNewRemoteRepoButton.Location = new Point(151, 89);
-            createNewRemoteRepoButton.Name = "createNewRemoteRepoButton";
-            createNewRemoteRepoButton.Size = new Size(148, 28);
-            createNewRemoteRepoButton.TabIndex = 0;
-            createNewRemoteRepoButton.Text = "Create Remote Repo";
-            createNewRemoteRepoButton.UseVisualStyleBackColor = true;
-            createNewRemoteRepoButton.Click += RevokeGithubAuthenticationButtonPressed;
-            // 
             // button1
             // 
             button1.FlatStyle = FlatStyle.Flat;
@@ -204,6 +191,18 @@
             button1.Text = "Clone To Local";
             button1.UseVisualStyleBackColor = true;
             button1.Click += RevokeGithubAuthenticationButtonPressed;
+            // 
+            // createNewRemoteRepoButton
+            // 
+            createNewRemoteRepoButton.FlatStyle = FlatStyle.Flat;
+            createNewRemoteRepoButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            createNewRemoteRepoButton.Location = new Point(151, 89);
+            createNewRemoteRepoButton.Name = "createNewRemoteRepoButton";
+            createNewRemoteRepoButton.Size = new Size(148, 28);
+            createNewRemoteRepoButton.TabIndex = 0;
+            createNewRemoteRepoButton.Text = "Create Remote Repo";
+            createNewRemoteRepoButton.UseVisualStyleBackColor = true;
+            createNewRemoteRepoButton.Click += RevokeGithubAuthenticationButtonPressed;
             // 
             // RepositoriesControl
             // 
@@ -261,11 +260,11 @@
         private Button revokeAccessButton;
         private Label titleLabel;
         private Panel buttonsPanel;
-        private DataGridViewTextBoxColumn localReposColumn;
-        private DataGridViewTextBoxColumn remoteReposColumn;
         private Panel reposButtonsMainPanel;
         private SplitContainer repositoriesButtonsSplitContainer;
         private Button button1;
         private Button createNewRemoteRepoButton;
+        private DataGridViewTextBoxColumn localReposColumn;
+        private DataGridViewTextBoxColumn remoteReposColumn;
     }
 }

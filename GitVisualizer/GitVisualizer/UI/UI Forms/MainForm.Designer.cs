@@ -144,7 +144,7 @@
             pushButton.TabIndex = 4;
             pushButton.Text = "Push";
             pushButton.UseVisualStyleBackColor = true;
-            pushButton.Click += pushButton_Click;
+            //pushButton.Click += pushButton_Click;
             // 
             // gitButtonsPanel
             // 

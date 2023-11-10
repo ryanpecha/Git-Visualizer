@@ -95,6 +95,7 @@ namespace GitVisualizer.UI.UI_Forms
             this.MaximizeBox = true;
         }
 
+        /*
         private void pushButton_Click(object sender, EventArgs e)
         {
             String repo_name = repositoriesControl.GetSelectedRepo();
@@ -127,6 +128,7 @@ namespace GitVisualizer.UI.UI_Forms
                 }
             }
         }
+        */
 
         private void pullButton_Click(object sender, EventArgs e)
         {

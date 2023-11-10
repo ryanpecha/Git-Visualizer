@@ -14,11 +14,14 @@ namespace GitVisualizer.UI.UI_Forms
     public partial class RepositoriesControl : UserControl
     {
         private Github githubAPI;
-        private String selected_repo;
+        private Tuple<RepositoryLocal?, RepositoryRemote?> activeRepo = new Tuple<RepositoryLocal?, RepositoryRemote?>(null, null);
+        private List<Tuple<RepositoryLocal?, RepositoryRemote?>> allRepos = new();
+
+
+
         public RepositoriesControl()
         {
             githubAPI = Program.Github;
-            selected_repo = "";
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
         }
@@ -37,10 +40,6 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Scanning.scanForAllReposAsync(InitCallback);
         }
 
-        public String GetSelectedRepo()
-        {
-            return selected_repo;
-        }
 
         private void InitCallback()
         {
@@ -55,34 +54,13 @@ namespace GitVisualizer.UI.UI_Forms
         public void AddReposToTable()
         {
             Debug.WriteLine("AddReposToTable()");
-            List<Tuple<string, RepositoryLocal?, RepositoryRemote?>> allRepos = GitAPI.Getters.getAllRepositories();
+            allRepos = GitAPI.Getters.getAllRepositories();
 
             repositoriesGridView.Rows.Clear();
-
-            foreach (Tuple<string, RepositoryLocal?, RepositoryRemote?> repoTuple in allRepos)
-            {
-                // repoTile, local, remote
-
-                if (repoTuple.Item2 != null && repoTuple.Item3 != null)
-                {
-                    repositoriesGridView.Rows.Add(repoTuple.Item2.dirPath, repoTuple.Item3.title);
-                }
-                else if (repoTuple.Item2 != null)
-                {
-                    repositoriesGridView.Rows.Add(repoTuple.Item2.dirPath, "Push to remote");
-                }
-                else if (repoTuple.Item3 != null)
-                {
-                    repositoriesGridView.Rows.Add("Clone to Local", repoTuple.Item3.title);
-                }
-
-            }
-            /*
-            for (int i = 0; i < githubRepositories.Count; i++)
-            {
-                repositoriesGridView.Rows.Add("Local path for: " + githubRepositories[i].title, githubRepositories[i].title);
-            }
-            */
+            repositoriesGridView.Columns.Clear();
+            repositoriesGridView.DataSource = allRepos;
+            repositoriesGridView.Columns[0].HeaderCell.Value = "Local Repositories";
+            repositoriesGridView.Columns[1].HeaderCell.Value = "Remote Repositories";
 
         }
 
@@ -103,30 +81,15 @@ namespace GitVisualizer.UI.UI_Forms
         private void repositoriesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) { return; }
-            DataGridViewTextBoxCell local = (DataGridViewTextBoxCell)
-                repositoriesGridView.Rows[e.RowIndex].Cells[0];
-            DataGridViewTextBoxCell remote = (DataGridViewTextBoxCell)
-                repositoriesGridView.Rows[e.RowIndex].Cells[1];
 
-            if (local != null && remote != null)
+            activeRepo = (Tuple<RepositoryLocal?, RepositoryRemote?>)repositoriesGridView.Rows[e.RowIndex].DataBoundItem;
+            Debug.WriteLine(activeRepo.Item2.title);
+            if (activeRepo.Item1 == null)
             {
-                // select remote without local copy
-                if (local.Value.ToString() == "Clone to Local")
-                {
-                    selected_repo = remote.Value.ToString();
-                }
-                // select local without remote copy
-                else if (remote.Value.ToString() == "Push to remote")
-                {
-                    selected_repo = local.Value.ToString();
-                }
-                // select both
-                else
-                {
-                    selected_repo = remote.Value.ToString();
-                }
-                Debug.WriteLine(selected_repo);
+                Debug.WriteLine("Need to Clone a remote first!");
+                return;
             }
+            GitAPI.Actions.LocalActions.setLiveRepository(activeRepo.Item1);
         }
 
 
