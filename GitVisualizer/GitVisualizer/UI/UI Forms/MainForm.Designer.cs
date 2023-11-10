@@ -1,4 +1,6 @@
-﻿namespace GitVisualizer.UI.UI_Forms
+﻿using GithubSpace;
+
+namespace GitVisualizer.UI.UI_Forms
 {
 
     partial class MainForm
