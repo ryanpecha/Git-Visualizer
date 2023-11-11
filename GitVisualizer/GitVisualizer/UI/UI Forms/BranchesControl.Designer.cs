@@ -84,7 +84,6 @@
             titleLabel.Size = new Size(280, 50);
             titleLabel.TabIndex = 1;
             titleLabel.Text = "Branches";
-            titleLabel.Click += titleLabel_Click;
             // 
             // branchesGridView
             // 
@@ -105,6 +104,7 @@
             branchesGridView.ShowEditingIcon = false;
             branchesGridView.Size = new Size(895, 675);
             branchesGridView.TabIndex = 3;
+            branchesGridView.CellPainting += BranchesGridViewDrawCell;
             // 
             // graphColumn
             // 

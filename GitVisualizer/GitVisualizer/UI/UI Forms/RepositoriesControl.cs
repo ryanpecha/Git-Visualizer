@@ -74,7 +74,7 @@ namespace GitVisualizer.UI.UI_Forms
             if (e.RowIndex < 0 || e.ColumnIndex < 0) { return; }
 
             selectedRepo = (Tuple<RepositoryLocal?, RepositoryRemote?>)repositoriesGridView.Rows[e.RowIndex].DataBoundItem;
-
+            if (selectedRepo == null) { return; }
             // If local exists
             if (selectedRepo.Item1 != null)
             {
@@ -134,6 +134,7 @@ namespace GitVisualizer.UI.UI_Forms
             if (selectedRepo == null && selectedRepo.Item1 == null) { return; }
             GitAPI.Actions.LocalActions.setLiveRepository(selectedRepo.Item1);
             activeRepositoryTextLabel.Text = selectedRepo.Item1.title;
+            activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
         }
 
         private void OnOpenOnGithubComButton(object sender, EventArgs e)

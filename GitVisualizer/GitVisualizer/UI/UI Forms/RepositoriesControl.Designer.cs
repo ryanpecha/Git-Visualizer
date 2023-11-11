@@ -170,6 +170,7 @@
             activeRepositoryTextLabel.Name = "activeRepositoryTextLabel";
             activeRepositoryTextLabel.Size = new Size(267, 77);
             activeRepositoryTextLabel.TabIndex = 4;
+            activeRepositoryTextLabel.Text = "Select a Local Repo to Set Workspace";
             // 
             // activeRepoLabel
             // 
@@ -377,6 +378,8 @@
             localRepoButtonsLabel.ForeColor = theme.TextNormal;
             remoteRepoButtonsLabel.ForeColor = theme.TextNormal;
 
+            activeRepositoryTextLabel.ForeColor = theme.TextSoft;
+
         }
         public DataGridView repositoriesGridView;
         private Panel repositoriesControlPanel;
@@ -388,8 +391,6 @@
         private SplitContainer repositoriesButtonsSplitContainer;
         private Button cloneToLocalButton;
         private Button createNewRemoteRepoButton;
-        private DataGridViewTextBoxColumn localReposColumn;
-        private DataGridViewTextBoxColumn remoteReposColumn;
         private Label activeRepoLabel;
         private Panel activeRepoPanel;
         private Label activeRepositoryTextLabel;
@@ -401,5 +402,7 @@
         private Button openInFileExplorerButton;
         private Button openOnGithubComButton;
         private Panel commonRepoButtonsPanel;
+        private DataGridViewTextBoxColumn localReposColumn;
+        private DataGridViewTextBoxColumn remoteReposColumn;
     }
 }
