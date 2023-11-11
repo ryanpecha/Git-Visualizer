@@ -96,11 +96,13 @@ namespace GitVisualizer.UI.UI_Forms
             {
                 remoteRepoButtonsLabel.Text = "Remote: " + selectedRepo.Item2.title;
                 createNewRemoteRepoButton.Visible = false;
+                openOnGithubComButton.Visible = true;
             }
             else
             {
                 remoteRepoButtonsLabel.Text = "No Remote for This Local. Create New Remote Repo First.";
                 createNewRemoteRepoButton.Visible = true;
+                openOnGithubComButton.Visible = false;
             }
 
         }
@@ -132,6 +134,13 @@ namespace GitVisualizer.UI.UI_Forms
             if (selectedRepo == null && selectedRepo.Item1 == null) { return; }
             GitAPI.Actions.LocalActions.setLiveRepository(selectedRepo.Item1);
             activeRepositoryTextLabel.Text = selectedRepo.Item1.title;
+        }
+
+        private void OnOpenOnGithubComButton(object sender, EventArgs e)
+        {
+            if (selectedRepo == null && selectedRepo.Item2 == null) { return; }
+            Process.Start(new ProcessStartInfo { FileName = selectedRepo.Item2.webURL, UseShellExecute = true });
+
         }
 
 
