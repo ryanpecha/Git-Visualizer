@@ -14,7 +14,7 @@ namespace GitVisualizer.UI.UI_Forms
     public partial class RepositoriesControl : UserControl
     {
         private Github githubAPI;
-        private Tuple<RepositoryLocal?, RepositoryRemote?> activeRepo = new Tuple<RepositoryLocal?, RepositoryRemote?>(null, null);
+        private Tuple<RepositoryLocal?, RepositoryRemote?> selectedRepo = new Tuple<RepositoryLocal?, RepositoryRemote?>(null, null);
         private List<Tuple<RepositoryLocal?, RepositoryRemote?>> allRepos = new();
 
 
@@ -37,13 +37,13 @@ namespace GitVisualizer.UI.UI_Forms
             //GetLocalRepositoriesData();
             //GetRemoteRepositoriesData();
             //AddReposToTable();
-            GitAPI.Scanning.scanForAllReposAsync(InitCallback);
+            GitAPI.Scanning.scanForAllReposAsync(UpdateGridCallback);
         }
 
 
-        private void InitCallback()
+        private void UpdateGridCallback()
         {
-            Debug.WriteLine("InitCallback()");
+            Debug.WriteLine("UpdateGridCallback()");
             //AddReposToTable();
             Invoke(AddReposToTable);
         }
@@ -56,21 +56,12 @@ namespace GitVisualizer.UI.UI_Forms
             Debug.WriteLine("AddReposToTable()");
             allRepos = GitAPI.Getters.getAllRepositories();
 
-            repositoriesGridView.Rows.Clear();
+            //repositoriesGridView.Rows.Clear();
             repositoriesGridView.Columns.Clear();
             repositoriesGridView.DataSource = allRepos;
             repositoriesGridView.Columns[0].HeaderCell.Value = "Local Repositories";
             repositoriesGridView.Columns[1].HeaderCell.Value = "Remote Repositories";
 
-        }
-
-        private void TrackDirectory(object sender, EventArgs e)
-        {
-            GitAPI.Actions.LocalActions.userSelectTrackDirectory(false, InitCallback);
-        }
-        private void TrackDirectoryRecursive(object sender, EventArgs e)
-        {
-            GitAPI.Actions.LocalActions.userSelectTrackDirectory(true, InitCallback);
         }
 
         private void RevokeGithubAuthenticationButtonPressed(object sender, EventArgs e)
@@ -82,28 +73,54 @@ namespace GitVisualizer.UI.UI_Forms
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) { return; }
 
-            activeRepo = (Tuple<RepositoryLocal?, RepositoryRemote?>)repositoriesGridView.Rows[e.RowIndex].DataBoundItem;
+            selectedRepo = (Tuple<RepositoryLocal?, RepositoryRemote?>)repositoriesGridView.Rows[e.RowIndex].DataBoundItem;
 
 
-            if (activeRepo.Item1 != null)
+            if (selectedRepo.Item1 != null)
             {
-                localRepoButtonsLabel.Text = "Local: " + activeRepo.Item1.title;
+                localRepoButtonsLabel.Text = "Local: " + selectedRepo.Item1.title;
+                cloneToLocalButton.Visible = false;
             }
             else
             {
+                localRepoButtonsLabel.Text = "No Local Repo, Need to Clone First!";
+                cloneToLocalButton.Visible = true;
                 Debug.WriteLine("Need to Clone a remote first!");
-                return;
             }
-            if (activeRepo.Item2 != null)
+            if (selectedRepo.Item2 != null)
             {
-                Debug.WriteLine(activeRepo.Item2.title);
-                activeRepositoryTextLabel.Text = activeRepo.Item2.title;
-                GitAPI.Actions.LocalActions.setLiveRepository(activeRepo.Item1);
+                Debug.WriteLine(selectedRepo.Item2.title);
+                activeRepositoryTextLabel.Text = selectedRepo.Item2.title;
+                remoteRepoButtonsLabel.Text = "Remote: " + selectedRepo.Item2.title;
+                //GitAPI.Actions.LocalActions.setLiveRepository(activeRepo.Item1);
             }
+            else
+            {
 
-
-
+            }
             //
+        }
+
+        private void OnCreateNewLocalRepoButton(object sender, EventArgs e)
+        {
+            //GitAPI.Actions.LocalActions.createLocalRepository();
+        }
+
+        private void OnTrackExistingReposButton(object sender, EventArgs e)
+        {
+            GitAPI.Actions.LocalActions.userSelectTrackDirectory(true, UpdateGridCallback);
+        }
+
+        private void OnCloneToLocalButton(object sender, EventArgs e)
+        {
+            if (selectedRepo == null && selectedRepo.Item2 == null) { return; }
+            GitAPI.Actions.RemoteActions.cloneRemoteRepository(selectedRepo.Item2, UpdateGridCallback);
+        }
+
+        private void OnSetAsActiveRepoButton(object sender, EventArgs e)
+        {
+            if (selectedRepo == null && selectedRepo.Item1 == null) { return; }
+            GitAPI.Actions.LocalActions.setLiveRepository(selectedRepo.Item1);
         }
 
 

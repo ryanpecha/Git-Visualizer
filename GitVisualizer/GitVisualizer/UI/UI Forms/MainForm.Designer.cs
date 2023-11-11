@@ -95,7 +95,7 @@
             mainPanel.Margin = new Padding(6, 42, 6, 6);
             mainPanel.Name = "mainPanel";
             mainPanel.Padding = new Padding(6);
-            mainPanel.Size = new Size(1001, 574);
+            mainPanel.Size = new Size(1184, 594);
             mainPanel.TabIndex = 3;
             // 
             // undoButton
@@ -144,7 +144,6 @@
             pushButton.TabIndex = 4;
             pushButton.Text = "Push";
             pushButton.UseVisualStyleBackColor = true;
-            //pushButton.Click += pushButton_Click;
             // 
             // gitButtonsPanel
             // 
@@ -153,7 +152,7 @@
             gitButtonsPanel.Controls.Add(pullButton);
             gitButtonsPanel.Controls.Add(pushButton);
             gitButtonsPanel.Dock = DockStyle.Right;
-            gitButtonsPanel.Location = new Point(662, 0);
+            gitButtonsPanel.Location = new Point(845, 0);
             gitButtonsPanel.Name = "gitButtonsPanel";
             gitButtonsPanel.Size = new Size(339, 47);
             gitButtonsPanel.TabIndex = 8;
@@ -176,14 +175,14 @@
             buttonsMenuPanel.Dock = DockStyle.Top;
             buttonsMenuPanel.Location = new Point(0, 0);
             buttonsMenuPanel.Name = "buttonsMenuPanel";
-            buttonsMenuPanel.Size = new Size(1001, 47);
+            buttonsMenuPanel.Size = new Size(1184, 47);
             buttonsMenuPanel.TabIndex = 5;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1001, 621);
+            ClientSize = new Size(1184, 641);
             Controls.Add(mainPanel);
             Controls.Add(buttonsMenuPanel);
             Name = "MainForm";

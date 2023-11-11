@@ -32,23 +32,22 @@
             localReposColumn = new DataGridViewTextBoxColumn();
             remoteReposColumn = new DataGridViewTextBoxColumn();
             repositoriesControlPanel = new Panel();
+            trackExistingReposButton = new Button();
+            createNewLocalRepoButton = new Button();
             activeRepoPanel = new Panel();
             activeRepositoryTextLabel = new Label();
             activeRepoLabel = new Label();
-            buttonsPanel = new Panel();
-            revokeAccessButton = new Button();
-            grantAccessButton = new Button();
             titleLabel = new Label();
             reposButtonsMainPanel = new Panel();
             repositoriesButtonsSplitContainer = new SplitContainer();
-            cloneToLocalButton = new Button();
-            createNewRemoteRepoButton = new Button();
+            button1 = new Button();
             localRepoButtonsLabel = new Label();
-            label1 = new Label();
+            createNewRemoteRepoButton = new Button();
+            remoteRepoButtonsLabel = new Label();
+            cloneToLocalButton = new Button();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
             repositoriesControlPanel.SuspendLayout();
             activeRepoPanel.SuspendLayout();
-            buttonsPanel.SuspendLayout();
             reposButtonsMainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)repositoriesButtonsSplitContainer).BeginInit();
             repositoriesButtonsSplitContainer.Panel1.SuspendLayout();
@@ -102,8 +101,9 @@
             repositoriesControlPanel.AutoSize = true;
             repositoriesControlPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             repositoriesControlPanel.BorderStyle = BorderStyle.FixedSingle;
+            repositoriesControlPanel.Controls.Add(trackExistingReposButton);
+            repositoriesControlPanel.Controls.Add(createNewLocalRepoButton);
             repositoriesControlPanel.Controls.Add(activeRepoPanel);
-            repositoriesControlPanel.Controls.Add(buttonsPanel);
             repositoriesControlPanel.Controls.Add(titleLabel);
             repositoriesControlPanel.Dock = DockStyle.Left;
             repositoriesControlPanel.Location = new Point(0, 0);
@@ -112,6 +112,30 @@
             repositoriesControlPanel.Size = new Size(280, 675);
             repositoriesControlPanel.TabIndex = 1;
             repositoriesControlPanel.Paint += repositoriesControlPanel_Paint;
+            // 
+            // trackExistingReposButton
+            // 
+            trackExistingReposButton.FlatStyle = FlatStyle.Flat;
+            trackExistingReposButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            trackExistingReposButton.Location = new Point(41, 512);
+            trackExistingReposButton.Name = "trackExistingReposButton";
+            trackExistingReposButton.Size = new Size(189, 36);
+            trackExistingReposButton.TabIndex = 6;
+            trackExistingReposButton.Text = "Track Existing Repos";
+            trackExistingReposButton.UseVisualStyleBackColor = true;
+            trackExistingReposButton.Click += OnTrackExistingReposButton;
+            // 
+            // createNewLocalRepoButton
+            // 
+            createNewLocalRepoButton.FlatStyle = FlatStyle.Flat;
+            createNewLocalRepoButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            createNewLocalRepoButton.Location = new Point(41, 468);
+            createNewLocalRepoButton.Name = "createNewLocalRepoButton";
+            createNewLocalRepoButton.Size = new Size(189, 38);
+            createNewLocalRepoButton.TabIndex = 5;
+            createNewLocalRepoButton.Text = "Create New Local Repo";
+            createNewLocalRepoButton.UseVisualStyleBackColor = true;
+            createNewLocalRepoButton.Click += OnCreateNewLocalRepoButton;
             // 
             // activeRepoPanel
             // 
@@ -144,42 +168,6 @@
             activeRepoLabel.TextAlign = ContentAlignment.MiddleCenter;
             activeRepoLabel.Click += label1_Click;
             // 
-            // buttonsPanel
-            // 
-            buttonsPanel.AutoSize = true;
-            buttonsPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            buttonsPanel.Controls.Add(revokeAccessButton);
-            buttonsPanel.Controls.Add(grantAccessButton);
-            buttonsPanel.Dock = DockStyle.Bottom;
-            buttonsPanel.Location = new Point(0, 493);
-            buttonsPanel.MinimumSize = new Size(0, 180);
-            buttonsPanel.Name = "buttonsPanel";
-            buttonsPanel.Size = new Size(278, 180);
-            buttonsPanel.TabIndex = 2;
-            // 
-            // revokeAccessButton
-            // 
-            revokeAccessButton.FlatStyle = FlatStyle.Flat;
-            revokeAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            revokeAccessButton.Location = new Point(47, 28);
-            revokeAccessButton.Name = "revokeAccessButton";
-            revokeAccessButton.Size = new Size(166, 54);
-            revokeAccessButton.TabIndex = 0;
-            revokeAccessButton.Text = "Revoke Access";
-            revokeAccessButton.UseVisualStyleBackColor = true;
-            revokeAccessButton.Click += RevokeGithubAuthenticationButtonPressed;
-            // 
-            // grantAccessButton
-            // 
-            grantAccessButton.FlatStyle = FlatStyle.Flat;
-            grantAccessButton.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
-            grantAccessButton.Location = new Point(47, 106);
-            grantAccessButton.Name = "grantAccessButton";
-            grantAccessButton.Size = new Size(166, 54);
-            grantAccessButton.TabIndex = 0;
-            grantAccessButton.Text = "Grant Access";
-            grantAccessButton.UseVisualStyleBackColor = true;
-            // 
             // titleLabel
             // 
             titleLabel.Dock = DockStyle.Top;
@@ -209,43 +197,31 @@
             // 
             // repositoriesButtonsSplitContainer.Panel1
             // 
+            repositoriesButtonsSplitContainer.Panel1.Controls.Add(button1);
             repositoriesButtonsSplitContainer.Panel1.Controls.Add(localRepoButtonsLabel);
-            repositoriesButtonsSplitContainer.Panel1.Controls.Add(cloneToLocalButton);
+            repositoriesButtonsSplitContainer.Panel1.Controls.Add(createNewRemoteRepoButton);
             // 
             // repositoriesButtonsSplitContainer.Panel2
             // 
-            repositoriesButtonsSplitContainer.Panel2.Controls.Add(label1);
-            repositoriesButtonsSplitContainer.Panel2.Controls.Add(createNewRemoteRepoButton);
+            repositoriesButtonsSplitContainer.Panel2.Controls.Add(remoteRepoButtonsLabel);
+            repositoriesButtonsSplitContainer.Panel2.Controls.Add(cloneToLocalButton);
             repositoriesButtonsSplitContainer.Size = new Size(895, 120);
             repositoriesButtonsSplitContainer.SplitterDistance = 446;
             repositoriesButtonsSplitContainer.SplitterWidth = 2;
             repositoriesButtonsSplitContainer.TabIndex = 0;
             // 
-            // cloneToLocalButton
+            // button1
             // 
-            cloneToLocalButton.FlatStyle = FlatStyle.Flat;
-            cloneToLocalButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            cloneToLocalButton.Location = new Point(142, 45);
-            cloneToLocalButton.Name = "cloneToLocalButton";
-            cloneToLocalButton.Size = new Size(148, 28);
-            cloneToLocalButton.TabIndex = 0;
-            cloneToLocalButton.Text = "Clone To Local";
-            cloneToLocalButton.UseVisualStyleBackColor = true;
-            cloneToLocalButton.Visible = false;
-            cloneToLocalButton.Click += RevokeGithubAuthenticationButtonPressed;
-            // 
-            // createNewRemoteRepoButton
-            // 
-            createNewRemoteRepoButton.FlatStyle = FlatStyle.Flat;
-            createNewRemoteRepoButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            createNewRemoteRepoButton.Location = new Point(150, 45);
-            createNewRemoteRepoButton.Name = "createNewRemoteRepoButton";
-            createNewRemoteRepoButton.Size = new Size(148, 28);
-            createNewRemoteRepoButton.TabIndex = 0;
-            createNewRemoteRepoButton.Text = "Create Remote Repo";
-            createNewRemoteRepoButton.UseVisualStyleBackColor = true;
-            createNewRemoteRepoButton.Visible = false;
-            createNewRemoteRepoButton.Click += RevokeGithubAuthenticationButtonPressed;
+            button1.FlatStyle = FlatStyle.Flat;
+            button1.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            button1.Location = new Point(6, 24);
+            button1.Name = "button1";
+            button1.Size = new Size(148, 28);
+            button1.TabIndex = 6;
+            button1.Text = "Set As Active Repo";
+            button1.UseVisualStyleBackColor = true;
+            button1.Visible = false;
+            button1.Click += OnSetAsActiveRepoButton;
             // 
             // localRepoButtonsLabel
             // 
@@ -260,17 +236,42 @@
             localRepoButtonsLabel.TextAlign = ContentAlignment.MiddleCenter;
             localRepoButtonsLabel.Click += label1_Click_1;
             // 
-            // label1
+            // createNewRemoteRepoButton
             // 
-            label1.AutoSize = true;
-            label1.Dock = DockStyle.Top;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(0, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(71, 21);
-            label1.TabIndex = 5;
-            label1.Text = "Remote: ";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            createNewRemoteRepoButton.FlatStyle = FlatStyle.Flat;
+            createNewRemoteRepoButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            createNewRemoteRepoButton.Location = new Point(294, 3);
+            createNewRemoteRepoButton.Name = "createNewRemoteRepoButton";
+            createNewRemoteRepoButton.Size = new Size(148, 28);
+            createNewRemoteRepoButton.TabIndex = 0;
+            createNewRemoteRepoButton.Text = "Create Remote Repo";
+            createNewRemoteRepoButton.UseVisualStyleBackColor = true;
+            createNewRemoteRepoButton.Visible = false;
+            // 
+            // remoteRepoButtonsLabel
+            // 
+            remoteRepoButtonsLabel.AutoSize = true;
+            remoteRepoButtonsLabel.Dock = DockStyle.Top;
+            remoteRepoButtonsLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            remoteRepoButtonsLabel.Location = new Point(0, 0);
+            remoteRepoButtonsLabel.Name = "remoteRepoButtonsLabel";
+            remoteRepoButtonsLabel.Size = new Size(71, 21);
+            remoteRepoButtonsLabel.TabIndex = 5;
+            remoteRepoButtonsLabel.Text = "Remote: ";
+            remoteRepoButtonsLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // cloneToLocalButton
+            // 
+            cloneToLocalButton.FlatStyle = FlatStyle.Flat;
+            cloneToLocalButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            cloneToLocalButton.Location = new Point(337, 37);
+            cloneToLocalButton.Name = "cloneToLocalButton";
+            cloneToLocalButton.Size = new Size(107, 27);
+            cloneToLocalButton.TabIndex = 0;
+            cloneToLocalButton.Text = "Clone To Local";
+            cloneToLocalButton.UseVisualStyleBackColor = true;
+            cloneToLocalButton.Visible = false;
+            cloneToLocalButton.Click += OnCloneToLocalButton;
             // 
             // RepositoriesControl
             // 
@@ -284,10 +285,8 @@
             Load += RepositoriesControl_Load;
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).EndInit();
             repositoriesControlPanel.ResumeLayout(false);
-            repositoriesControlPanel.PerformLayout();
             activeRepoPanel.ResumeLayout(false);
             activeRepoPanel.PerformLayout();
-            buttonsPanel.ResumeLayout(false);
             reposButtonsMainPanel.ResumeLayout(false);
             repositoriesButtonsSplitContainer.Panel1.ResumeLayout(false);
             repositoriesButtonsSplitContainer.Panel1.PerformLayout();
@@ -342,6 +341,9 @@
         private Panel activeRepoPanel;
         private Label activeRepositoryTextLabel;
         private Label localRepoButtonsLabel;
-        private Label label1;
+        private Label remoteRepoButtonsLabel;
+        private Button button1;
+        private Button createNewLocalRepoButton;
+        private Button trackExistingReposButton;
     }
 }

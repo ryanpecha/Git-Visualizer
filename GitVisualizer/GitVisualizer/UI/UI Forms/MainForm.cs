@@ -132,7 +132,7 @@ namespace GitVisualizer.UI.UI_Forms
 
         private void pullButton_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void fetchButton_Click(object sender, EventArgs e)
