@@ -2,6 +2,8 @@
 
 public class RepositoryLocal : Repository
 {
+    public RepositoryRemote? remoteRepository { get; private set; }
+
     public string dirPath { get; private set; }
     public RepositoryLocal(string title, string dirPath) : base(title)
     {
@@ -11,5 +13,9 @@ public class RepositoryLocal : Repository
     public override string ToString()
     {
         return dirPath;
+    }
+
+    public void setRemoteRepo(RepositoryRemote remoteRepository){
+        this.remoteRepository = remoteRepository;
     }
 }
