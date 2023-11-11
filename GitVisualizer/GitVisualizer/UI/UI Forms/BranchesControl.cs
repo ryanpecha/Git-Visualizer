@@ -24,6 +24,23 @@ namespace GitVisualizer.UI.UI_Forms
             Color.DarkSalmon,
             Color.Gold,
             Color.Plum];
+
+        private class TestTree
+        {
+            public class TestNode
+            {
+                public TestNode Parent;
+                public List<TestNode> Children = new();
+                public string Branch;
+                public string ID;
+                public string User;
+                public string Date;
+                public string Comment;
+            }
+            public TestNode Root;
+
+        }
+
         public BranchesControl()
         {
             InitializeComponent();
@@ -44,7 +61,7 @@ namespace GitVisualizer.UI.UI_Forms
             int branchIndex = 1;
             // get node area in graph
             int xOffset = branchIndex * pixelsPerBranchNode;
-            
+
             // Get branch color from index
             Pen pen = new Pen(branchNodeColors[branchIndex], 3);
             // Set position based on cell bounds using branch offset and radius
