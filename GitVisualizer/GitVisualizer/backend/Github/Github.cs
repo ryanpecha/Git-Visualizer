@@ -430,7 +430,7 @@ public class Github
                 }
                 string title = titleToken.ToString();
                 string cloneURL = cloneUrlHTTPSToken.ToString().Substring(6);
-                string webURL = cloneURL.Substring(0,cloneURL.Length - 3);
+                string webURL = cloneURL.Substring(0,cloneURL.Length - 4);
                 webURL = $"https://{webURL}";
                 RepositoryRemote remote = new RepositoryRemote(title, cloneURL, webURL);
                 Debug.WriteLine($"Scanned Remote Repo : {remote.title}");
