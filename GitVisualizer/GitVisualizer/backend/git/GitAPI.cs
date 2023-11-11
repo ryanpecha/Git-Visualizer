@@ -7,6 +7,8 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
+using System.Management.Automation;
+using GitVisualizer.UI.UI_Forms;
 
 namespace GitVisualizer;
 
@@ -25,12 +27,12 @@ public static class GitAPI
     public static RepositoryLocal? liveRepository { get; private set; }
 
 
-    // repoName -> repo
+    // url -> remoteRepo
     private static Dictionary<string, RepositoryRemote> remoteRepositories;
-    // repoName -> repo
+    // dirPath -> localRepo;
     private static Dictionary<string, RepositoryLocal> localRepositories;
-    // cloneURL -> Tuple<Local,Remote>
-    private static Dictionary<string, Tuple<RepositoryLocal?,RepositoryRemote?>> cloneMap;
+    // url -> list<localRepo>
+    private static Dictionary<string, HashSet<RepositoryLocal>> remoteBackedLocalRepositories;
 
 
 
@@ -45,7 +47,7 @@ public static class GitAPI
         //
         remoteRepositories = new Dictionary<string, RepositoryRemote>();
         localRepositories = new Dictionary<string, RepositoryLocal>();
-        cloneMap = new Dictionary<string, Tuple<RepositoryLocal?,RepositoryRemote?>>();
+        remoteBackedLocalRepositories = new Dictionary<string, HashSet<RepositoryLocal>>();
     }
 
     public class Scanning
@@ -66,6 +68,10 @@ public static class GitAPI
                     continue;
                 }
                 string[] gitFolderPaths = Directory.GetDirectories(dirPath, ".git", searchOption);
+
+                //localRepositories.Clear();
+                //cloneableLocalRepositories.Clear();
+
                 foreach (string gitFolderPath in gitFolderPaths)
                 {
                     // getting parent folder of .git folder
@@ -80,14 +86,29 @@ public static class GitAPI
                     // TODO extract repo name from .git via git command
                     string repoName = repoDirInfo.Name;
                     RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
-                    // skipping already loaded repositories
-                    if (localRepositories.Keys.Contains(newLocalRepo.title))
+
+                    // skipping already loaded local repos
+                    if (localRepositories.ContainsKey(newLocalRepo.dirPath))
                     {
                         continue;
                     }
-                    // 
-                    Debug.WriteLine($"LOCATED REPO title={repoName} path={repoDirPath}");
-                    localRepositories[newLocalRepo.title] = newLocalRepo;
+                    Debug.WriteLine($"LOCATED LOCAL REPO title={repoName} path={repoDirPath}");
+                    localRepositories[newLocalRepo.dirPath] = newLocalRepo;
+                    // skipping remote refs for local only repos
+                    string? remoteURL = newLocalRepo.getRemoteURL();
+                    if (remoteURL == null)
+                    {
+                        continue;
+                    }
+                    if (remoteBackedLocalRepositories.ContainsKey(remoteURL))
+                    {
+                        // skipping already tracked remote backed local repos
+                        remoteBackedLocalRepositories[remoteURL].Add(newLocalRepo);
+                        continue;
+                    }
+                    // initalizing with single local repo
+                    remoteBackedLocalRepositories[remoteURL] = [newLocalRepo];
+                    Debug.WriteLine($"LOCATED BACKING FOR LOCAL REPO title={repoName} path={repoDirPath} remote={remoteURL}");
                 }
             }
             if (callback != null)
@@ -102,14 +123,17 @@ public static class GitAPI
         public static async Task scanForRemoteReposAsync(Action? callback)
         {
             Debug.WriteLine("scanRemotesAsync()");
-            List<RepositoryRemote>? remotes = await github.ScanReposAsync();
-            if (remotes != null)
+            List<RepositoryRemote>? newRemoteRepos = await github.ScanReposAsync();
+            if (newRemoteRepos != null)
             {
-                foreach (RepositoryRemote remoteRepo in remotes)
+                foreach (RepositoryRemote newRemoteRepo in newRemoteRepos)
                 {
-                    remoteRepositories[remoteRepo.title] = remoteRepo;
-                    //if (remoteRepo)
-                    //cloneMap[remoteRepo]
+                    // skipping already tracked remotes
+                    if (remoteRepositories.ContainsKey(newRemoteRepo.cloneURL))
+                    {
+                        continue;
+                    }
+                    remoteRepositories[newRemoteRepo.cloneURL] = newRemoteRepo;
                 }
             }
             else
@@ -229,6 +253,8 @@ public static class GitAPI
         /// <summary> actions on the local filesystem within the currently checked-out commit </summary>
         public static class LocalActions
         {
+
+            public readonly static string description_getCloneURL = "";
 
             public readonly static string description_setLiveRepository = "";
             public static void setLiveRepository(RepositoryLocal repositoryLocal)
@@ -370,7 +396,8 @@ public static class GitAPI
                 {
                     string repoDirPath = Path.GetFullPath(dialog.SelectedPath);
                     string? repoName = Path.GetDirectoryName(repoDirPath);
-                    if (repoName == null) {
+                    if (repoName == null)
+                    {
                         return;
                     }
                     //
@@ -425,42 +452,83 @@ public static class GitAPI
     {
 
         public readonly static string description_getRemoteRepositories = "";
-        public static Dictionary<string, RepositoryRemote> getRemoteRepositories()
+        public static List<RepositoryRemote> getRemoteRepositories()
         {
-            return remoteRepositories;
+            return remoteRepositories.Values.ToList();
         }
 
 
         public readonly static string description_getLocalRepositories = "";
-        public static Dictionary<string, RepositoryLocal> getLocalRepositories()
+        public static List<RepositoryLocal> getLocalRepositories()
         {
-            return localRepositories;
+            return localRepositories.Values.ToList();
         }
 
         public readonly static string description_getAllRepositories = "";
         public static List<Tuple<RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
         {
             Debug.WriteLine("GETTING ALL REPOS");
-            List<Tuple<RepositoryLocal?, RepositoryRemote?>> repos = new List<Tuple<RepositoryLocal?, RepositoryRemote?>>();
-            HashSet<string> repoNames = [.. localRepositories.Keys, .. remoteRepositories.Keys];
-            foreach (string repoName in repoNames)
+            //
+            List<Tuple<RepositoryLocal?, RepositoryRemote?>> repoPairs = new List<Tuple<RepositoryLocal?, RepositoryRemote?>>();
+            //
+            HashSet<string> remoteURLs = remoteRepositories.Keys.ToHashSet();
+            HashSet<string> localBackedURLS = remoteBackedLocalRepositories.Keys.ToHashSet();
+            HashSet<string> allURLS = new HashSet<string>();
+            allURLS.UnionWith(remoteURLs);
+            allURLS.UnionWith(localBackedURLS);
+            //
+            HashSet<RepositoryLocal> curLocals = localRepositories.Values.ToHashSet();
+            //
+            foreach (string remoteURL in allURLS)
             {
-                string gitFormattedRepoName = Repository.formatTitle(repoName);
-                Debug.WriteLine("FOUND REPO : " + gitFormattedRepoName);
-                RepositoryLocal? localRepo = null;
-                if (localRepositories.ContainsKey(gitFormattedRepoName))
+
+                // backed local + github
+                if (remoteURLs.Contains(remoteURL) && localBackedURLS.Contains(remoteURL))
                 {
-                    localRepo = localRepositories[gitFormattedRepoName];
+                    RepositoryLocal? curLocal = null;
+                    foreach (RepositoryLocal local in remoteBackedLocalRepositories[remoteURL])
+                    {
+                        RepositoryRemote remote = remoteRepositories[remoteURL];
+                        curLocal = local;
+                        repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(local, remote));
+                        Debug.WriteLine($"LOCAL BACKED WITH GITHUB : {local.title}");
+                    }
+                    if (curLocal != null)
+                    {
+                        curLocals.Remove(curLocal);
+                    }
                 }
-                RepositoryRemote? remoteRepo = null;
-                if (remoteRepositories.ContainsKey(gitFormattedRepoName))
+                // backed local without github
+                else if (localBackedURLS.Contains(remoteURL))
                 {
-                    remoteRepo = remoteRepositories[gitFormattedRepoName];
+                    RepositoryLocal? curLocal = null;
+                    foreach (RepositoryLocal local in remoteBackedLocalRepositories[remoteURL])
+                    {
+                        curLocal = local;
+                        repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(local, null));
+                        Debug.WriteLine($"LOCAL BACKED WITHOUT GITHUB : {local.title} URL={local.getRemoteURL()}");
+                    }
+                    if (curLocal != null)
+                    {
+                        curLocals.Remove(curLocal);
+                    }
                 }
-                Tuple<RepositoryLocal?, RepositoryRemote?> repo = new Tuple<RepositoryLocal?, RepositoryRemote?>(localRepo, remoteRepo);
-                repos.Add(repo);
+                // github only
+                else
+                {
+                    RepositoryRemote remote = remoteRepositories[remoteURL];
+                    repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(null, remote));
+                    Debug.WriteLine($"GITHUB ONLY : {remote.title} : URL={remote.cloneURL}");
+                }
             }
-            return repos;
+            // local only
+            foreach (RepositoryLocal local in curLocals)
+            {
+                repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(local, null));
+                Debug.WriteLine($"LOCAL ONLY : {local.title}");
+            }
+            //
+            return repoPairs;
         }
     }
 }
