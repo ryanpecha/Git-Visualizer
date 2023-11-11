@@ -2,7 +2,7 @@
 
 public class RepositoryRemote : Repository
 {
-    public RepositoryLocal? localRepository { get; private set; }
+    //public RepositoryLocal? localRepository { get; private set; }
 
     public string cloneURL { get; private set; }
     public string webURL { get; private set; }
@@ -13,8 +13,10 @@ public class RepositoryRemote : Repository
         this.webURL = webURL;
     }
 
+    /*
     public void setLocalRepo(RepositoryLocal localRepository)
     {
         this.localRepository = localRepository;
     }
+    */
 }
