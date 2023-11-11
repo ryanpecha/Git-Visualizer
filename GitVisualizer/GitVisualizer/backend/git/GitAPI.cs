@@ -25,10 +25,12 @@ public static class GitAPI
     public static RepositoryLocal? liveRepository { get; private set; }
 
 
-    //
+    // repoName -> repo
     private static Dictionary<string, RepositoryRemote> remoteRepositories;
-    //
+    // repoName -> repo
     private static Dictionary<string, RepositoryLocal> localRepositories;
+    // cloneURL -> Tuple<Local,Remote>
+    private static Dictionary<string, Tuple<RepositoryLocal?,RepositoryRemote?>> cloneMap;
 
 
 
@@ -43,6 +45,7 @@ public static class GitAPI
         //
         remoteRepositories = new Dictionary<string, RepositoryRemote>();
         localRepositories = new Dictionary<string, RepositoryLocal>();
+        cloneMap = new Dictionary<string, Tuple<RepositoryLocal?,RepositoryRemote?>>();
     }
 
     public class Scanning
@@ -105,6 +108,8 @@ public static class GitAPI
                 foreach (RepositoryRemote remoteRepo in remotes)
                 {
                     remoteRepositories[remoteRepo.title] = remoteRepo;
+                    //if (remoteRepo)
+                    //cloneMap[remoteRepo]
                 }
             }
             else
@@ -210,10 +215,10 @@ public static class GitAPI
                     string clonedRepoPath = cloneDirPath + "/" + repositoryRemote.title;
                     //
                     string com = $"cd {cloneDirPath}; ";
-                    com += $"git clone {repositoryRemote.cloneUrlHTTPS}";
+                    com += $"git clone {repositoryRemote.cloneURL}";
                     ShellComRes comResult = Shell.exec(com);
                     // TODO check for command success
-                    LocalActions.trackDirectory(clonedRepoPath, false, callback);
+                    LocalActions.trackDirectory(clonedRepoPath, true, callback);
                 }
             }
 
@@ -356,21 +361,24 @@ public static class GitAPI
 
 
             public readonly static string description_createLocalRepository = "";
-            public static void createLocalRepository(string repoName, Action? callback)
+            public static void createLocalRepository(Action? callback)
             {
                 // TODO check that .git folder and repo exist
                 FolderBrowserDialog dialog = new FolderBrowserDialog();
                 DialogResult fdResult = dialog.ShowDialog();
                 if (fdResult == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
                 {
-                    string repoParentDirPath = Path.GetFullPath(dialog.SelectedPath);
-                    string repoDirPath = repoParentDirPath + "/" + repoName;
+                    string repoDirPath = Path.GetFullPath(dialog.SelectedPath);
+                    string? repoName = Path.GetDirectoryName(repoDirPath);
+                    if (repoName == null) {
+                        return;
+                    }
                     //
-                    string com = $"cd {repoParentDirPath}; ";
-                    com += $"git init --initial-branch=main {repoName}";
+                    string com = $"cd {repoDirPath}; ";
+                    com += $"git init --initial-branch=main; git add -A; git commit -m 'initalizing {repoName}'";
                     ShellComRes comResult = Shell.exec(com);
                     // TODO check for command success
-                    trackDirectory(repoDirPath, false, callback);
+                    trackDirectory(repoDirPath, true, callback);
                 }
             }
 
@@ -410,7 +418,6 @@ public static class GitAPI
                 }
             }
         }
-
     }
 
     /// <summary> Git Data Getters </summary>
