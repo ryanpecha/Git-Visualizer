@@ -75,37 +75,47 @@ namespace GitVisualizer.UI.UI_Forms
 
             selectedRepo = (Tuple<RepositoryLocal?, RepositoryRemote?>)repositoriesGridView.Rows[e.RowIndex].DataBoundItem;
 
-
+            // If local exists
             if (selectedRepo.Item1 != null)
             {
                 localRepoButtonsLabel.Text = "Local: " + selectedRepo.Item1.title;
                 cloneToLocalButton.Visible = false;
+                setAsActiveRepoButton.Visible = true;
+                openInFileExplorerButton.Visible = true;
             }
             else
             {
                 localRepoButtonsLabel.Text = "No Local Repo, Need to Clone First!";
                 cloneToLocalButton.Visible = true;
-                Debug.WriteLine("Need to Clone a remote first!");
+                setAsActiveRepoButton.Visible = false;
+                openInFileExplorerButton.Visible = false;
             }
+
+            // If remote exists
             if (selectedRepo.Item2 != null)
             {
-                Debug.WriteLine(selectedRepo.Item2.title);
-                activeRepositoryTextLabel.Text = selectedRepo.Item2.title;
                 remoteRepoButtonsLabel.Text = "Remote: " + selectedRepo.Item2.title;
-                //GitAPI.Actions.LocalActions.setLiveRepository(activeRepo.Item1);
+                createNewRemoteRepoButton.Visible = false;
             }
             else
             {
-
+                remoteRepoButtonsLabel.Text = "No Remote for This Local. Create New Remote Repo First.";
+                createNewRemoteRepoButton.Visible = true;
             }
-            //
+
         }
 
         private void OnCreateNewLocalRepoButton(object sender, EventArgs e)
         {
-            //GitAPI.Actions.LocalActions.createLocalRepository();
+            GitAPI.Actions.LocalActions.createLocalRepository(UpdateGridCallback);
         }
 
+        private void OnOpenInFileExplorerButton(object sender, EventArgs e)
+        {
+            if (selectedRepo == null && selectedRepo.Item1 == null) { return; }
+            Process.Start("explorer.exe", selectedRepo.Item1.dirPath);
+
+        }
         private void OnTrackExistingReposButton(object sender, EventArgs e)
         {
             GitAPI.Actions.LocalActions.userSelectTrackDirectory(true, UpdateGridCallback);
@@ -121,6 +131,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             if (selectedRepo == null && selectedRepo.Item1 == null) { return; }
             GitAPI.Actions.LocalActions.setLiveRepository(selectedRepo.Item1);
+            activeRepositoryTextLabel.Text = selectedRepo.Item1.title;
         }
 
 
@@ -134,10 +145,6 @@ namespace GitVisualizer.UI.UI_Forms
 
         }
 
-        private void remoteRepositoryActionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void label1_Click(object sender, EventArgs e)
         {

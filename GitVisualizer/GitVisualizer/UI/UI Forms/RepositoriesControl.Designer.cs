@@ -40,7 +40,8 @@
             titleLabel = new Label();
             reposButtonsMainPanel = new Panel();
             repositoriesButtonsSplitContainer = new SplitContainer();
-            button1 = new Button();
+            openInFileExplorerButton = new Button();
+            setAsActiveRepoButton = new Button();
             localRepoButtonsLabel = new Label();
             createNewRemoteRepoButton = new Button();
             remoteRepoButtonsLabel = new Label();
@@ -197,7 +198,8 @@
             // 
             // repositoriesButtonsSplitContainer.Panel1
             // 
-            repositoriesButtonsSplitContainer.Panel1.Controls.Add(button1);
+            repositoriesButtonsSplitContainer.Panel1.Controls.Add(openInFileExplorerButton);
+            repositoriesButtonsSplitContainer.Panel1.Controls.Add(setAsActiveRepoButton);
             repositoriesButtonsSplitContainer.Panel1.Controls.Add(localRepoButtonsLabel);
             repositoriesButtonsSplitContainer.Panel1.Controls.Add(createNewRemoteRepoButton);
             // 
@@ -210,18 +212,31 @@
             repositoriesButtonsSplitContainer.SplitterWidth = 2;
             repositoriesButtonsSplitContainer.TabIndex = 0;
             // 
-            // button1
+            // openInFileExplorerButton
             // 
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(6, 24);
-            button1.Name = "button1";
-            button1.Size = new Size(148, 28);
-            button1.TabIndex = 6;
-            button1.Text = "Set As Active Repo";
-            button1.UseVisualStyleBackColor = true;
-            button1.Visible = false;
-            button1.Click += OnSetAsActiveRepoButton;
+            openInFileExplorerButton.FlatStyle = FlatStyle.Flat;
+            openInFileExplorerButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            openInFileExplorerButton.Location = new Point(160, 24);
+            openInFileExplorerButton.Name = "openInFileExplorerButton";
+            openInFileExplorerButton.Size = new Size(148, 28);
+            openInFileExplorerButton.TabIndex = 7;
+            openInFileExplorerButton.Text = "Open In File Explorer";
+            openInFileExplorerButton.UseVisualStyleBackColor = true;
+            openInFileExplorerButton.Visible = false;
+            openInFileExplorerButton.Click += OnOpenInFileExplorerButton;
+            // 
+            // setAsActiveRepoButton
+            // 
+            setAsActiveRepoButton.FlatStyle = FlatStyle.Flat;
+            setAsActiveRepoButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            setAsActiveRepoButton.Location = new Point(6, 24);
+            setAsActiveRepoButton.Name = "setAsActiveRepoButton";
+            setAsActiveRepoButton.Size = new Size(148, 28);
+            setAsActiveRepoButton.TabIndex = 6;
+            setAsActiveRepoButton.Text = "Set As Active Repo";
+            setAsActiveRepoButton.UseVisualStyleBackColor = true;
+            setAsActiveRepoButton.Visible = false;
+            setAsActiveRepoButton.Click += OnSetAsActiveRepoButton;
             // 
             // localRepoButtonsLabel
             // 
@@ -240,7 +255,7 @@
             // 
             createNewRemoteRepoButton.FlatStyle = FlatStyle.Flat;
             createNewRemoteRepoButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            createNewRemoteRepoButton.Location = new Point(294, 3);
+            createNewRemoteRepoButton.Location = new Point(6, 58);
             createNewRemoteRepoButton.Name = "createNewRemoteRepoButton";
             createNewRemoteRepoButton.Size = new Size(148, 28);
             createNewRemoteRepoButton.TabIndex = 0;
@@ -264,7 +279,7 @@
             // 
             cloneToLocalButton.FlatStyle = FlatStyle.Flat;
             cloneToLocalButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            cloneToLocalButton.Location = new Point(337, 37);
+            cloneToLocalButton.Location = new Point(3, 25);
             cloneToLocalButton.Name = "cloneToLocalButton";
             cloneToLocalButton.Size = new Size(107, 27);
             cloneToLocalButton.TabIndex = 0;
@@ -342,8 +357,9 @@
         private Label activeRepositoryTextLabel;
         private Label localRepoButtonsLabel;
         private Label remoteRepoButtonsLabel;
-        private Button button1;
+        private Button setAsActiveRepoButton;
         private Button createNewLocalRepoButton;
         private Button trackExistingReposButton;
+        private Button openInFileExplorerButton;
     }
 }
