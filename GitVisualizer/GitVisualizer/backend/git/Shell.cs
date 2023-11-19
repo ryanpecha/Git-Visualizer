@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.Management.Automation.Runspaces;
 
 
-static class Shell
+public static class Shell
 {
 
     /// <summary> persistent shell instance for running commands </summary>
