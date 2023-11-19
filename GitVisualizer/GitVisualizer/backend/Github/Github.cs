@@ -124,7 +124,7 @@ namespace GithubSpace
 
         private static int interval = 5;
 
-        private static readonly HttpClient sharedClient = new()
+        private static HttpClient sharedClient = new()
         {
             BaseAddress = new Uri("https://api.github.com/"),
         };
@@ -167,8 +167,13 @@ namespace GithubSpace
         /// <summary>
         /// The .ctor.
         /// </summary>
-        public Github()
+        public Github(HttpClient client = null, String url = null)
         {
+            if (client != null)
+                sharedClient = client;
+
+            if (url != null)
+                sharedClient.BaseAddress = new Uri(url);
         }
 
         /// <summary>
@@ -273,9 +278,9 @@ namespace GithubSpace
         /// <returns>The string URL for git cloning.</returns>
         public String CreateAuthenticatedGit(int i)
         {
-            if (repos == null)
+            if (repos == null || accessToken == null)
                 return null;
-            else if (i < 0 || i > repos.Count)
+            else if (i < 0 || i >= repos.Count)
                 return "createAuthenticatedGit(): Invalid index: " + i;
 
             return "https://" + accessToken + "@" + repos[i].git_url;
@@ -287,6 +292,8 @@ namespace GithubSpace
         /// <returns>The string URL for git cloning.</returns>
         public String CreateAuthenticatedGit(String url)
         {
+            if (accessToken == null)
+                return null;
             return "https://" + accessToken + "@" + url;
         }
 
@@ -360,7 +367,6 @@ namespace GithubSpace
             if (response.IsSuccessStatusCode)
             {
                 String content = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("RegisterUser(): User code generated successfully");
                 JObject json = JObject.Parse(content);
 
                 string s = json["interval"].ToString();
@@ -369,6 +375,7 @@ namespace GithubSpace
                 Debug.WriteLine(content);
                 Debug.WriteLine("----------------");
                 userCode = json["user_code"].ToString();
+                Debug.WriteLine("RegisterUser(): User code generated successfully: " + userCode);
 
                 return userCode;
             }
@@ -388,6 +395,7 @@ namespace GithubSpace
                 Debug.WriteLine("PollAuthorizationDevice(): No user code. Cannot poll until we know user have access to a user code.");
                 return;
             }
+
 
             CommonHelper();
             PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(interval + 5));
@@ -465,11 +473,13 @@ namespace GithubSpace
                     JArray array = JArray.Parse(content);
                     int gitEndIndex = 6;
 
+
                     List<Repo> tempRepo = ((JArray)array).Select(repo => new Repo
                     {
                         name = (string)repo["name"],
                         git_url = ((string)repo["git_url"]).Substring(gitEndIndex),
                     }).ToList();
+
 
                     if (tempRepo.Count == 0)
                         break;
@@ -535,7 +545,15 @@ namespace GithubSpace
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Basic", getBasic());
 
-            HttpResponseMessage response = sharedClient.Send(request);
+            HttpResponseMessage response;
+            try
+            {
+                response = sharedClient.Send(request);
+            } catch (Exception ex)
+            {
+                Debug.WriteLine("RevokeAccessToken(): Failed to delete access token.");
+                return false;
+            }
 
             if (response.StatusCode.ToString() == "NoContent")
             {
@@ -554,7 +572,7 @@ namespace GithubSpace
         /// </summary>
         /// <param name="repoName">The repo name.</param>
         /// <returns>The git clone url of the newly created GitHub repo.</returns>
-        private async Task<String> CreateRepo(String repoName)
+        public async Task<String> CreateRepo(String repoName)
         {
             if (accessToken == null)
                 return null;
@@ -575,7 +593,7 @@ namespace GithubSpace
                 String content = await response.Content.ReadAsStringAsync();
                 JObject json = JObject.Parse(content);
                 int gitEndIndex = 8;
-                return username = json["clone_url"].ToString().Substring(gitEndIndex);
+                return json["clone_url"].ToString().Substring(gitEndIndex);
 
             }
 
@@ -626,6 +644,33 @@ namespace GithubSpace
 
             var basic = Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes($"{keyDecoded.Substring(3, 20)}:{keyDecoded.Substring(24, 40)}"));
             return basic;
+        }
+
+        static protected void SetHttpClient(HttpClient client, string url)
+        {
+            sharedClient = client;
+            sharedClient.BaseAddress = new Uri(url);
+        }
+
+        static protected void SetTestAccessCode()
+        {
+            accessToken = "123testaccess";
+        }
+
+        static protected void SetUserCode()
+        {
+            userCode = "123testuser";
+        }
+
+        protected void SetUsername()
+        {
+            username = "123testuser";
+        }
+
+        static protected void ResetData()
+        {
+            userCode = null;
+            accessToken = null;
         }
     }
 }
