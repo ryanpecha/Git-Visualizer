@@ -562,7 +562,7 @@ public static class GitAPI
 
                 // git spung
 
-                com += "git log --oneline --graph --pretty=format:\"\0%H\0%h\0%T\0%P\0%cn\0%ce\0%cd\0%s\"";
+                com += "git log --oneline --pretty=format:\"\0%H\0%h\0%T\0%P\0%cn\0%ce\0%cd\0%s\"";
                 ShellComRes comResult = Shell.exec(com);
                 // TODO check for command success
                 Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
