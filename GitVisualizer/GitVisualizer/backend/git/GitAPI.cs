@@ -583,7 +583,7 @@ public static class GitAPI
                     commit.longCommitHash = cols[0];
                     commit.shortCommitHash = cols[1];
                     commit.longTreeHash = cols[2];
-                    commit.parentHash = (cols.Length >= 3) ? cols[3] : null;
+                    commit.parentHash = (cols.Length > 3) ? cols[3] : null;
 
                     treeHashToCommitDict[commit.longCommitHash] = commit;
                 }
