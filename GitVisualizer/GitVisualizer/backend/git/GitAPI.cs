@@ -568,7 +568,7 @@ public static class GitAPI
                 Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine(pso);
+                    Debug.WriteLine("LINE >" + pso + "<");
                     string[] cols = pso.ToString().Split("\0");
                     Commit commit = new Commit();
                     commit.localRepository = liveRepository;
