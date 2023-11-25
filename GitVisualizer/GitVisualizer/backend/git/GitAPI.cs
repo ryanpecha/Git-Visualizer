@@ -563,6 +563,7 @@ public static class GitAPI
                 // git spung
                 Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
                 List<Commit> commits = new List<Commit>();
+                Commit? head = null;
 
                 string delim = " | ";
 
@@ -582,10 +583,21 @@ public static class GitAPI
                     commit.longCommitHash = cols[0];
                     commit.shortCommitHash = cols[1];
                     commit.longTreeHash = cols[2];
-                    commit.parentHash = (cols.Length > 3) ? cols[3] : null;
+                    commit.parentHashes = new List<string>();
+                    if (cols.Length > 3)
+                    {
+                        foreach (string parentHash in cols[3].Split(" "))
+                        {
+                            commit.parentHashes.Add(parentHash);
+                        }
+                    }
+                    else
+                    {
+                        head = commit;
+                    }
 
                     treeHashToCommitDict[commit.longCommitHash] = commit;
-                    commits.Append(commit);
+                    commits.Add(commit);
                 }
 
                 // %cn %cd %s
@@ -630,7 +642,18 @@ public static class GitAPI
                 {
                     string longHash = kvp.Key;
                     Commit commit = kvp.Value;
+                    foreach (string parentHash in commit.parentHashes)
+                    {
+                        Commit parentCommit = treeHashToCommitDict[parentHash];
+                        commit.parents.Add(parentCommit);
+                        parentCommit.children.Add(commit);
+                    }
                 }
+
+                commits.Remove(head);
+                commits.Insert(0, head);
+                
+                return commits;
             }
             return new List<Commit>();
         }

@@ -7,7 +7,8 @@ public class Commit
     public string longCommitHash;
     public string shortCommitHash;
     public string longTreeHash;
-    public string? parentHash;
+    public List<string> parentHashes;
+    
     public string committerName;
     public string committerDate;
     public string subject;
