@@ -558,9 +558,14 @@ public static class GitAPI
                 // Committer email (ce)
                 // Committer date (cd)
                 // Subject (s)
-                com += "git log --oneline --pretty=format:\"%H %h %P\"";
+
+                // git spung
+
+                com += "git log --oneline --pretty=format:\"%H %h %T %P %cn %ce %cd %s\"";
                 ShellComRes comResult = Shell.exec(com);
                 Console.WriteLine(comResult);
+                Dictionary<string,Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
+                //foreach 
                 // TODO check for command success        
                 //foreach (comResult) {
                     
