@@ -562,6 +562,7 @@ public static class GitAPI
 
                 // git spung
                 Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
+                List<Commit> commits = new List<Commit>();
 
                 string delim = " | ";
 
@@ -569,16 +570,14 @@ public static class GitAPI
                 ShellComRes comResult = Shell.exec(com);
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine("INFO1 >" + pso + "<");
+                    Debug.WriteLine("COMMIT INFO >" + pso + "<");
                     string sline = pso.ToString().Trim();
-                    if (sline.Equals(""))
-                    {
-                        continue;
-                    }
                     string[] cols = sline.Split(delim);
 
                     Commit commit = new Commit();
                     commit.localRepository = liveRepository;
+                    commit.parents = new List<Commit>();
+                    commit.children = new List<Commit>();
 
                     commit.longCommitHash = cols[0];
                     commit.shortCommitHash = cols[1];
@@ -586,33 +585,46 @@ public static class GitAPI
                     commit.parentHash = (cols.Length > 3) ? cols[3] : null;
 
                     treeHashToCommitDict[commit.longCommitHash] = commit;
+                    commits.Append(commit);
                 }
 
                 // %cn %cd %s
 
-                /*
-                com = baseCom + $"git log --oneline --pretty=format:\"\"";
+                com = baseCom + $"git log --oneline --pretty=format:\"%cn\"";
                 comResult = Shell.exec(com);
+                int i = 0;
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine("INFO1 >" + pso + "<");
-                    string sline = pso.ToString().Trim();
-                    if (sline.Equals(""))
-                    {
-                        continue;
-                    }
-                    string[] cols = sline.Split(delim);
-
-                    Commit commit = treeHashToCommitDict[commit.longCommitHash];
-
-                    commit.longCommitHash = cols[0];
-                    commit.shortCommitHash = cols[1];
-                    commit.longTreeHash = cols[2];
-                    commit.parentHash = cols[3];
-
-                     = commit;
+                    Debug.WriteLine("COMMITTER NAME >" + pso + "<");
+                    string committerName = pso.ToString().Trim();
+                    Commit commit = commits[i];
+                    commit.committerName = committerName;
+                    i++;
                 }
-                */
+
+                com = baseCom + $"git log --oneline --pretty=format:\"%cd\"";
+                comResult = Shell.exec(com);
+                i = 0;
+                foreach (PSObject pso in comResult.psObjects)
+                {
+                    Debug.WriteLine("COMMITER DATE >" + pso + "<");
+                    string committerDate = pso.ToString().Trim();
+                    Commit commit = commits[i];
+                    commit.committerDate = committerDate;
+                    i++;
+                }
+
+                com = baseCom + $"git log --oneline --pretty=format:\"%s\"";
+                comResult = Shell.exec(com);
+                i = 0;
+                foreach (PSObject pso in comResult.psObjects)
+                {
+                    Debug.WriteLine("SUBJECT >" + pso + "<");
+                    string subject = pso.ToString().Trim();
+                    Commit commit = commits[i];
+                    commit.subject = subject;
+                    i++;
+                }
 
                 foreach (KeyValuePair<string, Commit> kvp in treeHashToCommitDict)
                 {

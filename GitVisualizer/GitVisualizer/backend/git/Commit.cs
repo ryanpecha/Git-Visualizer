@@ -12,6 +12,6 @@ public class Commit
     public string committerDate;
     public string subject;
 
-    //public Commit parent;
-    //public List<Commit> children;
+    public List<Commit> parents;
+    public List<Commit> children;
 }
