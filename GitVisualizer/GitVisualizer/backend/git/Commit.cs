@@ -2,15 +2,17 @@
 
 public class Commit
 {
-    public string shortHash { get; private set; }
-    public string longHash { get; private set; }
-    public RepositoryLocal localRepository { get; private set; }
+    public RepositoryLocal localRepository;
 
-    public Commit(string shortHash, string longHash, RepositoryLocal localRepository)
-    {
-        this.shortHash = shortHash;
-        this.longHash = longHash;
-        this.localRepository = localRepository;
-    }
+    public string longCommitHash;
+    public string shortCommitHash;
+    public string longTreeHash;
+    public string parentHash;
+    public string committerName;
+    public string committerEmail;
+    public string committerDate;
+    public string subject;
 
+    //public Commit parent;
+    //public List<Commit> children;
 }

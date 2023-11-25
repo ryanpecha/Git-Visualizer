@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Management.Automation;
 using GitVisualizer.UI.UI_Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace GitVisualizer;
 
@@ -280,7 +281,7 @@ public static class GitAPI
                 {
                     // TODO check that commit exists
                     string com = $"cd {commit.localRepository.dirPath}; ";
-                    com += $"git checkout {commit.longHash}";
+                    com += $"git checkout {commit.longCommitHash}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     liveCommit = commit;
@@ -310,7 +311,7 @@ public static class GitAPI
             {
                 // TODO check that branch does not exist
                 string com = $"cd {commit.localRepository.dirPath}; ";
-                com += $"git checkout -b {title} {commit.longHash}";
+                com += $"git checkout -b {title} {commit.longCommitHash}";
                 ShellComRes result = Shell.exec(com);
                 // TODO check for command success
                 Branch branch = new Branch(title, commit);
@@ -561,17 +562,30 @@ public static class GitAPI
 
                 // git spung
 
-                com += "git log --oneline --pretty=format:\"%H %h %T %P %cn %ce %cd %s\"";
+                com += "git log --oneline --graph --pretty=format:\"\0%H\0%h\0%T\0%P\0%cn\0%ce\0%cd\0%s\"";
                 ShellComRes comResult = Shell.exec(com);
-                foreach (PSObject pso in comResult.psObjects) {
+                // TODO check for command success
+                Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
+                foreach (PSObject pso in comResult.psObjects)
+                {
                     Debug.WriteLine(pso);
+                    string[] cols = pso.ToString().Split("\0");
+                    Commit commit = new Commit();
+                    commit.localRepository = liveRepository;
+                    commit.longCommitHash = cols[1];
+                    commit.shortCommitHash = cols[2];
+                    commit.longTreeHash = cols[3];
+                    commit.parentHash = cols[4];
+                    commit.committerName = cols[5];
+                    commit.committerEmail = cols[6];
+                    commit.committerDate = cols[7];
+                    commit.subject = cols[8];
+                    treeHashToCommitDict[commit.longCommitHash] = commit;
                 }
-                Dictionary<string,Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
-                //foreach 
-                // TODO check for command success        
-                //foreach (comResult) {
-                    
-                //}
+                foreach (KeyValuePair<string,Commit> kvp in treeHashToCommitDict) {
+                    string longHash = kvp.Key;
+                    Commit commit = kvp.Value;
+                }
             }
             return new List<Commit>();
         }
