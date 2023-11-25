@@ -550,45 +550,72 @@ public static class GitAPI
         {
             if (liveRepository != null)
             {
-                string com = $"cd {liveRepository.dirPath}; ";
+                string baseCom = $"cd {liveRepository.dirPath}; ";
+                
                 // Commit hash (H)
                 // Abbreviated commit hash (h)
                 // Tree hash (T)
                 // Parent Hashes (P)
                 // Committer name (cn)
-                // Committer email (ce)
                 // Committer date (cd)
                 // Subject (s)
 
                 // git spung
-
-                com += "git log --oneline --pretty=format:\"\0%H\0%h\0%T\0%P\0%cn\0%ce\0%cd\0%s\"";
-                ShellComRes comResult = Shell.exec(com);
-                // TODO check for command success
                 Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
+
+                string delim = " | ";
+
+                string com = baseCom + $"git log --oneline --pretty=format:\"%H{delim}%h{delim}%T{delim}%P\"";
+                ShellComRes comResult = Shell.exec(com);
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine("LINE >" + pso + "<");
-                    if (pso.Equals("")){
+                    Debug.WriteLine("INFO1 >" + pso + "<");
+                    string sline = pso.ToString().Trim();
+                    if (sline.Equals(""))
+                    {
                         continue;
                     }
-                    if (pso.Equals("\n")){
-                        continue;
-                    }
-                    string[] cols = pso.ToString().Split("\0");
+                    string[] cols = sline.Split(delim);
+
                     Commit commit = new Commit();
                     commit.localRepository = liveRepository;
-                    commit.longCommitHash = cols[1];
-                    commit.shortCommitHash = cols[2];
-                    commit.longTreeHash = cols[3];
-                    commit.parentHash = cols[4];
-                    commit.committerName = cols[5];
-                    commit.committerEmail = cols[6];
-                    commit.committerDate = cols[7];
-                    commit.subject = cols[8];
+
+                    commit.longCommitHash = cols[0];
+                    commit.shortCommitHash = cols[1];
+                    commit.longTreeHash = cols[2];
+                    commit.parentHash = cols[3];
+
                     treeHashToCommitDict[commit.longCommitHash] = commit;
                 }
-                foreach (KeyValuePair<string,Commit> kvp in treeHashToCommitDict) {
+
+                // %cn %cd %s
+
+                /*
+                com = baseCom + $"git log --oneline --pretty=format:\"\"";
+                comResult = Shell.exec(com);
+                foreach (PSObject pso in comResult.psObjects)
+                {
+                    Debug.WriteLine("INFO1 >" + pso + "<");
+                    string sline = pso.ToString().Trim();
+                    if (sline.Equals(""))
+                    {
+                        continue;
+                    }
+                    string[] cols = sline.Split(delim);
+
+                    Commit commit = treeHashToCommitDict[commit.longCommitHash];
+
+                    commit.longCommitHash = cols[0];
+                    commit.shortCommitHash = cols[1];
+                    commit.longTreeHash = cols[2];
+                    commit.parentHash = cols[3];
+
+                     = commit;
+                }
+                */
+
+                foreach (KeyValuePair<string, Commit> kvp in treeHashToCommitDict)
+                {
                     string longHash = kvp.Key;
                     Commit commit = kvp.Value;
                 }
