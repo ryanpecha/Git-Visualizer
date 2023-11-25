@@ -563,7 +563,9 @@ public static class GitAPI
 
                 com += "git log --oneline --pretty=format:\"%H %h %T %P %cn %ce %cd %s\"";
                 ShellComRes comResult = Shell.exec(com);
-                Console.WriteLine(comResult);
+                foreach (PSObject pso in comResult.psObjects) {
+                    Debug.WriteLine(pso);
+                }
                 Dictionary<string,Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
                 //foreach 
                 // TODO check for command success        
