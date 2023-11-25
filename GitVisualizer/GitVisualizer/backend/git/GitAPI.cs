@@ -322,10 +322,35 @@ public static class GitAPI
             public readonly static string description_deleteBranchLocal = "";
             public static void deleteBranchLocal(Branch branch)
             {
-
+                if (!ReferenceEquals(branch.commit, liveCommit))
+                {
+                    // TODO check that branch exists and points to a valid commit
+                    string com = $"cd {branch.commit.localRepository.dirPath}; ";
+                    com += $"git branch -D {branch.title}";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                    com = $"cd {branch.commit.localRepository.dirPath}; ";
+                    com += $"git push origin -d {branch.title}";
+                    result = Shell.exec(com);
+                }
             }
 
-
+            public static Process? embedUI()
+            {
+                if (liveRepository != null)
+                {
+                    ProcessStartInfo psi = new ProcessStartInfo($"cd {liveRepository.dirPath}" + ";git reflog |  awk '{print $1 }' | xargs gitk");
+                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                    Process p = Process.Start(psi);
+                    return p;
+                    /*
+                    SetParent(p.MainWindowHandle, panel1.Handle);
+                    CenterToScreen();
+                    psi.WindowStyle = ProcessWindowStyle.Normal;
+                    */
+                }
+                return null;
+            }
 
             public readonly static string description_merge = "";
             public static void merge()
@@ -345,6 +370,13 @@ public static class GitAPI
             public static void fetch()
             {
                 // gets info about remote repositories
+                if (liveCommit != null)
+                {
+                    string com = $"cd {liveCommit.localRepository.dirPath}; ";
+                    com += $"git fetch -all";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
             }
 
 
