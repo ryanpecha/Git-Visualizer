@@ -650,10 +650,12 @@ public static class GitAPI
                     }
                 }
 
-                commits.Remove(head);
-                commits.Insert(0, head);
-                
-                return commits;
+                //endregioncommits.Remove(head);
+                //commits.Insert(0, head);
+
+                List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
+
+                return sortedCommits;
             }
             return new List<Commit>();
         }
