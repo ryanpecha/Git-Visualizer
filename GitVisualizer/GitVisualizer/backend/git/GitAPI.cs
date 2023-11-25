@@ -569,6 +569,12 @@ public static class GitAPI
                 foreach (PSObject pso in comResult.psObjects)
                 {
                     Debug.WriteLine("LINE >" + pso + "<");
+                    if (pso.Equals("")){
+                        continue;
+                    }
+                    if (pso.Equals("\n")){
+                        continue;
+                    }
                     string[] cols = pso.ToString().Split("\0");
                     Commit commit = new Commit();
                     commit.localRepository = liveRepository;
