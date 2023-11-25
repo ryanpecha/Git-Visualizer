@@ -620,7 +620,7 @@ public static class GitAPI
                 foreach (PSObject pso in comResult.psObjects)
                 {
                     Debug.WriteLine("COMMITER DATE >" + pso + "<");
-                    string committerDate = pso.ToString().Trim();
+                    DateTime committerDate = DateTime.Parse(pso.ToString().Trim());
                     Commit commit = commits[i];
                     commit.committerDate = committerDate;
                     i++;
@@ -652,6 +652,8 @@ public static class GitAPI
 
                 //endregioncommits.Remove(head);
                 //commits.Insert(0, head);
+
+
 
                 List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
 
