@@ -551,7 +551,7 @@ public static class GitAPI
             if (liveRepository != null)
             {
                 string baseCom = $"cd {liveRepository.dirPath}; ";
-                
+
                 // Commit hash (H)
                 // Abbreviated commit hash (h)
                 // Tree hash (T)
@@ -583,7 +583,7 @@ public static class GitAPI
                     commit.longCommitHash = cols[0];
                     commit.shortCommitHash = cols[1];
                     commit.longTreeHash = cols[2];
-                    commit.parentHash = cols[3];
+                    commit.parentHash = (cols.Length >= 3) ? cols[3] : null;
 
                     treeHashToCommitDict[commit.longCommitHash] = commit;
                 }
