@@ -47,6 +47,13 @@ namespace GitVisualizer.UI.UI_Forms
             ApplyColorTheme(MainForm.AppTheme);
         }
 
+        public void OnBranchesControlFocus()
+        {
+            // Update view by getting branch info
+            List<Commit> commitHistory = GitAPI.Getters.getCommits();
+        }
+
+
         /// <summary>
         /// Draws little circle nodes representing branches in the branch cell view on any cell draw event.
         /// </summary>

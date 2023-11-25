@@ -65,6 +65,7 @@ namespace GitVisualizer.UI.UI_Forms
 
         public void OnBranchesButtonPress(object sender, EventArgs e)
         {
+            branchesControl.OnBranchesControlFocus();
             ShowControlInMainPanel(branchesControl);
         }
 
