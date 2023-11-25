@@ -335,29 +335,11 @@ public static class GitAPI
                 }
             }
 
-            public static Process? embedUI()
-            {
-                if (liveRepository != null)
-                {
-                    ProcessStartInfo psi = new ProcessStartInfo($"cd {liveRepository.dirPath}" + ";git reflog |  awk '{print $1 }' | xargs gitk");
-                    psi.WindowStyle = ProcessWindowStyle.Minimized;
-                    Process p = Process.Start(psi);
-                    return p;
-                    /*
-                    SetParent(p.MainWindowHandle, panel1.Handle);
-                    CenterToScreen();
-                    psi.WindowStyle = ProcessWindowStyle.Normal;
-                    */
-                }
-                return null;
-            }
-
             public readonly static string description_merge = "";
             public static void merge()
             {
 
             }
-
 
             public readonly static string description_sync = "";
             public static void sync()
@@ -561,6 +543,30 @@ public static class GitAPI
             }
             //
             return repoPairs;
+        }
+
+        public static List<Commit> getCommits()
+        {
+            if (liveRepository != null)
+            {
+                string com = $"cd {liveRepository.dirPath}; ";
+                // Commit hash (H)
+                // Abbreviated commit hash (h)
+                // Tree hash (T)
+                // Parent Hashes (P)
+                // Committer name (cn)
+                // Committer email (ce)
+                // Committer date (cd)
+                // Subject (s)
+                com += "git log --oneline --pretty=format:\"%H %h %P\"";
+                ShellComRes comResult = Shell.exec(com);
+                Console.WriteLine(comResult);
+                // TODO check for command success        
+                //foreach (comResult) {
+                    
+                //}
+            }
+            return new List<Commit>();
         }
     }
 }
