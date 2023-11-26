@@ -26,21 +26,9 @@ namespace GitVisualizer.UI.UI_Forms
             Color.Gold,
             Color.Plum];
 
-        private class TestTree
-        {
-            public class TestNode
-            {
-                public TestNode Parent;
-                public List<TestNode> Children = new();
-                public string Branch;
-                public string ID;
-                public string User;
-                public string Date;
-                public string Comment;
-            }
-            public TestNode Root;
-
-        }
+        private List<Commit> commitHistory = new();
+        private int currentDepth = 0;
+        
 
         public BranchesControl()
         {
@@ -50,16 +38,30 @@ namespace GitVisualizer.UI.UI_Forms
 
         public void OnBranchesControlFocus()
         {
+            UpdateActiveRepoText();
+            UpdateGridView();
+        }
+
+        private void UpdateActiveRepoText()
+        {
+            if (GitAPI.liveRepository == null) { return; }
+
+            activeRepositoryTextLabel.Text = GitAPI.liveRepository.title;
+            activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
+
+        }
+        private void UpdateGridView()
+        {
             // Update view by getting branch info
             branchesGridView.Rows.Clear();
-            List<Commit> commitHistory = GitAPI.Getters.getCommits();
+            commitHistory = GitAPI.Getters.getCommits();
             foreach (Commit commit in commitHistory)
             {
                 Debug.WriteLine(commit.subject);
-                branchesGridView.Rows.Add(null, "branmch", commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
+                int index = branchesGridView.Rows.Add(null, commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
+                branchesGridView.Rows[index].Cells[0].ToolTipText = commit.longCommitHash;
             }
         }
-
 
         /// <summary>
         /// Draws little circle nodes representing branches in the branch cell view on any cell draw event.
@@ -71,6 +73,9 @@ namespace GitVisualizer.UI.UI_Forms
             // Ignore header row and any columns besides Graph column
             if (e.ColumnIndex > 0 || e.RowIndex == -1) { return; }
 
+            Commit commit = commitHistory[e.RowIndex];
+            
+            
             // Get Branch index for offset
             int branchIndex = 1;
             // get node area in graph

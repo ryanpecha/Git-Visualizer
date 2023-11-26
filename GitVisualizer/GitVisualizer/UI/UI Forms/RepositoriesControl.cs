@@ -146,25 +146,5 @@ namespace GitVisualizer.UI.UI_Forms
         }
 
 
-        private void repositoriesControlPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void RepositoriesControl_Load(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
-        }
     }
 }

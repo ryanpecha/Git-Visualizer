@@ -37,6 +37,8 @@
 
             branchesControlPanel.BackColor = theme.PanelBackground;
             branchesControlPanel.ForeColor = theme.TextBright;
+
+            activeRepositoryTextLabel.ForeColor = theme.TextSoft;
         }
 
         #region Component Designer generated code
@@ -48,15 +50,18 @@
         private void InitializeComponent()
         {
             branchesControlPanel = new Panel();
+            activeRepoPanel = new Panel();
+            activeRepositoryTextLabel = new Label();
+            activeRepoLabel = new Label();
             titleLabel = new Label();
             branchesGridView = new DataGridView();
             graphColumn = new DataGridViewImageColumn();
-            branchColumn = new DataGridViewTextBoxColumn();
             idColumn = new DataGridViewTextBoxColumn();
             userColumn = new DataGridViewTextBoxColumn();
             dateColumn = new DataGridViewTextBoxColumn();
             commentColumn = new DataGridViewTextBoxColumn();
             branchesControlPanel.SuspendLayout();
+            activeRepoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).BeginInit();
             SuspendLayout();
             // 
@@ -64,6 +69,7 @@
             // 
             branchesControlPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             branchesControlPanel.BorderStyle = BorderStyle.FixedSingle;
+            branchesControlPanel.Controls.Add(activeRepoPanel);
             branchesControlPanel.Controls.Add(titleLabel);
             branchesControlPanel.Dock = DockStyle.Left;
             branchesControlPanel.Location = new Point(0, 0);
@@ -72,16 +78,46 @@
             branchesControlPanel.Size = new Size(280, 675);
             branchesControlPanel.TabIndex = 2;
             // 
+            // activeRepoPanel
+            // 
+            activeRepoPanel.Controls.Add(activeRepositoryTextLabel);
+            activeRepoPanel.Controls.Add(activeRepoLabel);
+            activeRepoPanel.Dock = DockStyle.Top;
+            activeRepoPanel.Location = new Point(0, 54);
+            activeRepoPanel.Name = "activeRepoPanel";
+            activeRepoPanel.Size = new Size(278, 107);
+            activeRepoPanel.TabIndex = 5;
+            // 
+            // activeRepositoryTextLabel
+            // 
+            activeRepositoryTextLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            activeRepositoryTextLabel.Location = new Point(3, 21);
+            activeRepositoryTextLabel.Name = "activeRepositoryTextLabel";
+            activeRepositoryTextLabel.Size = new Size(267, 77);
+            activeRepositoryTextLabel.TabIndex = 4;
+            activeRepositoryTextLabel.Text = "Select a Local Repo to Set Workspace";
+            // 
+            // activeRepoLabel
+            // 
+            activeRepoLabel.AutoSize = true;
+            activeRepoLabel.Dock = DockStyle.Top;
+            activeRepoLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            activeRepoLabel.Location = new Point(0, 0);
+            activeRepoLabel.Name = "activeRepoLabel";
+            activeRepoLabel.Size = new Size(134, 21);
+            activeRepoLabel.TabIndex = 3;
+            activeRepoLabel.Text = "Active Repository:";
+            activeRepoLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // titleLabel
             // 
-            titleLabel.AutoSize = true;
             titleLabel.Dock = DockStyle.Top;
             titleLabel.Font = new Font("Segoe UI", 24F, FontStyle.Regular, GraphicsUnit.Point);
             titleLabel.Location = new Point(0, 0);
             titleLabel.Margin = new Padding(0);
-            titleLabel.MinimumSize = new Size(280, 50);
+            titleLabel.MinimumSize = new Size(280, 54);
             titleLabel.Name = "titleLabel";
-            titleLabel.Size = new Size(280, 50);
+            titleLabel.Size = new Size(280, 54);
             titleLabel.TabIndex = 1;
             titleLabel.Text = "Branches";
             // 
@@ -92,7 +128,7 @@
             branchesGridView.AllowUserToResizeRows = false;
             branchesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             branchesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            branchesGridView.Columns.AddRange(new DataGridViewColumn[] { graphColumn, branchColumn, idColumn, userColumn, dateColumn, commentColumn });
+            branchesGridView.Columns.AddRange(new DataGridViewColumn[] { graphColumn, idColumn, userColumn, dateColumn, commentColumn });
             branchesGridView.Dock = DockStyle.Fill;
             branchesGridView.ImeMode = ImeMode.Off;
             branchesGridView.Location = new Point(280, 0);
@@ -117,14 +153,6 @@
             graphColumn.ReadOnly = true;
             graphColumn.Resizable = DataGridViewTriState.True;
             graphColumn.SortMode = DataGridViewColumnSortMode.Automatic;
-            // 
-            // branchColumn
-            // 
-            branchColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            branchColumn.HeaderText = "Branch";
-            branchColumn.Name = "branchColumn";
-            branchColumn.ReadOnly = true;
-            branchColumn.Width = 90;
             // 
             // idColumn
             // 
@@ -166,7 +194,8 @@
             Name = "BranchesControl";
             Size = new Size(1175, 675);
             branchesControlPanel.ResumeLayout(false);
-            branchesControlPanel.PerformLayout();
+            activeRepoPanel.ResumeLayout(false);
+            activeRepoPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).EndInit();
             ResumeLayout(false);
         }
@@ -176,10 +205,12 @@
         private Label titleLabel;
         public DataGridView branchesGridView;
         private DataGridViewImageColumn graphColumn;
-        private DataGridViewTextBoxColumn branchColumn;
         private DataGridViewTextBoxColumn idColumn;
         private DataGridViewTextBoxColumn userColumn;
         private DataGridViewTextBoxColumn dateColumn;
         private DataGridViewTextBoxColumn commentColumn;
+        private Panel activeRepoPanel;
+        private Label activeRepositoryTextLabel;
+        private Label activeRepoLabel;
     }
 }

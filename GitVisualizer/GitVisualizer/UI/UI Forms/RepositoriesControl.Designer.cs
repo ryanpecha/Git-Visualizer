@@ -114,7 +114,7 @@
             repositoriesControlPanel.Name = "repositoriesControlPanel";
             repositoriesControlPanel.Size = new Size(280, 675);
             repositoriesControlPanel.TabIndex = 1;
-            repositoriesControlPanel.Paint += repositoriesControlPanel_Paint;
+            //repositoriesControlPanel.Paint += repositoriesControlPanel_Paint;
             // 
             // commonRepoButtonsPanel
             // 
@@ -183,7 +183,6 @@
             activeRepoLabel.TabIndex = 3;
             activeRepoLabel.Text = "Active Repository:";
             activeRepoLabel.TextAlign = ContentAlignment.MiddleCenter;
-            activeRepoLabel.Click += label1_Click;
             // 
             // titleLabel
             // 
@@ -267,7 +266,6 @@
             localRepoButtonsLabel.Size = new Size(441, 32);
             localRepoButtonsLabel.TabIndex = 4;
             localRepoButtonsLabel.Text = "Local: ";
-            localRepoButtonsLabel.Click += label1_Click_1;
             // 
             // createNewRemoteRepoButton
             // 
@@ -330,7 +328,6 @@
             Margin = new Padding(6, 3, 3, 3);
             Name = "RepositoriesControl";
             Size = new Size(1175, 675);
-            Load += RepositoriesControl_Load;
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).EndInit();
             repositoriesControlPanel.ResumeLayout(false);
             commonRepoButtonsPanel.ResumeLayout(false);
