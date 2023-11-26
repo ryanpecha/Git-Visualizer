@@ -659,6 +659,7 @@ public static class GitAPI
                 }
 
                 List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
+                sortedCommits.Reverse();
                 return sortedCommits;
             }
             return new List<Commit>();
