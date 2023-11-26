@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -50,7 +51,13 @@ namespace GitVisualizer.UI.UI_Forms
         public void OnBranchesControlFocus()
         {
             // Update view by getting branch info
+            branchesGridView.Rows.Clear();
             List<Commit> commitHistory = GitAPI.Getters.getCommits();
+            foreach (Commit commit in commitHistory)
+            {
+                Debug.WriteLine(commit.subject);
+                branchesGridView.Rows.Add(null, "branmch", commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
+            }
         }
 
 

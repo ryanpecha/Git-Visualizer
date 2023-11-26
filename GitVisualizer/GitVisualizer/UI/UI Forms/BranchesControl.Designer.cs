@@ -87,7 +87,9 @@
             // 
             // branchesGridView
             // 
+            branchesGridView.AllowUserToAddRows = false;
             branchesGridView.AllowUserToDeleteRows = false;
+            branchesGridView.AllowUserToResizeRows = false;
             branchesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             branchesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             branchesGridView.Columns.AddRange(new DataGridViewColumn[] { graphColumn, branchColumn, idColumn, userColumn, dateColumn, commentColumn });

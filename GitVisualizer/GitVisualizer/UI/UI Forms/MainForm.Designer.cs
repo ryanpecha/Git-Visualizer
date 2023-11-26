@@ -187,7 +187,7 @@
             Controls.Add(buttonsMenuPanel);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "GitHelper";
+            Text = "GitVisualizer - No active repo selected";
             Load += MainFormLoad;
             ((System.ComponentModel.ISupportInitialize)githubBindingSource).EndInit();
             gitButtonsPanel.ResumeLayout(false);

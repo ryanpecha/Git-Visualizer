@@ -135,6 +135,7 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Actions.LocalActions.setLiveRepository(selectedRepo.Item1);
             activeRepositoryTextLabel.Text = selectedRepo.Item1.title;
             activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
+            TopLevelControl.Text = "GitVisualizer - " + selectedRepo.Item1.title;
         }
 
         private void OnOpenOnGithubComButton(object sender, EventArgs e)
