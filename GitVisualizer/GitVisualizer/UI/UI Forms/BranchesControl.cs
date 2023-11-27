@@ -124,11 +124,10 @@ namespace GitVisualizer.UI.UI_Forms
 
         public void OnCreateBranchFromSelectedButton(object sender, EventArgs e)
         {
-            if (branchComboBox.Items.Count == 0) { return; }
+            if (selectedCommit == null) { return; }
             string title = newBranchFromCommitTextBox.Text;
             if (title.Length == 0) { return; }
-            Branch selected = (Branch)branchComboBox.SelectedItem;
-            //Branch branch = GitAPI.Actions.LocalActions.createLocalBranch(title, selected);
+            GitAPI.Actions.LocalActions.createLocalBranch(title, selectedCommit);
         }
 
         /// <summary>
