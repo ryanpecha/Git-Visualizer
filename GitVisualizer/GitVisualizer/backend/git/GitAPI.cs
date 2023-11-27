@@ -551,7 +551,6 @@ public static class GitAPI
             if (liveRepository != null)
             {
                 string baseCom = $"cd {liveRepository.dirPath}; ";
-
                 // Commit hash (H)
                 // Abbreviated commit hash (h)
                 // Tree hash (T)
@@ -559,16 +558,16 @@ public static class GitAPI
                 // Committer name (cn)
                 // Committer date (cd)
                 // Subject (s)
-
-                // git spung
                 Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
                 List<Commit> commits = new List<Commit>();
                 Commit? head = null;
-
                 string delim = " | ";
-
                 string com = baseCom + $"git log --oneline --pretty=format:\"%H{delim}%h{delim}%T{delim}%P\"";
                 ShellComRes comResult = Shell.exec(com);
+                if (comResult.psObjects == null)
+                {
+                    return new List<Commit>();
+                }
                 foreach (PSObject pso in comResult.psObjects)
                 {
                     Debug.WriteLine("COMMIT INFO >" + pso + "<");
