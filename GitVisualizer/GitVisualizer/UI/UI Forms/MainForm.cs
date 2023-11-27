@@ -71,6 +71,7 @@ namespace GitVisualizer.UI.UI_Forms
 
         public void OnMergingButtonPress(object sender, EventArgs e)
         {
+            mergingControl.OnMergingControlFocus();
             ShowControlInMainPanel(mergingControl);
         }
 

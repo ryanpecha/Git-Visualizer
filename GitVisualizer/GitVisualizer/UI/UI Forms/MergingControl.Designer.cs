@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             Button commitChangesButton;
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             mergingControlPanel = new Panel();
             panel1 = new Panel();
             commitMessageTextBox = new TextBox();
@@ -302,43 +302,44 @@
             stagedChangesDataGridView.AllowUserToDeleteRows = false;
             stagedChangesDataGridView.AllowUserToResizeColumns = false;
             stagedChangesDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = SystemColors.Control;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            stagedChangesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            stagedChangesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             stagedChangesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             stagedChangesDataGridView.Columns.AddRange(new DataGridViewColumn[] { fileColumn, unstageColumn });
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = SystemColors.Window;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
-            stagedChangesDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            stagedChangesDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             stagedChangesDataGridView.Dock = DockStyle.Fill;
             stagedChangesDataGridView.Location = new Point(0, 16);
             stagedChangesDataGridView.MultiSelect = false;
             stagedChangesDataGridView.Name = "stagedChangesDataGridView";
             stagedChangesDataGridView.ReadOnly = true;
-            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = SystemColors.Control;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
-            stagedChangesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            stagedChangesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             stagedChangesDataGridView.RowHeadersVisible = false;
             stagedChangesDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             stagedChangesDataGridView.RowTemplate.Height = 25;
             stagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             stagedChangesDataGridView.Size = new Size(428, 160);
             stagedChangesDataGridView.TabIndex = 0;
+            stagedChangesDataGridView.CellContentClick += stagedChangesDataGridView_CellContentClick;
             // 
             // fileColumn
             // 
@@ -346,6 +347,7 @@
             fileColumn.HeaderText = "File";
             fileColumn.Name = "fileColumn";
             fileColumn.ReadOnly = true;
+            fileColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // unstageColumn
             // 
@@ -390,6 +392,7 @@
             unstagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             unstagedChangesDataGridView.Size = new Size(431, 160);
             unstagedChangesDataGridView.TabIndex = 1;
+            unstagedChangesDataGridView.CellContentClick += unstagedChangesDataGridView_CellContentClick;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -397,6 +400,7 @@
             dataGridViewTextBoxColumn1.HeaderText = "File";
             dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn1.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // dataGridViewButtonColumn1
             // 
@@ -406,15 +410,15 @@
             dataGridViewButtonColumn1.ReadOnly = true;
             dataGridViewButtonColumn1.Resizable = DataGridViewTriState.False;
             dataGridViewButtonColumn1.Text = "+";
-            dataGridViewButtonColumn1.Width = 42;
+            dataGridViewButtonColumn1.Width = 44;
             // 
             // undoColumn
             // 
             undoColumn.HeaderText = "Undo";
-            undoColumn.MinimumWidth = 50;
+            undoColumn.MinimumWidth = 44;
             undoColumn.Name = "undoColumn";
             undoColumn.ReadOnly = true;
-            undoColumn.Width = 50;
+            undoColumn.Width = 44;
             // 
             // MergingControl
             // 
@@ -489,10 +493,10 @@
             diffFile1Group.ForeColor = theme.TextHeader;
             diffFile2Group.ForeColor = theme.TextHeader;
 
-            chooseLocalButton.BackColor = theme.ElementBackground;
-            chooseRemoteButton.BackColor = theme.ElementBackground;
-            chooseLocalButton.ForeColor = theme.TextSelectable;
-            chooseRemoteButton.ForeColor = theme.TextSelectable;
+            //chooseLocalButton.BackColor = theme.ElementBackground;
+            //chooseRemoteButton.BackColor = theme.ElementBackground;
+            //chooseLocalButton.ForeColor = theme.TextSelectable;
+            //chooseRemoteButton.ForeColor = theme.TextSelectable;
         }
         private Panel mergingControlPanel;
         private Label titleLabel;
@@ -512,10 +516,10 @@
         private SplitContainer stageChangesSplitContainer;
         private GroupBox stagedChangesGroup;
         private DataGridView stagedChangesDataGridView;
-        private DataGridViewTextBoxColumn fileColumn;
-        private DataGridViewButtonColumn unstageColumn;
         private GroupBox unstagedChangesBox;
         private DataGridView unstagedChangesDataGridView;
+        private DataGridViewTextBoxColumn fileColumn;
+        private DataGridViewButtonColumn unstageColumn;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewButtonColumn dataGridViewButtonColumn1;
         private DataGridViewButtonColumn undoColumn;
