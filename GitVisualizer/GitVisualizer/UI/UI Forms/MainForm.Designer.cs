@@ -57,7 +57,7 @@
             repositoriesPageButton.Size = new Size(156, 32);
             repositoriesPageButton.TabIndex = 0;
             repositoriesPageButton.Text = "Repositories";
-            navigationTooltip.SetToolTip(repositoriesPageButton, "For managing, creating, and viewing local and remote repositories.\r\n");
+            navigationTooltip.SetToolTip(repositoriesPageButton, "For managing, creating, and viewing local and remote repositories\r\n");
             repositoriesPageButton.UseVisualStyleBackColor = true;
             repositoriesPageButton.Click += OnRepositoriesButtonPress;
             // 
@@ -70,7 +70,7 @@
             branchesPageButton.Size = new Size(156, 32);
             branchesPageButton.TabIndex = 1;
             branchesPageButton.Text = "Branches";
-            navigationTooltip.SetToolTip(branchesPageButton, "Shows history, changesets, and branches and allows checking into commits or branches.");
+            navigationTooltip.SetToolTip(branchesPageButton, "Shows history, changesets, and branches and allows checking into commits or branches");
             branchesPageButton.UseVisualStyleBackColor = true;
             branchesPageButton.Click += OnBranchesButtonPress;
             // 
@@ -83,7 +83,7 @@
             mergingPageButton.Size = new Size(156, 32);
             mergingPageButton.TabIndex = 2;
             mergingPageButton.Text = "Changes";
-            navigationTooltip.SetToolTip(mergingPageButton, "Allows for staging and syncing changes with repository, and shows differences.\r\n");
+            navigationTooltip.SetToolTip(mergingPageButton, "Allows for staging and syncing changes with repository, and shows differences\r\n");
             mergingPageButton.UseVisualStyleBackColor = true;
             mergingPageButton.Click += OnMergingButtonPress;
             // 
@@ -99,18 +99,18 @@
             // 
             // pageButtonsPanel
             // 
+            pageButtonsPanel.Controls.Add(revokeAccessButton);
             pageButtonsPanel.Controls.Add(mergingPageButton);
             pageButtonsPanel.Controls.Add(branchesPageButton);
             pageButtonsPanel.Controls.Add(repositoriesPageButton);
-            pageButtonsPanel.Dock = DockStyle.Left;
+            pageButtonsPanel.Dock = DockStyle.Fill;
             pageButtonsPanel.Location = new Point(0, 0);
             pageButtonsPanel.Name = "pageButtonsPanel";
-            pageButtonsPanel.Size = new Size(495, 47);
+            pageButtonsPanel.Size = new Size(1184, 47);
             pageButtonsPanel.TabIndex = 4;
             // 
             // buttonsMenuPanel
             // 
-            buttonsMenuPanel.Controls.Add(revokeAccessButton);
             buttonsMenuPanel.Controls.Add(pageButtonsPanel);
             buttonsMenuPanel.Dock = DockStyle.Top;
             buttonsMenuPanel.Location = new Point(0, 0);
@@ -120,16 +120,16 @@
             // 
             // revokeAccessButton
             // 
-            revokeAccessButton.Dock = DockStyle.Right;
+            revokeAccessButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             revokeAccessButton.Enabled = false;
             revokeAccessButton.FlatStyle = FlatStyle.Flat;
-            revokeAccessButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            revokeAccessButton.Location = new Point(1093, 0);
+            revokeAccessButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            revokeAccessButton.Location = new Point(1015, 9);
             revokeAccessButton.Name = "revokeAccessButton";
-            revokeAccessButton.Size = new Size(91, 47);
+            revokeAccessButton.Size = new Size(157, 30);
             revokeAccessButton.TabIndex = 9;
-            revokeAccessButton.Text = "Sign Out";
-            navigationTooltip.SetToolTip(revokeAccessButton, "Revoke access of your credentials to Github, so you will need to login again next time.");
+            revokeAccessButton.Text = "Revoke Github Access";
+            navigationTooltip.SetToolTip(revokeAccessButton, "Revoke access of your credentials to Github, so you will need to login again next time");
             revokeAccessButton.UseVisualStyleBackColor = true;
             revokeAccessButton.Click += revokeAccessButton_Click;
             // 

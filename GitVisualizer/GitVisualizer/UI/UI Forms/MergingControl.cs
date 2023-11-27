@@ -28,8 +28,27 @@ namespace GitVisualizer.UI.UI_Forms
         public void OnMergingControlFocus()
         {
             UpdateGridViews();
+            UpdateLiveReposAndBranch();
         }
 
+
+        private void UpdateLiveReposAndBranch()
+        {
+            if (GitAPI.liveRepository == null) { return; }
+
+            activeRepositoryTextLabel.Text = GitAPI.liveRepository.title;
+            activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
+
+            if (GitAPI.liveBranch != null)
+            {
+                checkedOutBranchTextLabel.Text = "Branch: " + GitAPI.liveBranch.title;
+            }
+            else if (GitAPI.liveCommit != null)
+            {
+                checkedOutBranchTextLabel.Text = "Commit: " + GitAPI.liveCommit.shortCommitHash;
+            }
+
+        }
         private void UpdateGridViews()
         {
             stagedChanges = GitAPI.Getters.getStagedFiles();

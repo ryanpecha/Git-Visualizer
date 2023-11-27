@@ -60,6 +60,9 @@
             stageAllButton = new Button();
             unstagedChangesLabel = new Label();
             undoAllButton = new Button();
+            checkedOutBranchPanel = new Panel();
+            checkedOutBranchTextLabel = new Label();
+            checkedOutBranchLabel = new Label();
             mergingControlPanel.SuspendLayout();
             panel1.SuspendLayout();
             activeRepoPanel.SuspendLayout();
@@ -81,6 +84,7 @@
             stagedChangesBarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).BeginInit();
             unstagedChangesBarPanel.SuspendLayout();
+            checkedOutBranchPanel.SuspendLayout();
             SuspendLayout();
             // 
             // commitChangesButton
@@ -100,6 +104,7 @@
             // 
             mergingControlPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             mergingControlPanel.BorderStyle = BorderStyle.FixedSingle;
+            mergingControlPanel.Controls.Add(checkedOutBranchPanel);
             mergingControlPanel.Controls.Add(panel1);
             mergingControlPanel.Controls.Add(activeRepoPanel);
             mergingControlPanel.Controls.Add(titleLabel);
@@ -473,6 +478,36 @@
             undoAllButton.UseVisualStyleBackColor = true;
             undoAllButton.Click += OnRevertAllButton;
             // 
+            // checkedOutBranchPanel
+            // 
+            checkedOutBranchPanel.Controls.Add(checkedOutBranchTextLabel);
+            checkedOutBranchPanel.Controls.Add(checkedOutBranchLabel);
+            checkedOutBranchPanel.Dock = DockStyle.Top;
+            checkedOutBranchPanel.Location = new Point(0, 161);
+            checkedOutBranchPanel.Name = "checkedOutBranchPanel";
+            checkedOutBranchPanel.Size = new Size(278, 107);
+            checkedOutBranchPanel.TabIndex = 18;
+            // 
+            // checkedOutBranchTextLabel
+            // 
+            checkedOutBranchTextLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            checkedOutBranchTextLabel.Location = new Point(3, 21);
+            checkedOutBranchTextLabel.Name = "checkedOutBranchTextLabel";
+            checkedOutBranchTextLabel.Size = new Size(267, 77);
+            checkedOutBranchTextLabel.TabIndex = 4;
+            // 
+            // checkedOutBranchLabel
+            // 
+            checkedOutBranchLabel.AutoSize = true;
+            checkedOutBranchLabel.Dock = DockStyle.Top;
+            checkedOutBranchLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            checkedOutBranchLabel.Location = new Point(0, 0);
+            checkedOutBranchLabel.Name = "checkedOutBranchLabel";
+            checkedOutBranchLabel.Size = new Size(172, 21);
+            checkedOutBranchLabel.TabIndex = 3;
+            checkedOutBranchLabel.Text = "Checked Out to Branch:";
+            checkedOutBranchLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // MergingControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -510,6 +545,8 @@
             ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).EndInit();
             unstagedChangesBarPanel.ResumeLayout(false);
             unstagedChangesBarPanel.PerformLayout();
+            checkedOutBranchPanel.ResumeLayout(false);
+            checkedOutBranchPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -593,5 +630,8 @@
         private Button undoAllButton;
         private Button stageAllButton;
         private Button syncButton;
+        private Panel checkedOutBranchPanel;
+        private Label checkedOutBranchTextLabel;
+        private Label checkedOutBranchLabel;
     }
 }
