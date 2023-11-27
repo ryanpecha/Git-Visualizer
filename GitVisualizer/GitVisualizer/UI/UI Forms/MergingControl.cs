@@ -109,5 +109,12 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Actions.LocalActions.revertAllUnstagedChanges();
             UpdateGridViews();
         }
+
+        private void OnCommitChangesButton(object sender, EventArgs e)
+        {
+            string message = commitMessageTextBox.Text;
+            GitAPI.Actions.LocalActions.commitStagedChanges(message);
+            UpdateGridViews();
+        }
     }
 }

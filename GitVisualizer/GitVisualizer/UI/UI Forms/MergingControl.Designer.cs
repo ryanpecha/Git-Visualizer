@@ -93,6 +93,7 @@
             commitChangesButton.TabIndex = 16;
             commitChangesButton.Text = "Commit Staged Changes";
             commitChangesButton.UseVisualStyleBackColor = true;
+            commitChangesButton.Click += OnCommitChangesButton;
             // 
             // mergingControlPanel
             // 
