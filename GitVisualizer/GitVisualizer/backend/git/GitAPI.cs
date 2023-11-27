@@ -442,17 +442,7 @@ public static class GitAPI
             public readonly static string description_commitStagedChanges = "";
             public static void commitStagedChanges(string message)
             {
-                
-            }
 
-            public readonly static string description_undoUnstagedChanges = "";
-            public static void undoUnstagedChange(string fpath)
-            {
-                // reset file to state without any changes
-                string com = $"cd {liveRepository.dirPath}; ";
-                com += $"git checkout {fpath}";
-                ShellComRes result = Shell.exec(com);
-                // TODO check for command success
             }
 
             public readonly static string description_unstageAllStagedChanges = "";
@@ -467,9 +457,35 @@ public static class GitAPI
                     // TODO check for command success
                 }
             }
-            
-            public readonly static string description_stageAllUnStagedChanges = "";
-            public static void stageAllUnStagedChanges()
+
+            public readonly static string description_revertUnstagedChange = "";
+            public static void revertUnstagedChange(string fpath)
+            {
+                // reset file to state without any changes
+                if (liveRepository != null)
+                {
+                    string com = $"cd {liveRepository.dirPath}; ";
+                    com += $"git checkout {fpath}";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
+            }
+
+            public readonly static string description_revertAllUnstagedChanges = "";
+            public static void revertAllUnstagedChanges(string fpath)
+            {
+                // reset file to state without any changes
+                if (liveRepository != null)
+                {
+                    string com = $"cd {liveRepository.dirPath}; ";
+                    com += $"git checkout .";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
+            }
+
+            public readonly static string description_stageAllUnstagedChanges = "";
+            public static void stageAllUnstagedChanges()
             {
                 // stage all changed files
                 if (liveRepository != null)
