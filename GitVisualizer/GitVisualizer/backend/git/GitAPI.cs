@@ -674,13 +674,14 @@ public static class GitAPI
                 ShellComRes result = Shell.exec(com);
                 foreach (PSObject pso in result.psObjects)
                 {
-                    string line = pso.ToString().TrimEnd();
+                    string line = "_" + pso.ToString().TrimEnd();
                     line = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
                     Debug.WriteLine("BRANCH >" + line + "<");
                     string[] items = line.Split(" ");
-                    bool live = items[0].Equals("*");
+                    bool live = items[0].Equals("_*");
                     string title = items[1];
                     string shortCommitHash = items[2];
+                    Debug.WriteLine("shortCommitHash >" + shortCommitHash + "<");
                     Commit commit = shortHashToCommitDict[shortCommitHash];
                     Branch branch = new Branch(title, commit);
                     commit.branches.Add(branch);
