@@ -148,6 +148,12 @@ namespace GitVisualizer.UI.UI_Forms
 
         }
 
+        private void OnCreateNewRemoteRepoButton(object sender, EventArgs e)
+        {
+
+            GitAPI.Actions.RemoteActions.createRemoteRepository(selectedRepo.Item1, UpdateGridCallback);
+        }
+
 
     }
 }

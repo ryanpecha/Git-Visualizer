@@ -290,6 +290,7 @@
             createNewRemoteRepoButton.Text = "Create Remote Repo";
             createNewRemoteRepoButton.UseVisualStyleBackColor = true;
             createNewRemoteRepoButton.Visible = false;
+            createNewRemoteRepoButton.Click += OnCreateNewRemoteRepoButton;
             // 
             // openOnGithubComButton
             // 
