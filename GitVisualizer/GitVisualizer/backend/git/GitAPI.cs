@@ -782,8 +782,34 @@ public static class GitAPI
                     }
                 }
 
+                // temp graph
+                com = baseCom + $"git log --graph --oneline";
+                comResult = Shell.exec(com);
+                if (comResult.psObjects == null)
+                {
+                    List<Branch> tb = new List<Branch>();
+                    List<Commit> tc = new List<Commit>();
+                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                }
+                i = 0; // commit index
+                foreach (PSObject pso in comResult.psObjects)
+                {
+                    string line = pso.ToString().Trim();
+                    // commit
+                    if (line.Contains("*")){
+                        Commit commit = commits[i];
+                        i++;
+                    }
+                    // branching/connecting commits
+                    else {
+
+                    }
+                    //Debug.WriteLine(pso.ToString());
+                }
+
                 // sorting commits by date
-                List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
+                //List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
+                List<Commit> sortedCommits = commits;
                 sortedCommits.Reverse();
 
                 // getting all branches
