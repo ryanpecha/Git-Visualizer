@@ -529,14 +529,8 @@ public static class GitAPI
                 {
                     string line = pso.ToString().Trim();
                     // line : eventNameChar     fpath
-                    /*
-                    string[] splitLine = line.Split(" ");
-                    string action = splitLine[0][0].ToString().ToUpper();
-                    string fpath = string.Join(" ", splitLine[1..]);
-                    */
                     string action = line[0].ToString().ToUpper();
                     string fpath = line[1..].Trim();
-                    //fpath = fpath.Substring(1, fpath.Length - 1);
                     Debug.WriteLine("GOT STAGED CHANGE");
                     Debug.WriteLine("LINE : " + line);
                     Debug.WriteLine("ACTION : " + action);
