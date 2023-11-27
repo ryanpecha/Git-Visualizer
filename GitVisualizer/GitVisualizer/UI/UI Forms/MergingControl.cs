@@ -22,13 +22,14 @@ namespace GitVisualizer.UI.UI_Forms
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            commitMessageTextBox.PlaceholderText = "Enter commit message...";
+            commitMessageTextBox.PlaceholderText = "Enter commit message... (Required for Commits)";
         }
 
         public void OnMergingControlFocus()
         {
             UpdateGridViews();
             UpdateLiveReposAndBranch();
+
         }
 
 

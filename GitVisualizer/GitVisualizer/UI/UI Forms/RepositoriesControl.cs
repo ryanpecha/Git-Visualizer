@@ -41,6 +41,7 @@ namespace GitVisualizer.UI.UI_Forms
         }
 
 
+
         private void UpdateGridCallback()
         {
             Debug.WriteLine("UpdateGridCallback()");

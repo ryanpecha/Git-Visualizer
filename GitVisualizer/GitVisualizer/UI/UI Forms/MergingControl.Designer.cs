@@ -30,9 +30,17 @@
         {
             commitChangesButton = new Button();
             mergingControlPanel = new Panel();
+            checkedOutBranchPanel = new Panel();
+            checkedOutBranchTextLabel = new Label();
+            checkedOutBranchLabel = new Label();
             panel1 = new Panel();
-            syncButton = new Button();
+            flowLayoutPanel1 = new FlowLayoutPanel();
             commitMessageTextBox = new TextBox();
+            syncButton = new Button();
+            outgoingCountLabel = new Label();
+            outgoingCountTextLabel = new Label();
+            incomingCountLabel = new Label();
+            incomingCountTextLabel = new Label();
             activeRepoPanel = new Panel();
             activeRepositoryTextLabel = new Label();
             activeRepoLabel = new Label();
@@ -60,11 +68,10 @@
             stageAllButton = new Button();
             unstagedChangesLabel = new Label();
             undoAllButton = new Button();
-            checkedOutBranchPanel = new Panel();
-            checkedOutBranchTextLabel = new Label();
-            checkedOutBranchLabel = new Label();
             mergingControlPanel.SuspendLayout();
+            checkedOutBranchPanel.SuspendLayout();
             panel1.SuspendLayout();
+            flowLayoutPanel1.SuspendLayout();
             activeRepoPanel.SuspendLayout();
             mergingPanel.SuspendLayout();
             diffPanel.SuspendLayout();
@@ -84,7 +91,6 @@
             stagedChangesBarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).BeginInit();
             unstagedChangesBarPanel.SuspendLayout();
-            checkedOutBranchPanel.SuspendLayout();
             SuspendLayout();
             // 
             // commitChangesButton
@@ -92,7 +98,7 @@
             commitChangesButton.Enabled = false;
             commitChangesButton.FlatStyle = FlatStyle.Flat;
             commitChangesButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            commitChangesButton.Location = new Point(17, 71);
+            commitChangesButton.Location = new Point(15, 66);
             commitChangesButton.Name = "commitChangesButton";
             commitChangesButton.Size = new Size(181, 28);
             commitChangesButton.TabIndex = 16;
@@ -115,22 +121,76 @@
             mergingControlPanel.Size = new Size(280, 675);
             mergingControlPanel.TabIndex = 4;
             // 
+            // checkedOutBranchPanel
+            // 
+            checkedOutBranchPanel.Controls.Add(checkedOutBranchTextLabel);
+            checkedOutBranchPanel.Controls.Add(checkedOutBranchLabel);
+            checkedOutBranchPanel.Dock = DockStyle.Top;
+            checkedOutBranchPanel.Location = new Point(0, 161);
+            checkedOutBranchPanel.Name = "checkedOutBranchPanel";
+            checkedOutBranchPanel.Size = new Size(278, 107);
+            checkedOutBranchPanel.TabIndex = 18;
+            // 
+            // checkedOutBranchTextLabel
+            // 
+            checkedOutBranchTextLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            checkedOutBranchTextLabel.Location = new Point(3, 21);
+            checkedOutBranchTextLabel.Name = "checkedOutBranchTextLabel";
+            checkedOutBranchTextLabel.Size = new Size(267, 77);
+            checkedOutBranchTextLabel.TabIndex = 4;
+            // 
+            // checkedOutBranchLabel
+            // 
+            checkedOutBranchLabel.AutoSize = true;
+            checkedOutBranchLabel.Dock = DockStyle.Top;
+            checkedOutBranchLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            checkedOutBranchLabel.Location = new Point(0, 0);
+            checkedOutBranchLabel.Name = "checkedOutBranchLabel";
+            checkedOutBranchLabel.Size = new Size(172, 21);
+            checkedOutBranchLabel.TabIndex = 3;
+            checkedOutBranchLabel.Text = "Checked Out to Branch:";
+            checkedOutBranchLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // panel1
             // 
-            panel1.Controls.Add(syncButton);
-            panel1.Controls.Add(commitMessageTextBox);
-            panel1.Controls.Add(commitChangesButton);
+            panel1.Controls.Add(flowLayoutPanel1);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 539);
+            panel1.Location = new Point(0, 486);
             panel1.Name = "panel1";
-            panel1.Size = new Size(278, 134);
+            panel1.Size = new Size(278, 187);
             panel1.TabIndex = 17;
+            // 
+            // flowLayoutPanel1
+            // 
+            flowLayoutPanel1.Controls.Add(commitMessageTextBox);
+            flowLayoutPanel1.Controls.Add(commitChangesButton);
+            flowLayoutPanel1.Controls.Add(syncButton);
+            flowLayoutPanel1.Controls.Add(outgoingCountLabel);
+            flowLayoutPanel1.Controls.Add(outgoingCountTextLabel);
+            flowLayoutPanel1.Controls.Add(incomingCountLabel);
+            flowLayoutPanel1.Controls.Add(incomingCountTextLabel);
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+            flowLayoutPanel1.Location = new Point(0, 0);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Padding = new Padding(12);
+            flowLayoutPanel1.Size = new Size(278, 187);
+            flowLayoutPanel1.TabIndex = 18;
+            // 
+            // commitMessageTextBox
+            // 
+            commitMessageTextBox.Dock = DockStyle.Top;
+            commitMessageTextBox.Location = new Point(15, 15);
+            commitMessageTextBox.Multiline = true;
+            commitMessageTextBox.Name = "commitMessageTextBox";
+            commitMessageTextBox.Size = new Size(243, 45);
+            commitMessageTextBox.TabIndex = 8;
+            commitMessageTextBox.TextChanged += commitMessageTextBox_TextChanged;
             // 
             // syncButton
             // 
             syncButton.FlatStyle = FlatStyle.Flat;
             syncButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            syncButton.Location = new Point(204, 71);
+            syncButton.Location = new Point(202, 66);
             syncButton.Name = "syncButton";
             syncButton.Size = new Size(56, 28);
             syncButton.TabIndex = 17;
@@ -138,14 +198,49 @@
             syncButton.UseVisualStyleBackColor = true;
             syncButton.Click += OnSyncButton;
             // 
-            // commitMessageTextBox
+            // outgoingCountLabel
             // 
-            commitMessageTextBox.Location = new Point(17, 20);
-            commitMessageTextBox.Multiline = true;
-            commitMessageTextBox.Name = "commitMessageTextBox";
-            commitMessageTextBox.Size = new Size(243, 45);
-            commitMessageTextBox.TabIndex = 8;
-            commitMessageTextBox.TextChanged += commitMessageTextBox_TextChanged;
+            outgoingCountLabel.Dock = DockStyle.Top;
+            outgoingCountLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            outgoingCountLabel.Location = new Point(15, 97);
+            outgoingCountLabel.Name = "outgoingCountLabel";
+            outgoingCountLabel.Padding = new Padding(8, 4, 0, 0);
+            outgoingCountLabel.Size = new Size(80, 34);
+            outgoingCountLabel.TabIndex = 21;
+            outgoingCountLabel.Text = "Outgoing:";
+            // 
+            // outgoingCountTextLabel
+            // 
+            outgoingCountTextLabel.Dock = DockStyle.Top;
+            flowLayoutPanel1.SetFlowBreak(outgoingCountTextLabel, true);
+            outgoingCountTextLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            outgoingCountTextLabel.Location = new Point(101, 97);
+            outgoingCountTextLabel.Name = "outgoingCountTextLabel";
+            outgoingCountTextLabel.Padding = new Padding(0, 4, 0, 0);
+            outgoingCountTextLabel.Size = new Size(48, 34);
+            outgoingCountTextLabel.TabIndex = 22;
+            outgoingCountTextLabel.Text = "0";
+            // 
+            // incomingCountLabel
+            // 
+            incomingCountLabel.Dock = DockStyle.Top;
+            incomingCountLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            incomingCountLabel.Location = new Point(15, 131);
+            incomingCountLabel.Name = "incomingCountLabel";
+            incomingCountLabel.Padding = new Padding(8, 0, 0, 0);
+            incomingCountLabel.Size = new Size(80, 34);
+            incomingCountLabel.TabIndex = 23;
+            incomingCountLabel.Text = "Incoming:";
+            // 
+            // incomingCountTextLabel
+            // 
+            incomingCountTextLabel.Dock = DockStyle.Top;
+            incomingCountTextLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            incomingCountTextLabel.Location = new Point(101, 131);
+            incomingCountTextLabel.Name = "incomingCountTextLabel";
+            incomingCountTextLabel.Size = new Size(48, 34);
+            incomingCountTextLabel.TabIndex = 24;
+            incomingCountTextLabel.Text = "0";
             // 
             // activeRepoPanel
             // 
@@ -478,36 +573,6 @@
             undoAllButton.UseVisualStyleBackColor = true;
             undoAllButton.Click += OnRevertAllButton;
             // 
-            // checkedOutBranchPanel
-            // 
-            checkedOutBranchPanel.Controls.Add(checkedOutBranchTextLabel);
-            checkedOutBranchPanel.Controls.Add(checkedOutBranchLabel);
-            checkedOutBranchPanel.Dock = DockStyle.Top;
-            checkedOutBranchPanel.Location = new Point(0, 161);
-            checkedOutBranchPanel.Name = "checkedOutBranchPanel";
-            checkedOutBranchPanel.Size = new Size(278, 107);
-            checkedOutBranchPanel.TabIndex = 18;
-            // 
-            // checkedOutBranchTextLabel
-            // 
-            checkedOutBranchTextLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            checkedOutBranchTextLabel.Location = new Point(3, 21);
-            checkedOutBranchTextLabel.Name = "checkedOutBranchTextLabel";
-            checkedOutBranchTextLabel.Size = new Size(267, 77);
-            checkedOutBranchTextLabel.TabIndex = 4;
-            // 
-            // checkedOutBranchLabel
-            // 
-            checkedOutBranchLabel.AutoSize = true;
-            checkedOutBranchLabel.Dock = DockStyle.Top;
-            checkedOutBranchLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkedOutBranchLabel.Location = new Point(0, 0);
-            checkedOutBranchLabel.Name = "checkedOutBranchLabel";
-            checkedOutBranchLabel.Size = new Size(172, 21);
-            checkedOutBranchLabel.TabIndex = 3;
-            checkedOutBranchLabel.Text = "Checked Out to Branch:";
-            checkedOutBranchLabel.TextAlign = ContentAlignment.MiddleCenter;
-            // 
             // MergingControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -519,8 +584,11 @@
             Size = new Size(1175, 675);
             Load += MergingControl_Load;
             mergingControlPanel.ResumeLayout(false);
+            checkedOutBranchPanel.ResumeLayout(false);
+            checkedOutBranchPanel.PerformLayout();
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             activeRepoPanel.ResumeLayout(false);
             activeRepoPanel.PerformLayout();
             mergingPanel.ResumeLayout(false);
@@ -545,8 +613,6 @@
             ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).EndInit();
             unstagedChangesBarPanel.ResumeLayout(false);
             unstagedChangesBarPanel.PerformLayout();
-            checkedOutBranchPanel.ResumeLayout(false);
-            checkedOutBranchPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -633,5 +699,10 @@
         private Panel checkedOutBranchPanel;
         private Label checkedOutBranchTextLabel;
         private Label checkedOutBranchLabel;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Label outgoingCountLabel;
+        private Label outgoingCountTextLabel;
+        private Label incomingCountLabel;
+        private Label incomingCountTextLabel;
     }
 }
