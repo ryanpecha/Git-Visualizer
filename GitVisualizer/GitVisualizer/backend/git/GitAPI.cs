@@ -414,13 +414,13 @@ public static class GitAPI
             }
 
             public readonly static string description_stageChanges = "";
-            public static void stageChanges(List<string> fpaths)
+            public static void stageChange(string fpath)
             {
                 // stage file changes to commit
             }
 
             public readonly static string description_unStageChanges = "";
-            public static void unStageChanges(List<string> fpaths)
+            public static void unStageChange(string fpath)
             {
                 // unstage file changes to commit
 
@@ -433,7 +433,7 @@ public static class GitAPI
             }
 
             public readonly static string description_undoUnstagedChanges = "";
-            public static void undoUnstagedChanges(List<string> fpaths)
+            public static void undoUnstagedChange(string fpath)
             {
 
             }
@@ -452,6 +452,27 @@ public static class GitAPI
 
         public static List<Tuple<string, string>> getStagedFiles()
         {
+            if (liveRepository != null)
+            {
+                string com = $"cd {liveRepository.dirPath}; ";
+                com += $"git diff --cached --name-status";
+                ShellComRes result = Shell.exec(com);
+                if (result.psObjects == null)
+                {
+                    return new();
+                }
+                // action(add,del,mod), fpath
+                List<Tuple<string, string>> changes = new();
+                foreach (PSObject pso in result.psObjects)
+                {
+                    string line = pso.ToString().Trim();
+                    string[] splitLine = line.Split(" ");
+                    string action = splitLine[0][0].ToString().ToUpper();
+                    string fpath = splitLine[1];
+                    changes.Add(new Tuple<string, string>(action, fpath));
+                }
+                return changes;
+            }
             return new();
         }
 
@@ -472,7 +493,7 @@ public static class GitAPI
                 {
                     string line = pso.ToString().Trim();
                     string[] splitLine = line.Split(" ");
-                    string action = splitLine[0];
+                    string action = splitLine[0][0].ToString().ToUpper();
                     string fpath = splitLine[1];
                     changes.Add(new Tuple<string, string>(action, fpath));
                 }
