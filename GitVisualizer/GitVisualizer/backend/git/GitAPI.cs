@@ -10,6 +10,7 @@ using System.IO;
 using System.Management.Automation;
 using GitVisualizer.UI.UI_Forms;
 using System.Windows.Forms.VisualStyles;
+using System.Text.RegularExpressions;
 
 namespace GitVisualizer;
 
@@ -250,9 +251,10 @@ public static class GitAPI
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     liveRepository = repositoryLocal;
-                    // TODO set commit to currently checked out repo commit
-                    //liveCommit = ;
+                    // set commit to currently checked out repo commit
+                    Getters.getCommitsAndBranches();
                 }
+                Getters.setCommitsAheadAndBehind();
             }
 
 
@@ -269,6 +271,7 @@ public static class GitAPI
                     liveCommit = commit;
                     liveBranch = null;
                 }
+                Getters.setCommitsAheadAndBehind();
             }
 
 
@@ -285,6 +288,7 @@ public static class GitAPI
                     liveCommit = branch.commit;
                     liveBranch = branch;
                 }
+                Getters.setCommitsAheadAndBehind();
             }
 
 
@@ -447,6 +451,7 @@ public static class GitAPI
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                 }
+                Getters.setCommitsAheadAndBehind();
             }
 
             public readonly static string description_unstageAllStagedChanges = "";
@@ -694,13 +699,39 @@ public static class GitAPI
         {
             if (liveRepository != null)
             {
-                string com = $"cd '{liveRepository.dirPath}'; ";
-                com += $"git rev-list --left-right --count origin/master...origin/test-branch";
-                ShellComRes result = Shell.exec(com);
-                if (result.psObjects == null)
+                if (liveBranch != null)
                 {
+                    string com = $"cd '{liveRepository.dirPath}'; ";
+                    com += $"git rev-list --left-right --count {liveRepository.title}...origin/{liveRepository.title}";
+                    ShellComRes result = Shell.exec(com);
+                    if (result.psObjects == null)
+                    {
+                        commitsAhead = null;
+                        commitsBehind = null;
+                        return;
+                    }
+                    if (result.psObjects.Count == 0) {
+                        commitsAhead = null;
+                        commitsBehind = null;
+                        return;
+                    }
+                    string line = result.psObjects[0].ToString().Trim();
+                    line = Regex.Replace(line, @"\s+", " ");
+                    string[] nums = line.Split(" ");
+                    //commitsAhead = int.Parse(nums[1]);
+                    //commitsBehind = int.Parse(nums[0]);
+                }
+                else
+                {
+                    commitsAhead = null;
+                    commitsBehind = null;
                     return;
                 }
+            }
+            else
+            {
+                commitsAhead = null;
+                commitsBehind = null;
             }
         }
 
@@ -912,6 +943,8 @@ public static class GitAPI
                         }
                     }
                 }
+
+                setCommitsAheadAndBehind();
 
                 // branches-commits tuples
                 return new Tuple<List<Branch>, List<Commit>>(allBranches, sortedCommits);
