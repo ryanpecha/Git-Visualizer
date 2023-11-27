@@ -149,6 +149,7 @@
             createNewLocalRepoButton.TabIndex = 6;
             createNewLocalRepoButton.Text = "Create New Local Repo";
             createNewLocalRepoButton.UseVisualStyleBackColor = true;
+            createNewLocalRepoButton.Click += OnCreateNewLocalRepoButton;
             // 
             // trackExistingReposButton
             // 
@@ -161,6 +162,7 @@
             trackExistingReposButton.TabIndex = 7;
             trackExistingReposButton.Text = "Track Existing Repos";
             trackExistingReposButton.UseVisualStyleBackColor = true;
+            trackExistingReposButton.Click += OnTrackExistingReposButton;
             // 
             // activeRepoPanel
             // 

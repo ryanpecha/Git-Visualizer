@@ -104,6 +104,7 @@
             createBranchFromCurrentButton.Text = "Create Branch From Current Commit";
             createBranchFromCurrentButton.UseVisualStyleBackColor = true;
             createBranchFromCurrentButton.Visible = false;
+            createBranchFromCurrentButton.Click += OnCreateBranchFromCurrentButton;
             // 
             // createBranchFromSelectedButton
             // 
@@ -117,6 +118,7 @@
             createBranchFromSelectedButton.Text = "Create Branch From Selected";
             createBranchFromSelectedButton.UseVisualStyleBackColor = true;
             createBranchFromSelectedButton.Visible = false;
+            createBranchFromSelectedButton.Click += OnCreateBranchFromSelectedButton;
             // 
             // checkoutBranchButton
             // 
