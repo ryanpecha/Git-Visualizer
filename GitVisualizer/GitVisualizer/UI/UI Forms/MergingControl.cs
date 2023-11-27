@@ -76,6 +76,7 @@ namespace GitVisualizer.UI.UI_Forms
             else if (e.ColumnIndex == 2)
             {
                 GitAPI.Actions.LocalActions.revertUnstagedChange(unstagedChanges[e.RowIndex].Item2);
+                UpdateGridViews();
             }
         }
 
@@ -89,6 +90,24 @@ namespace GitVisualizer.UI.UI_Forms
             {
                 commitChangesButton.Enabled = true;
             }
+        }
+
+        private void OnUnstageAllButton(object sender, EventArgs e)
+        {
+            GitAPI.Actions.LocalActions.unstageAllStagedChanges();
+            UpdateGridViews();
+        }
+
+        private void OnStageAllButton(object sender, EventArgs e)
+        {
+            GitAPI.Actions.LocalActions.stageAllUnstagedChanges();
+            UpdateGridViews();
+
+        }
+        private void OnRevertAllButton(object sender, EventArgs e)
+        {
+            GitAPI.Actions.LocalActions.revertAllUnstagedChanges();
+            UpdateGridViews();
         }
     }
 }

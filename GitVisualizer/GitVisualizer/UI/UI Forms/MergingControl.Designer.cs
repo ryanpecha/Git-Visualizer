@@ -358,6 +358,7 @@
             unstageAllButton.TabIndex = 9;
             unstageAllButton.Text = "Unstage All";
             unstageAllButton.UseVisualStyleBackColor = true;
+            unstageAllButton.Click += OnUnstageAllButton;
             // 
             // unstagedChangesDataGridView
             // 
@@ -430,6 +431,7 @@
             stageAllButton.TabIndex = 11;
             stageAllButton.Text = "Stage All";
             stageAllButton.UseVisualStyleBackColor = true;
+            stageAllButton.Click += OnStageAllButton;
             // 
             // unstagedChangesLabel
             // 
@@ -454,6 +456,7 @@
             undoAllButton.TabIndex = 9;
             undoAllButton.Text = "Undo All";
             undoAllButton.UseVisualStyleBackColor = true;
+            undoAllButton.Click += OnRevertAllButton;
             // 
             // MergingControl
             // 
