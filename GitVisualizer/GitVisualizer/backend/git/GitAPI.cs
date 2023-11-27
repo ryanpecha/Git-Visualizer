@@ -13,6 +13,12 @@ using System.Windows.Forms.VisualStyles;
 
 namespace GitVisualizer;
 
+// TODO - load current checked out commit/branch on initial branch view
+// TODO - keep track of remote branches
+// TODO - load previously loaded repo on program startup
+// TODO - load staged changes on initial branch view
+// TODO - 
+
 public static class GitAPI
 {
 
@@ -196,7 +202,7 @@ public static class GitAPI
             public readonly static string description_deleteRemoteRepository = "";
             public static void deleteRemoteRepository()
             {
-
+                // TODO delete
             }
 
 
@@ -207,8 +213,8 @@ public static class GitAPI
             }
 
 
-            public readonly static string description_pushCommitToRemoteRepository = "";
-            public static void pushCommitToRemoteRepository()
+            public readonly static string description_push = "";
+            public static void push()
             {
 
             }
@@ -343,31 +349,28 @@ public static class GitAPI
 
             }
 
+
             public readonly static string description_sync = "";
             public static void sync()
             {
-                // pull and push
-            }
-
-
-            public readonly static string description_fetch = "";
-            public static void fetch()
-            {
-                // gets info about remote repositories
+                // fetch and pull
                 if (liveCommit != null)
                 {
                     string com = $"cd {liveCommit.localRepository.dirPath}; ";
-                    com += $"git fetch -all";
+                    com += $"git fetch --all";
                     ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                    com = $"cd {liveCommit.localRepository.dirPath}; ";
+                    com += $"git pull --all";
+                    result = Shell.exec(com);
                     // TODO check for command success
                 }
             }
 
 
-            public readonly static string description_pull = "";
-            public static void pull()
+            public readonly static string description_commit = "";
+            public static void commit()
             {
-                // fetch followed by a merge
             }
 
 
@@ -425,40 +428,47 @@ public static class GitAPI
                 }
             }
 
-
-
-            /// <summary> actions on the local filesystem within the currently checked-out commit </summary>
-            public static class LiveActions
+            public readonly static string description_clean = "";
+            public static void clean()
             {
-                public readonly static string description_clean = "";
-                public static void clean()
+                if (liveRepository != null)
                 {
-
+                    string com = $"cd {liveRepository.dirPath}; ";
+                    com += $"git clean -fdx";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
                 }
+            }
 
-                public readonly static string description_add = "";
-                public static void add(List<string> fpaths)
-                {
+            public readonly static string description_stageChanges = "";
+            public static void stageChanges(List<string> fpaths)
+            {
+                // stage file changes to commit
+            }
 
-                }
+            public readonly static string description_unStageChanges = "";
+            public static void unStageChanges(List<string> fpaths)
+            {
+                // unstage file changes to commit
 
-                public readonly static string description_undoAdd = "";
-                public static void undoAdd(List<string> fpaths)
-                {
+            }
 
-                }
+            public readonly static string description_commitStagedChanges = "";
+            public static void commitStagedChanges()
+            {
 
-                public readonly static string description_commit = "";
-                public static void commit()
-                {
+            }
 
-                }
+            public readonly static string description_undoChanges = "";
+            public static void undoChanges(List<string> fpaths)
+            {
 
-                public readonly static string description_undoCommit = "";
-                public static void undoCommit()
-                {
+            }
 
-                }
+            public readonly static string description_undoLastCommit = "";
+            public static void undoLastCommit()
+            {
+
             }
         }
     }
@@ -547,11 +557,13 @@ public static class GitAPI
             return repoPairs;
         }
 
+
         public static Tuple<List<Branch>, List<Commit>> getCommitsAndBranches()
         {
             if (liveRepository != null)
             {
                 string baseCom = $"cd {liveRepository.dirPath}; ";
+
                 // Commit hash (H)
                 // Abbreviated commit hash (h)
                 // Tree hash (T)
@@ -559,6 +571,8 @@ public static class GitAPI
                 // Committer name (cn)
                 // Committer date (cd)
                 // Subject (s)
+
+                // all commits
                 Dictionary<string, Commit> longHashToCommitDict = new Dictionary<string, Commit>();
                 Dictionary<string, Commit> shortHashToCommitDict = new Dictionary<string, Commit>();
                 List<Commit> commits = new List<Commit>();
@@ -572,6 +586,8 @@ public static class GitAPI
                     List<Commit> tc = new List<Commit>();
                     return new Tuple<List<Branch>, List<Commit>>(tb, tc);
                 }
+
+                // longCommitHash, shortCommitHash, longTreeHash, parentHashes
                 foreach (PSObject pso in comResult.psObjects)
                 {
                     Debug.WriteLine("COMMIT INFO >" + pso + "<");
@@ -580,14 +596,9 @@ public static class GitAPI
 
                     Commit commit = new Commit();
                     commit.localRepository = liveRepository;
-                    commit.branches = new List<Branch>();
-                    commit.parents = new List<Commit>();
-                    commit.children = new List<Commit>();
-
                     commit.longCommitHash = cols[0];
                     commit.shortCommitHash = cols[1];
                     commit.longTreeHash = cols[2];
-                    commit.parentHashes = new List<string>();
                     if (cols.Length > 3)
                     {
                         foreach (string parentHash in cols[3].Split(" "))
@@ -605,10 +616,15 @@ public static class GitAPI
                     commits.Add(commit);
                 }
 
-                // %cn %cd %s
-
+                // committer name
                 com = baseCom + $"git log --oneline --pretty=format:\"%cn\"";
                 comResult = Shell.exec(com);
+                if (comResult.psObjects == null)
+                {
+                    List<Branch> tb = new List<Branch>();
+                    List<Commit> tc = new List<Commit>();
+                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                }
                 int i = 0;
                 foreach (PSObject pso in comResult.psObjects)
                 {
@@ -619,8 +635,15 @@ public static class GitAPI
                     i++;
                 }
 
+                // committer date
                 com = baseCom + $"git log --oneline --pretty=format:\"%cd\"";
                 comResult = Shell.exec(com);
+                if (comResult.psObjects == null)
+                {
+                    List<Branch> tb = new List<Branch>();
+                    List<Commit> tc = new List<Commit>();
+                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                }
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
                 {
@@ -639,8 +662,15 @@ public static class GitAPI
                     i++;
                 }
 
+                // subject
                 com = baseCom + $"git log --oneline --pretty=format:\"%s\"";
                 comResult = Shell.exec(com);
+                if (comResult.psObjects == null)
+                {
+                    List<Branch> tb = new List<Branch>();
+                    List<Commit> tc = new List<Commit>();
+                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                }
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
                 {
@@ -651,6 +681,7 @@ public static class GitAPI
                     i++;
                 }
 
+                // setting internal refs to build commit tree
                 foreach (KeyValuePair<string, Commit> kvp in longHashToCommitDict)
                 {
                     string longHash = kvp.Key;
@@ -663,25 +694,32 @@ public static class GitAPI
                     }
                 }
 
+                // sorting commits by date
                 List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
                 sortedCommits.Reverse();
 
+                // getting all branches
                 List<Branch> allBranches = new List<Branch>();
                 // getting commits
                 com = $"cd {liveRepository.dirPath}; ";
                 // list local branchs : *(live or not) | name | short hash | most recent commit msg
                 com += $"git branch -vv";
-                ShellComRes result = Shell.exec(com);
-                foreach (PSObject pso in result.psObjects)
+                comResult = Shell.exec(com);
+                if (comResult.psObjects == null)
+                {
+                    List<Branch> tb = new List<Branch>();
+                    List<Commit> tc = new List<Commit>();
+                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                }
+                foreach (PSObject pso in comResult.psObjects)
                 {
                     string line = pso.ToString().TrimEnd();
                     line = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
-                    Debug.WriteLine("BRANCH >" + line + "<");
                     string[] items = line.Split(" ");
                     bool live = items[0].Equals("*");
                     string title = items[1];
                     string shortCommitHash = items[2];
-                    Debug.WriteLine("shortCommitHash >" + shortCommitHash + "<");
+                    // setting branhc-commit refs
                     if (shortHashToCommitDict.ContainsKey(shortCommitHash))
                     {
                         Commit commit = shortHashToCommitDict[shortCommitHash];
@@ -691,6 +729,7 @@ public static class GitAPI
                     }
                 }
 
+                // branches-commits tuples
                 return new Tuple<List<Branch>, List<Commit>>(allBranches, sortedCommits);
             }
 
