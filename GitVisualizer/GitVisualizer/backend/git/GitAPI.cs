@@ -429,7 +429,7 @@ public static class GitAPI
                 if (liveRepository != null)
                 {
                     string com = $"cd '{liveRepository.dirPath}'; ";
-                    com += $"git reset {fpath}";
+                    com += $"git reset '{fpath}'";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     Debug.WriteLine($"unStageChange successful={result.success}");
@@ -462,6 +462,19 @@ public static class GitAPI
                 }
             }
 
+            public readonly static string description_stageAllUnstagedChanges = "";
+            public static void stageAllUnstagedChanges()
+            {
+                // stage all changed files
+                if (liveRepository != null)
+                {
+                    string com = $"cd '{liveRepository.dirPath}'; ";
+                    com += $"git add -u";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
+            }
+
             public readonly static string description_revertUnstagedChange = "";
             public static void revertUnstagedChange(string fpath)
             {
@@ -469,7 +482,7 @@ public static class GitAPI
                 if (liveRepository != null)
                 {
                     string com = $"cd '{liveRepository.dirPath}'; ";
-                    com += $"git checkout {fpath}";
+                    com += $"git checkout '{fpath}'";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                 }
@@ -483,19 +496,6 @@ public static class GitAPI
                 {
                     string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git checkout .";
-                    ShellComRes result = Shell.exec(com);
-                    // TODO check for command success
-                }
-            }
-
-            public readonly static string description_stageAllUnstagedChanges = "";
-            public static void stageAllUnstagedChanges()
-            {
-                // stage all changed files
-                if (liveRepository != null)
-                {
-                    string com = $"cd '{liveRepository.dirPath}'; ";
-                    com += $"git add -u";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                 }
@@ -543,6 +543,7 @@ public static class GitAPI
 
         public static List<Tuple<string, string>> getUnStagedFiles()
         {
+
             if (liveRepository != null)
             {
                 string com = $"cd '{liveRepository.dirPath}'; ";
