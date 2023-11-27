@@ -31,6 +31,7 @@
             commitChangesButton = new Button();
             mergingControlPanel = new Panel();
             panel1 = new Panel();
+            syncButton = new Button();
             commitMessageTextBox = new TextBox();
             activeRepoPanel = new Panel();
             activeRepositoryTextLabel = new Label();
@@ -111,20 +112,34 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(syncButton);
             panel1.Controls.Add(commitMessageTextBox);
             panel1.Controls.Add(commitChangesButton);
             panel1.Dock = DockStyle.Bottom;
-            panel1.Location = new Point(0, 474);
+            panel1.Location = new Point(0, 539);
             panel1.Name = "panel1";
-            panel1.Size = new Size(278, 199);
+            panel1.Size = new Size(278, 134);
             panel1.TabIndex = 17;
+            // 
+            // syncButton
+            // 
+            syncButton.Enabled = false;
+            syncButton.FlatStyle = FlatStyle.Flat;
+            syncButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            syncButton.Location = new Point(204, 71);
+            syncButton.Name = "syncButton";
+            syncButton.Size = new Size(56, 28);
+            syncButton.TabIndex = 17;
+            syncButton.Text = "Sync";
+            syncButton.UseVisualStyleBackColor = true;
+            syncButton.Click += OnSyncButton;
             // 
             // commitMessageTextBox
             // 
             commitMessageTextBox.Location = new Point(17, 20);
             commitMessageTextBox.Multiline = true;
             commitMessageTextBox.Name = "commitMessageTextBox";
-            commitMessageTextBox.Size = new Size(228, 45);
+            commitMessageTextBox.Size = new Size(243, 45);
             commitMessageTextBox.TabIndex = 8;
             commitMessageTextBox.TextChanged += commitMessageTextBox_TextChanged;
             // 
@@ -578,5 +593,6 @@
         private Label unstagedChangesLabel;
         private Button undoAllButton;
         private Button stageAllButton;
+        private Button syncButton;
     }
 }

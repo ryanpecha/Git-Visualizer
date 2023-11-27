@@ -116,5 +116,11 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Actions.LocalActions.commitStagedChanges(message);
             UpdateGridViews();
         }
+
+        private void OnSyncButton(object sender, EventArgs e)
+        {
+            GitAPI.Actions.LocalActions.sync();
+            UpdateGridViews();
+        }
     }
 }
