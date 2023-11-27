@@ -35,8 +35,14 @@
             branchesGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
             branchesGridView.EnableHeadersVisualStyles = false;
 
+            commitCommandPanel.BackColor = theme.ElementBackground;
+            commitCommandPanel.ForeColor = theme.TextSelectable;
+
+            selectedCommitTextLabel.ForeColor = theme.TextNormal;
+
             branchesControlPanel.BackColor = theme.PanelBackground;
             branchesControlPanel.ForeColor = theme.TextBright;
+
 
             activeRepositoryTextLabel.ForeColor = theme.TextSoft;
         }
@@ -136,7 +142,7 @@
             createBranchFromSelectedButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             createBranchFromSelectedButton.Location = new Point(3, 66);
             createBranchFromSelectedButton.Name = "createBranchFromSelectedButton";
-            createBranchFromSelectedButton.Size = new Size(180, 28);
+            createBranchFromSelectedButton.Size = new Size(200, 28);
             createBranchFromSelectedButton.TabIndex = 15;
             createBranchFromSelectedButton.Text = "Create Branch From Selected";
             createBranchFromSelectedButton.UseVisualStyleBackColor = true;
@@ -367,7 +373,7 @@
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Location = new Point(0, 32);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(189, 122);
+            flowLayoutPanel1.Size = new Size(211, 122);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // checkoutCommitButton
@@ -377,7 +383,7 @@
             checkoutCommitButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             checkoutCommitButton.Location = new Point(3, 3);
             checkoutCommitButton.Name = "checkoutCommitButton";
-            checkoutCommitButton.Size = new Size(180, 28);
+            checkoutCommitButton.Size = new Size(200, 28);
             checkoutCommitButton.TabIndex = 7;
             checkoutCommitButton.Text = "Checkout to Selected Commit";
             checkoutCommitButton.UseVisualStyleBackColor = true;
@@ -388,7 +394,7 @@
             newBranchFromCommitTextBox.Dock = DockStyle.Top;
             newBranchFromCommitTextBox.Location = new Point(3, 37);
             newBranchFromCommitTextBox.Name = "newBranchFromCommitTextBox";
-            newBranchFromCommitTextBox.Size = new Size(180, 23);
+            newBranchFromCommitTextBox.Size = new Size(200, 23);
             newBranchFromCommitTextBox.TabIndex = 14;
             // 
             // selectedCommitTextLabel

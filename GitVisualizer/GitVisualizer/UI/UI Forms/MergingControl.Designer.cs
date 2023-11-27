@@ -28,13 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Button commitChangesButton;
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
             mergingControlPanel = new Panel();
+            panel1 = new Panel();
+            commitMessageTextBox = new TextBox();
             activeRepoPanel = new Panel();
             activeRepositoryTextLabel = new Label();
             activeRepoLabel = new Label();
-            commonBranchesButtonsPanel = new Panel();
-            commonBranchButtonsFlowPanel = new FlowLayoutPanel();
-            button1 = new Button();
             titleLabel = new Label();
             mergingPanel = new Panel();
             diffPanel = new Panel();
@@ -43,19 +46,21 @@
             diffFile2Group = new GroupBox();
             diffControlPanel = new Panel();
             buttonSplitContainer = new SplitContainer();
-            chooseLocalButton = new Button();
-            chooseRemoteButton = new Button();
-            gitCommandPanel = new Panel();
-            gitButtonsPanel = new Panel();
-            textBox1 = new TextBox();
-            undoButton = new Button();
-            fetchButton = new Button();
-            pullButton = new Button();
-            pushButton = new Button();
+            commonBranchesButtonsPanel = new Panel();
+            stageChangesSplitContainer = new SplitContainer();
+            stagedChangesGroup = new GroupBox();
+            stagedChangesDataGridView = new DataGridView();
+            fileColumn = new DataGridViewTextBoxColumn();
+            unstageColumn = new DataGridViewButtonColumn();
+            unstagedChangesBox = new GroupBox();
+            unstagedChangesDataGridView = new DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewButtonColumn1 = new DataGridViewButtonColumn();
+            undoColumn = new DataGridViewButtonColumn();
+            commitChangesButton = new Button();
             mergingControlPanel.SuspendLayout();
+            panel1.SuspendLayout();
             activeRepoPanel.SuspendLayout();
-            commonBranchesButtonsPanel.SuspendLayout();
-            commonBranchButtonsFlowPanel.SuspendLayout();
             mergingPanel.SuspendLayout();
             diffPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)diffSplitContainer).BeginInit();
@@ -64,19 +69,35 @@
             diffSplitContainer.SuspendLayout();
             diffControlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).BeginInit();
-            buttonSplitContainer.Panel1.SuspendLayout();
-            buttonSplitContainer.Panel2.SuspendLayout();
             buttonSplitContainer.SuspendLayout();
-            gitCommandPanel.SuspendLayout();
-            gitButtonsPanel.SuspendLayout();
+            commonBranchesButtonsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)stageChangesSplitContainer).BeginInit();
+            stageChangesSplitContainer.Panel1.SuspendLayout();
+            stageChangesSplitContainer.Panel2.SuspendLayout();
+            stageChangesSplitContainer.SuspendLayout();
+            stagedChangesGroup.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)stagedChangesDataGridView).BeginInit();
+            unstagedChangesBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).BeginInit();
             SuspendLayout();
+            // 
+            // commitChangesButton
+            // 
+            commitChangesButton.FlatStyle = FlatStyle.Flat;
+            commitChangesButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            commitChangesButton.Location = new Point(17, 71);
+            commitChangesButton.Name = "commitChangesButton";
+            commitChangesButton.Size = new Size(181, 28);
+            commitChangesButton.TabIndex = 16;
+            commitChangesButton.Text = "Commit Staged Changes";
+            commitChangesButton.UseVisualStyleBackColor = true;
             // 
             // mergingControlPanel
             // 
             mergingControlPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             mergingControlPanel.BorderStyle = BorderStyle.FixedSingle;
+            mergingControlPanel.Controls.Add(panel1);
             mergingControlPanel.Controls.Add(activeRepoPanel);
-            mergingControlPanel.Controls.Add(commonBranchesButtonsPanel);
             mergingControlPanel.Controls.Add(titleLabel);
             mergingControlPanel.Dock = DockStyle.Left;
             mergingControlPanel.Location = new Point(0, 0);
@@ -84,6 +105,24 @@
             mergingControlPanel.Name = "mergingControlPanel";
             mergingControlPanel.Size = new Size(280, 675);
             mergingControlPanel.TabIndex = 4;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(commitMessageTextBox);
+            panel1.Controls.Add(commitChangesButton);
+            panel1.Dock = DockStyle.Bottom;
+            panel1.Location = new Point(0, 474);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(278, 199);
+            panel1.TabIndex = 17;
+            // 
+            // commitMessageTextBox
+            // 
+            commitMessageTextBox.Location = new Point(17, 20);
+            commitMessageTextBox.Multiline = true;
+            commitMessageTextBox.Name = "commitMessageTextBox";
+            commitMessageTextBox.Size = new Size(228, 45);
+            commitMessageTextBox.TabIndex = 8;
             // 
             // activeRepoPanel
             // 
@@ -116,38 +155,6 @@
             activeRepoLabel.Text = "Active Repository:";
             activeRepoLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // commonBranchesButtonsPanel
-            // 
-            commonBranchesButtonsPanel.Controls.Add(commonBranchButtonsFlowPanel);
-            commonBranchesButtonsPanel.Dock = DockStyle.Bottom;
-            commonBranchesButtonsPanel.Location = new Point(0, 420);
-            commonBranchesButtonsPanel.Name = "commonBranchesButtonsPanel";
-            commonBranchesButtonsPanel.Padding = new Padding(12);
-            commonBranchesButtonsPanel.Size = new Size(278, 253);
-            commonBranchesButtonsPanel.TabIndex = 9;
-            // 
-            // commonBranchButtonsFlowPanel
-            // 
-            commonBranchButtonsFlowPanel.Controls.Add(button1);
-            commonBranchButtonsFlowPanel.Dock = DockStyle.Fill;
-            commonBranchButtonsFlowPanel.Location = new Point(12, 12);
-            commonBranchButtonsFlowPanel.Margin = new Padding(0);
-            commonBranchButtonsFlowPanel.Name = "commonBranchButtonsFlowPanel";
-            commonBranchButtonsFlowPanel.Size = new Size(254, 229);
-            commonBranchButtonsFlowPanel.TabIndex = 10;
-            // 
-            // button1
-            // 
-            button1.Dock = DockStyle.Top;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(250, 38);
-            button1.TabIndex = 7;
-            button1.Text = "Create New Branch";
-            button1.UseVisualStyleBackColor = true;
-            // 
             // titleLabel
             // 
             titleLabel.Dock = DockStyle.Top;
@@ -163,7 +170,7 @@
             // mergingPanel
             // 
             mergingPanel.Controls.Add(diffPanel);
-            mergingPanel.Controls.Add(gitCommandPanel);
+            mergingPanel.Controls.Add(commonBranchesButtonsPanel);
             mergingPanel.Dock = DockStyle.Fill;
             mergingPanel.Location = new Point(280, 0);
             mergingPanel.Name = "mergingPanel";
@@ -183,6 +190,7 @@
             // diffSplitContainer
             // 
             diffSplitContainer.Dock = DockStyle.Fill;
+            diffSplitContainer.IsSplitterFixed = true;
             diffSplitContainer.Location = new Point(0, 50);
             diffSplitContainer.Margin = new Padding(8);
             diffSplitContainer.Name = "diffSplitContainer";
@@ -240,119 +248,173 @@
             buttonSplitContainer.Location = new Point(0, 0);
             buttonSplitContainer.Margin = new Padding(8);
             buttonSplitContainer.Name = "buttonSplitContainer";
-            // 
-            // buttonSplitContainer.Panel1
-            // 
-            buttonSplitContainer.Panel1.Controls.Add(chooseLocalButton);
-            // 
-            // buttonSplitContainer.Panel2
-            // 
-            buttonSplitContainer.Panel2.Controls.Add(chooseRemoteButton);
             buttonSplitContainer.Size = new Size(895, 50);
             buttonSplitContainer.SplitterDistance = 437;
             buttonSplitContainer.SplitterWidth = 18;
             buttonSplitContainer.TabIndex = 2;
             // 
-            // chooseLocalButton
+            // commonBranchesButtonsPanel
             // 
-            chooseLocalButton.Dock = DockStyle.Fill;
-            chooseLocalButton.FlatStyle = FlatStyle.Flat;
-            chooseLocalButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            chooseLocalButton.Location = new Point(0, 0);
-            chooseLocalButton.Name = "chooseLocalButton";
-            chooseLocalButton.Size = new Size(437, 50);
-            chooseLocalButton.TabIndex = 1;
-            chooseLocalButton.Text = "Choose All Changes From Your File";
-            chooseLocalButton.UseVisualStyleBackColor = true;
-            chooseLocalButton.Click += revokeAccessButton_Click;
+            commonBranchesButtonsPanel.Controls.Add(stageChangesSplitContainer);
+            commonBranchesButtonsPanel.Dock = DockStyle.Bottom;
+            commonBranchesButtonsPanel.Location = new Point(0, 475);
+            commonBranchesButtonsPanel.Name = "commonBranchesButtonsPanel";
+            commonBranchesButtonsPanel.Padding = new Padding(12);
+            commonBranchesButtonsPanel.Size = new Size(895, 200);
+            commonBranchesButtonsPanel.TabIndex = 11;
             // 
-            // chooseRemoteButton
+            // stageChangesSplitContainer
             // 
-            chooseRemoteButton.Dock = DockStyle.Fill;
-            chooseRemoteButton.FlatStyle = FlatStyle.Flat;
-            chooseRemoteButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            chooseRemoteButton.Location = new Point(0, 0);
-            chooseRemoteButton.Name = "chooseRemoteButton";
-            chooseRemoteButton.Size = new Size(440, 50);
-            chooseRemoteButton.TabIndex = 1;
-            chooseRemoteButton.Text = "Choose All Changes From Source File";
-            chooseRemoteButton.UseVisualStyleBackColor = true;
-            chooseRemoteButton.Click += revokeAccessButton_Click;
+            stageChangesSplitContainer.Dock = DockStyle.Fill;
+            stageChangesSplitContainer.IsSplitterFixed = true;
+            stageChangesSplitContainer.Location = new Point(12, 12);
+            stageChangesSplitContainer.Name = "stageChangesSplitContainer";
             // 
-            // gitCommandPanel
+            // stageChangesSplitContainer.Panel1
             // 
-            gitCommandPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            gitCommandPanel.Controls.Add(gitButtonsPanel);
-            gitCommandPanel.Dock = DockStyle.Bottom;
-            gitCommandPanel.Location = new Point(0, 475);
-            gitCommandPanel.Name = "gitCommandPanel";
-            gitCommandPanel.Size = new Size(895, 200);
-            gitCommandPanel.TabIndex = 5;
+            stageChangesSplitContainer.Panel1.Controls.Add(stagedChangesGroup);
             // 
-            // gitButtonsPanel
+            // stageChangesSplitContainer.Panel2
             // 
-            gitButtonsPanel.Controls.Add(textBox1);
-            gitButtonsPanel.Controls.Add(undoButton);
-            gitButtonsPanel.Controls.Add(fetchButton);
-            gitButtonsPanel.Controls.Add(pullButton);
-            gitButtonsPanel.Controls.Add(pushButton);
-            gitButtonsPanel.Dock = DockStyle.Left;
-            gitButtonsPanel.Location = new Point(0, 0);
-            gitButtonsPanel.Name = "gitButtonsPanel";
-            gitButtonsPanel.Size = new Size(434, 200);
-            gitButtonsPanel.TabIndex = 9;
+            stageChangesSplitContainer.Panel2.Controls.Add(unstagedChangesBox);
+            stageChangesSplitContainer.Size = new Size(871, 176);
+            stageChangesSplitContainer.SplitterDistance = 428;
+            stageChangesSplitContainer.SplitterWidth = 12;
+            stageChangesSplitContainer.TabIndex = 0;
             // 
-            // textBox1
+            // stagedChangesGroup
             // 
-            textBox1.Location = new Point(12, 60);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(324, 45);
-            textBox1.TabIndex = 8;
+            stagedChangesGroup.Controls.Add(stagedChangesDataGridView);
+            stagedChangesGroup.Dock = DockStyle.Fill;
+            stagedChangesGroup.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            stagedChangesGroup.Location = new Point(0, 0);
+            stagedChangesGroup.Margin = new Padding(0);
+            stagedChangesGroup.Name = "stagedChangesGroup";
+            stagedChangesGroup.Padding = new Padding(0);
+            stagedChangesGroup.Size = new Size(428, 176);
+            stagedChangesGroup.TabIndex = 0;
+            stagedChangesGroup.TabStop = false;
+            stagedChangesGroup.Text = "Staged Changes";
             // 
-            // undoButton
+            // stagedChangesDataGridView
             // 
-            undoButton.FlatStyle = FlatStyle.Flat;
-            undoButton.Location = new Point(257, 7);
-            undoButton.Margin = new Padding(1);
-            undoButton.Name = "undoButton";
-            undoButton.Size = new Size(79, 28);
-            undoButton.TabIndex = 7;
-            undoButton.Text = "Undo";
-            undoButton.UseVisualStyleBackColor = true;
+            stagedChangesDataGridView.AllowUserToAddRows = false;
+            stagedChangesDataGridView.AllowUserToDeleteRows = false;
+            stagedChangesDataGridView.AllowUserToResizeColumns = false;
+            stagedChangesDataGridView.AllowUserToResizeRows = false;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = SystemColors.Control;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            stagedChangesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            stagedChangesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            stagedChangesDataGridView.Columns.AddRange(new DataGridViewColumn[] { fileColumn, unstageColumn });
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = SystemColors.Window;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            stagedChangesDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
+            stagedChangesDataGridView.Dock = DockStyle.Fill;
+            stagedChangesDataGridView.Location = new Point(0, 16);
+            stagedChangesDataGridView.MultiSelect = false;
+            stagedChangesDataGridView.Name = "stagedChangesDataGridView";
+            stagedChangesDataGridView.ReadOnly = true;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = SystemColors.Control;
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            stagedChangesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            stagedChangesDataGridView.RowHeadersVisible = false;
+            stagedChangesDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            stagedChangesDataGridView.RowTemplate.Height = 25;
+            stagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            stagedChangesDataGridView.Size = new Size(428, 160);
+            stagedChangesDataGridView.TabIndex = 0;
             // 
-            // fetchButton
+            // fileColumn
             // 
-            fetchButton.FlatStyle = FlatStyle.Flat;
-            fetchButton.Location = new Point(175, 7);
-            fetchButton.Margin = new Padding(1);
-            fetchButton.Name = "fetchButton";
-            fetchButton.Size = new Size(79, 28);
-            fetchButton.TabIndex = 6;
-            fetchButton.Text = "Fetch";
-            fetchButton.UseVisualStyleBackColor = true;
+            fileColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            fileColumn.HeaderText = "File";
+            fileColumn.Name = "fileColumn";
+            fileColumn.ReadOnly = true;
             // 
-            // pullButton
+            // unstageColumn
             // 
-            pullButton.FlatStyle = FlatStyle.Flat;
-            pullButton.Location = new Point(93, 7);
-            pullButton.Margin = new Padding(1);
-            pullButton.Name = "pullButton";
-            pullButton.Size = new Size(79, 28);
-            pullButton.TabIndex = 5;
-            pullButton.Text = "Pull";
-            pullButton.UseVisualStyleBackColor = true;
+            unstageColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            unstageColumn.HeaderText = "Unstage";
+            unstageColumn.Name = "unstageColumn";
+            unstageColumn.ReadOnly = true;
+            unstageColumn.Resizable = DataGridViewTriState.False;
+            unstageColumn.Text = "unstage";
+            unstageColumn.Width = 60;
             // 
-            // pushButton
+            // unstagedChangesBox
             // 
-            pushButton.FlatStyle = FlatStyle.Flat;
-            pushButton.Location = new Point(12, 7);
-            pushButton.Margin = new Padding(1);
-            pushButton.Name = "pushButton";
-            pushButton.Size = new Size(79, 28);
-            pushButton.TabIndex = 4;
-            pushButton.Text = "Push";
-            pushButton.UseVisualStyleBackColor = true;
+            unstagedChangesBox.Controls.Add(unstagedChangesDataGridView);
+            unstagedChangesBox.Dock = DockStyle.Fill;
+            unstagedChangesBox.Location = new Point(0, 0);
+            unstagedChangesBox.Margin = new Padding(0);
+            unstagedChangesBox.Name = "unstagedChangesBox";
+            unstagedChangesBox.Padding = new Padding(0);
+            unstagedChangesBox.Size = new Size(431, 176);
+            unstagedChangesBox.TabIndex = 1;
+            unstagedChangesBox.TabStop = false;
+            unstagedChangesBox.Text = "Unstaged Changes";
+            // 
+            // unstagedChangesDataGridView
+            // 
+            unstagedChangesDataGridView.AllowUserToAddRows = false;
+            unstagedChangesDataGridView.AllowUserToDeleteRows = false;
+            unstagedChangesDataGridView.AllowUserToResizeColumns = false;
+            unstagedChangesDataGridView.AllowUserToResizeRows = false;
+            unstagedChangesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            unstagedChangesDataGridView.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewButtonColumn1, undoColumn });
+            unstagedChangesDataGridView.Dock = DockStyle.Fill;
+            unstagedChangesDataGridView.Location = new Point(0, 16);
+            unstagedChangesDataGridView.MultiSelect = false;
+            unstagedChangesDataGridView.Name = "unstagedChangesDataGridView";
+            unstagedChangesDataGridView.ReadOnly = true;
+            unstagedChangesDataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            unstagedChangesDataGridView.RowHeadersVisible = false;
+            unstagedChangesDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            unstagedChangesDataGridView.RowTemplate.Height = 25;
+            unstagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            unstagedChangesDataGridView.Size = new Size(431, 160);
+            unstagedChangesDataGridView.TabIndex = 1;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewTextBoxColumn1.HeaderText = "File";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewButtonColumn1
+            // 
+            dataGridViewButtonColumn1.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dataGridViewButtonColumn1.HeaderText = "Stage";
+            dataGridViewButtonColumn1.Name = "dataGridViewButtonColumn1";
+            dataGridViewButtonColumn1.ReadOnly = true;
+            dataGridViewButtonColumn1.Resizable = DataGridViewTriState.False;
+            dataGridViewButtonColumn1.Text = "+";
+            dataGridViewButtonColumn1.Width = 42;
+            // 
+            // undoColumn
+            // 
+            undoColumn.HeaderText = "Undo";
+            undoColumn.MinimumWidth = 50;
+            undoColumn.Name = "undoColumn";
+            undoColumn.ReadOnly = true;
+            undoColumn.Width = 50;
             // 
             // MergingControl
             // 
@@ -365,10 +427,10 @@
             Size = new Size(1175, 675);
             Load += MergingControl_Load;
             mergingControlPanel.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             activeRepoPanel.ResumeLayout(false);
             activeRepoPanel.PerformLayout();
-            commonBranchesButtonsPanel.ResumeLayout(false);
-            commonBranchButtonsFlowPanel.ResumeLayout(false);
             mergingPanel.ResumeLayout(false);
             diffPanel.ResumeLayout(false);
             diffSplitContainer.Panel1.ResumeLayout(false);
@@ -378,13 +440,17 @@
             ((System.ComponentModel.ISupportInitialize)diffSplitContainer).EndInit();
             diffSplitContainer.ResumeLayout(false);
             diffControlPanel.ResumeLayout(false);
-            buttonSplitContainer.Panel1.ResumeLayout(false);
-            buttonSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).EndInit();
             buttonSplitContainer.ResumeLayout(false);
-            gitCommandPanel.ResumeLayout(false);
-            gitButtonsPanel.ResumeLayout(false);
-            gitButtonsPanel.PerformLayout();
+            commonBranchesButtonsPanel.ResumeLayout(false);
+            stageChangesSplitContainer.Panel1.ResumeLayout(false);
+            stageChangesSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)stageChangesSplitContainer).EndInit();
+            stageChangesSplitContainer.ResumeLayout(false);
+            stagedChangesGroup.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)stagedChangesDataGridView).EndInit();
+            unstagedChangesBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -395,8 +461,31 @@
             mergingControlPanel.BackColor = theme.PanelBackground;
             mergingControlPanel.ForeColor = theme.TextBright;
 
+            stagedChangesDataGridView.BackColor = theme.ElementBackground;
+            stagedChangesDataGridView.ForeColor = theme.TextSelectable;
 
-            gitCommandPanel.BackColor = theme.ElementBackground;
+            stagedChangesDataGridView.BackgroundColor = theme.ElementBackground;
+            stagedChangesDataGridView.ForeColor = theme.TextSelectable;
+            stagedChangesDataGridView.DefaultCellStyle.ForeColor = theme.TextNormal;
+            stagedChangesDataGridView.DefaultCellStyle.BackColor = theme.ElementBackground;
+            stagedChangesDataGridView.ColumnHeadersDefaultCellStyle.ForeColor = theme.TextSelectable;
+            stagedChangesDataGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
+            stagedChangesDataGridView.EnableHeadersVisualStyles = false;
+
+            unstagedChangesDataGridView.BackColor = theme.ElementBackground;
+            unstagedChangesDataGridView.ForeColor = theme.TextSelectable;
+
+            unstagedChangesDataGridView.BackgroundColor = theme.ElementBackground;
+            unstagedChangesDataGridView.ForeColor = theme.TextSelectable;
+            unstagedChangesDataGridView.DefaultCellStyle.ForeColor = theme.TextNormal;
+            unstagedChangesDataGridView.DefaultCellStyle.BackColor = theme.ElementBackground;
+            unstagedChangesDataGridView.ColumnHeadersDefaultCellStyle.ForeColor = theme.TextSelectable;
+            unstagedChangesDataGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
+            unstagedChangesDataGridView.EnableHeadersVisualStyles = false;
+
+            stagedChangesGroup.ForeColor = theme.TextNormal;
+            unstagedChangesBox.ForeColor = theme.TextNormal;
+
             diffFile1Group.ForeColor = theme.TextHeader;
             diffFile2Group.ForeColor = theme.TextHeader;
 
@@ -412,22 +501,23 @@
         private SplitContainer diffSplitContainer;
         private GroupBox diffFile1Group;
         private GroupBox diffFile2Group;
-        private Panel gitCommandPanel;
-        private Button chooseLocalButton;
-        private Button chooseRemoteButton;
         private Panel diffControlPanel;
         private SplitContainer buttonSplitContainer;
-        private Panel gitButtonsPanel;
-        private Button undoButton;
-        private Button fetchButton;
-        private Button pullButton;
-        private Button pushButton;
-        private Panel commonBranchesButtonsPanel;
-        private FlowLayoutPanel commonBranchButtonsFlowPanel;
-        private Button button1;
         private Panel activeRepoPanel;
         private Label activeRepositoryTextLabel;
         private Label activeRepoLabel;
-        private TextBox textBox1;
+        private TextBox commitMessageTextBox;
+        private Panel panel1;
+        private Panel commonBranchesButtonsPanel;
+        private SplitContainer stageChangesSplitContainer;
+        private GroupBox stagedChangesGroup;
+        private DataGridView stagedChangesDataGridView;
+        private DataGridViewTextBoxColumn fileColumn;
+        private DataGridViewButtonColumn unstageColumn;
+        private GroupBox unstagedChangesBox;
+        private DataGridView unstagedChangesDataGridView;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewButtonColumn dataGridViewButtonColumn1;
+        private DataGridViewButtonColumn undoColumn;
     }
 }
