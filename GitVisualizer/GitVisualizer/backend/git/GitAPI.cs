@@ -442,6 +442,12 @@ public static class GitAPI
                     com += $"git reset {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
+                    Debug.WriteLine($"unStageChange succussful={result.success}");
+                    if (result.psObjects != null){
+                        foreach(PSObject pso in result.psObjects) {
+                            Debug.WriteLine(pso.ToString());
+                        }
+                    }
                 }
             }
 
