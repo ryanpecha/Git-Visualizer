@@ -123,7 +123,6 @@
             // 
             // syncButton
             // 
-            syncButton.Enabled = false;
             syncButton.FlatStyle = FlatStyle.Flat;
             syncButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             syncButton.Location = new Point(204, 71);

@@ -119,7 +119,7 @@ namespace GitVisualizer.UI.UI_Forms
 
         private void OnSyncButton(object sender, EventArgs e)
         {
-            GitAPI.Actions.LocalActions.sync();
+            GitAPI.Actions.RemoteActions.sync();
             UpdateGridViews();
         }
     }

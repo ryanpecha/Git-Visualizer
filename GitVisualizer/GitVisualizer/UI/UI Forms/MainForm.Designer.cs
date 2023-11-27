@@ -38,6 +38,7 @@
             pageButtonsPanel = new Panel();
             buttonsMenuPanel = new Panel();
             revokeAccessButton = new Button();
+            navigationTooltip = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)githubBindingSource).BeginInit();
             pageButtonsPanel.SuspendLayout();
             buttonsMenuPanel.SuspendLayout();
@@ -56,6 +57,7 @@
             repositoriesPageButton.Size = new Size(156, 32);
             repositoriesPageButton.TabIndex = 0;
             repositoriesPageButton.Text = "Repositories";
+            navigationTooltip.SetToolTip(repositoriesPageButton, "For managing, creating, and viewing local and remote repositories.\r\n");
             repositoriesPageButton.UseVisualStyleBackColor = true;
             repositoriesPageButton.Click += OnRepositoriesButtonPress;
             // 
@@ -68,6 +70,7 @@
             branchesPageButton.Size = new Size(156, 32);
             branchesPageButton.TabIndex = 1;
             branchesPageButton.Text = "Branches";
+            navigationTooltip.SetToolTip(branchesPageButton, "Shows history, changesets, and branches and allows checking into commits or branches.");
             branchesPageButton.UseVisualStyleBackColor = true;
             branchesPageButton.Click += OnBranchesButtonPress;
             // 
@@ -166,5 +169,6 @@
         private Panel pageButtonsPanel;
         private Panel buttonsMenuPanel;
         private Button revokeAccessButton;
+        private ToolTip navigationTooltip;
     }
 }

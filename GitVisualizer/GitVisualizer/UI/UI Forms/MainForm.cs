@@ -101,5 +101,6 @@ namespace GitVisualizer.UI.UI_Forms
         {
             Program.Github.DeleteToken();
         }
+
     }
 }
