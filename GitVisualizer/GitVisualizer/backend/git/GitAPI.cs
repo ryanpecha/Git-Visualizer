@@ -174,13 +174,6 @@ public static class GitAPI
             }
 
 
-            public readonly static string description_push = "";
-            public static void push()
-            {
-
-            }
-
-
             public readonly static string description_addLocalBranchToRemote = "";
             public static void addLocalBranchToRemote(Branch branch)
             {
@@ -214,6 +207,30 @@ public static class GitAPI
                 }
             }
 
+            
+            public readonly static string description_sync = "";
+            public static void sync()
+            {
+                // fetch and pull
+                if (liveCommit != null)
+                {
+                    string com = $"cd '{liveCommit.localRepository.dirPath}'; ";
+                    com += $"git fetch --all";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                    com = $"cd '{liveCommit.localRepository.dirPath}'; ";
+                    com += $"git pull --all";
+                    result = Shell.exec(com);
+                    if (liveBranch != null)
+                    {
+                        // TODO check for command success
+                        com = $"cd '{liveCommit.localRepository.dirPath}'; ";
+                        com += $"git push origin {liveBranch.title}:{liveBranch.title}";
+                        result = Shell.exec(com);
+                        // TODO check for command success
+                    }
+                }
+            }
         }
 
 
@@ -310,30 +327,6 @@ public static class GitAPI
 
             }
 
-
-            public readonly static string description_sync = "";
-            public static void sync()
-            {
-                // fetch and pull
-                if (liveCommit != null)
-                {
-                    string com = $"cd '{liveCommit.localRepository.dirPath}'; ";
-                    com += $"git fetch --all";
-                    ShellComRes result = Shell.exec(com);
-                    // TODO check for command success
-                    com = $"cd '{liveCommit.localRepository.dirPath}'; ";
-                    com += $"git pull --all";
-                    result = Shell.exec(com);
-                    if (liveBranch != null)
-                    {
-                        // TODO check for command success
-                        com = $"cd '{liveCommit.localRepository.dirPath}'; ";
-                        com += $"git push origin {liveBranch.title}:{liveBranch.title}";
-                        result = Shell.exec(com);
-                        // TODO check for command success
-                    }
-                }
-            }
 
             public readonly static string description_trackDirectory = "";
             public static void trackDirectory(string dirPath, bool recursive, Action? callback)
