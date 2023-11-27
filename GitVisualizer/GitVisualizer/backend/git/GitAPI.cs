@@ -324,13 +324,15 @@ public static class GitAPI
                     com = $"cd '{liveCommit.localRepository.dirPath}'; ";
                     com += $"git pull --all";
                     result = Shell.exec(com);
-                    // TODO check for command success
-                    com = $"cd '{liveCommit.localRepository.dirPath}'; ";
-                    com += $"git push";
-                    result = Shell.exec(com);
-                    // TODO check for command success
+                    if (liveBranch != null)
+                    {
+                        // TODO check for command success
+                        com = $"cd '{liveCommit.localRepository.dirPath}'; ";
+                        com += $"git push origin {liveBranch.title}:{liveBranch.title}";
+                        result = Shell.exec(com);
+                        // TODO check for command success
+                    }
                 }
-                
             }
 
             public readonly static string description_trackDirectory = "";
