@@ -41,7 +41,8 @@ public static class GitAPI
     // url -> list<localRepo>
     private static Dictionary<string, HashSet<RepositoryLocal>> remoteBackedLocalRepositories;
 
-
+    public static int? commitsAhead {get; private set;} = null;
+    public static int? commitsBehind {get; private set;} = null;
 
     /// <summary> GitAPI initialization </summary>
     static GitAPI()
@@ -232,7 +233,6 @@ public static class GitAPI
                 }
             }
         }
-
 
 
         /// <summary> actions on the local filesystem within the currently checked-out commit </summary>
@@ -653,6 +653,41 @@ public static class GitAPI
             }
             //
             return repoPairs;
+        }
+
+
+        public static Tuple<string?,string?> getLiveCommitShortHashAndBranch() {
+            if (liveRepository != null) {
+                string com = $"cd '{liveRepository.dirPath}'; ";
+                com += $"git log -1 --pretty=format:%h";
+                ShellComRes result = Shell.exec(com);
+                if (result.psObjects == null)
+                {
+                    return new(null,null);
+                }
+                string shortHash = result.psObjects[0].ToString().Trim();
+                Debug.WriteLine($"CURRENT COMMIT SHORT HASH {shortHash}");
+
+                com = $"cd '{liveRepository.dirPath}'; ";
+                com += $"git git rev-parse --abbrev-ref HEAD";
+                result = Shell.exec(com);
+                if (result.psObjects == null)
+                {
+                    return new(null,null);
+                }
+                string branchName = result.psObjects[0].ToString().Trim();
+                Debug.WriteLine($"CURRENT COMMIT SHORT HASH {shortHash}");
+
+                return new Tuple<string,string>(shortHash,);
+            }
+            return null;
+        }
+
+
+        public static void setCommitsAheadAndBehind() {
+            if (liveRepository != null) {
+                "git rev-list --left-right --count origin/master...origin/test-branch";
+            }
         }
 
 
