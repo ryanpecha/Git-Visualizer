@@ -714,6 +714,7 @@ public static class GitAPI
                         commitsAhead = null;
                         commitsBehind = null;
                         return;
+                        
                     }
                     string line = result.psObjects[0].ToString().Trim();
                     line = Regex.Replace(line, @"\s+", " ");
