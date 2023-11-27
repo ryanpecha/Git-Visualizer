@@ -219,7 +219,7 @@ public static class GitAPI
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     com = $"cd '{liveCommit.localRepository.dirPath}'; ";
-                    com += $"git pull --all";
+                    com += $"git pull --all -p";
                     result = Shell.exec(com);
                     if (liveBranch != null)
                     {
