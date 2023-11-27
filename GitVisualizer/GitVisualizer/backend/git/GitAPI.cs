@@ -218,7 +218,7 @@ public static class GitAPI
                     string cloneDirPath = Path.GetFullPath(dialog.SelectedPath);
                     string clonedRepoPath = cloneDirPath + "/" + repositoryRemote.title;
                     //
-                    string com = $"cd {cloneDirPath}; ";
+                    string com = $"cd '{cloneDirPath}'; ";
                     com += $"git clone {repositoryRemote.cloneURL}";
                     ShellComRes comResult = Shell.exec(com);
                     // TODO check for command success
@@ -242,7 +242,7 @@ public static class GitAPI
                 if (!ReferenceEquals(repositoryLocal, liveRepository))
                 {
                     // TODO check that .git folder and repo exist
-                    string com = $"cd {repositoryLocal.dirPath}; ";
+                    string com = $"cd '{repositoryLocal.dirPath}'; ";
                     com += $"git init {repositoryLocal.dirPath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -259,7 +259,7 @@ public static class GitAPI
                 if (!ReferenceEquals(commit, liveCommit))
                 {
                     // TODO check that commit exists
-                    string com = $"cd {commit.localRepository.dirPath}; ";
+                    string com = $"cd '{commit.localRepository.dirPath}'; ";
                     com += $"git checkout {commit.longCommitHash}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -275,7 +275,7 @@ public static class GitAPI
                 if (!ReferenceEquals(branch.commit, liveCommit))
                 {
                     // TODO check that branch exists and points to a valid commit
-                    string com = $"cd {branch.commit.localRepository.dirPath}; ";
+                    string com = $"cd '{branch.commit.localRepository.dirPath}'; ";
                     com += $"git checkout {branch.title}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -289,7 +289,7 @@ public static class GitAPI
             public static Branch createLocalBranch(string title, Commit commit)
             {
                 // TODO check that branch does not exist
-                string com = $"cd {commit.localRepository.dirPath}; ";
+                string com = $"cd '{commit.localRepository.dirPath}'; ";
                 com += $"git checkout -b {title} {commit.longCommitHash}";
                 ShellComRes result = Shell.exec(com);
                 // TODO check for command success
@@ -306,11 +306,11 @@ public static class GitAPI
                 if (!ReferenceEquals(branch.commit, liveCommit))
                 {
                     // TODO check that branch exists and points to a valid commit
-                    string com = $"cd {branch.commit.localRepository.dirPath}; ";
+                    string com = $"cd '{branch.commit.localRepository.dirPath}'; ";
                     com += $"git branch -D {branch.title}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
-                    com = $"cd {branch.commit.localRepository.dirPath}; ";
+                    com = $"cd '{branch.commit.localRepository.dirPath}'; ";
                     com += $"git push origin -d {branch.title}";
                     result = Shell.exec(com);
                 }
@@ -329,11 +329,11 @@ public static class GitAPI
                 // fetch and pull
                 if (liveCommit != null)
                 {
-                    string com = $"cd {liveCommit.localRepository.dirPath}; ";
+                    string com = $"cd '{liveCommit.localRepository.dirPath}'; ";
                     com += $"git fetch --all";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
-                    com = $"cd {liveCommit.localRepository.dirPath}; ";
+                    com = $"cd '{liveCommit.localRepository.dirPath}'; ";
                     com += $"git pull --all";
                     result = Shell.exec(com);
                     // TODO check for command success
@@ -393,7 +393,7 @@ public static class GitAPI
                         return;
                     }
                     //
-                    string com = $"cd {repoDirPath}; ";
+                    string com = $"cd '{repoDirPath}'; ";
                     com += $"git init --initial-branch=main; git add -A; git commit -m 'initalizing {repoName}'";
                     ShellComRes comResult = Shell.exec(com);
                     // TODO check for command success
@@ -406,7 +406,7 @@ public static class GitAPI
             {
                 if (liveRepository != null)
                 {
-                    string com = $"cd {liveRepository.dirPath}; ";
+                    string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git clean -fdx";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -419,13 +419,15 @@ public static class GitAPI
                 // stage file changes to commit
                 if (liveRepository != null)
                 {
-                    string com = $"cd {liveRepository.dirPath}; ";
+                    string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git add {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     Debug.WriteLine($"stageChange succussful={result.success}");
-                    if (result.psObjects != null){
-                        foreach(PSObject pso in result.psObjects) {
+                    if (result.psObjects != null)
+                    {
+                        foreach (PSObject pso in result.psObjects)
+                        {
                             Debug.WriteLine(pso.ToString());
                         }
                     }
@@ -438,13 +440,15 @@ public static class GitAPI
                 // unstage file changes to commit
                 if (liveRepository != null)
                 {
-                    string com = $"cd {liveRepository.dirPath}; ";
+                    string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git reset {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     Debug.WriteLine($"unStageChange succussful={result.success}");
-                    if (result.psObjects != null){
-                        foreach(PSObject pso in result.psObjects) {
+                    if (result.psObjects != null)
+                    {
+                        foreach (PSObject pso in result.psObjects)
+                        {
                             Debug.WriteLine(pso.ToString());
                         }
                     }
@@ -463,7 +467,7 @@ public static class GitAPI
                 // unstage all staged changes
                 if (liveRepository != null)
                 {
-                    string com = $"cd {liveRepository.dirPath}; ";
+                    string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git reset";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -476,7 +480,7 @@ public static class GitAPI
                 // reset file to state without any changes
                 if (liveRepository != null)
                 {
-                    string com = $"cd {liveRepository.dirPath}; ";
+                    string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git checkout {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -489,7 +493,7 @@ public static class GitAPI
                 // reset file to state without any changes
                 if (liveRepository != null)
                 {
-                    string com = $"cd {liveRepository.dirPath}; ";
+                    string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git checkout .";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -502,7 +506,7 @@ public static class GitAPI
                 // stage all changed files
                 if (liveRepository != null)
                 {
-                    string com = $"cd {liveRepository.dirPath}; ";
+                    string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git add -u";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
@@ -525,7 +529,7 @@ public static class GitAPI
         {
             if (liveRepository != null)
             {
-                string com = $"cd {liveRepository.dirPath}; ";
+                string com = $"cd '{liveRepository.dirPath}'; ";
                 com += $"git diff --cached --name-status";
                 ShellComRes result = Shell.exec(com);
                 if (result.psObjects == null)
@@ -554,7 +558,7 @@ public static class GitAPI
         {
             if (liveRepository != null)
             {
-                string com = $"cd {liveRepository.dirPath}; ";
+                string com = $"cd '{liveRepository.dirPath}'; ";
                 com += $"git add -A -n";
                 ShellComRes result = Shell.exec(com);
                 if (result.psObjects == null)
@@ -662,7 +666,7 @@ public static class GitAPI
         {
             if (liveRepository != null)
             {
-                string baseCom = $"cd {liveRepository.dirPath}; ";
+                string baseCom = $"cd '{liveRepository.dirPath}'; ";
 
                 // Commit hash (H)
                 // Abbreviated commit hash (h)
