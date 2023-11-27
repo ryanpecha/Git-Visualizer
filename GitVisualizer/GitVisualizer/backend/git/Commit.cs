@@ -2,18 +2,18 @@
 
 public class Commit
 {
-    public RepositoryLocal localRepository;
-    public List<Branch> branches;
+    public RepositoryLocal localRepository {get; set;}
+    public List<Branch> branches {get; set;} = new();
 
-    public string longCommitHash;
-    public string shortCommitHash;
-    public string longTreeHash;
-    public List<string> parentHashes;
+    public string longCommitHash {get; set;}
+    public string shortCommitHash {get; set;}
+    public string longTreeHash {get; set;}
+    public List<string> parentHashes {get; set;} = new();
 
-    public string committerName;
-    public DateTime committerDate;
-    public string subject;
+    public string committerName {get; set;}
+    public DateTime committerDate {get; set;}
+    public string subject {get; set;}
 
-    public List<Commit> parents;
-    public List<Commit> children;
+    public List<Commit> parents {get; set;} = new();
+    public List<Commit> children {get; set;} = new();
 }
