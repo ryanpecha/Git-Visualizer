@@ -14,12 +14,6 @@ using System.Text.RegularExpressions;
 
 namespace GitVisualizer;
 
-// TODO - load current checked out commit/branch on initial branch view
-// TODO - keep track of remote branches
-// TODO - load previously loaded repo on program startup
-// TODO - load staged changes on initial branch view
-// TODO - 
-
 public static class GitAPI
 {
 
