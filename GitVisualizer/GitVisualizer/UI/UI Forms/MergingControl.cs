@@ -114,6 +114,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             string message = commitMessageTextBox.Text;
             GitAPI.Actions.LocalActions.commitStagedChanges(message);
+            commitMessageTextBox.Text = string.Empty;
             UpdateGridViews();
         }
 

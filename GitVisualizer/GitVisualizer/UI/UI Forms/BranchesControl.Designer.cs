@@ -59,6 +59,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             createBranchFromCurrentButton = new Button();
             createBranchFromSelectedButton = new Button();
             checkoutBranchButton = new Button();
@@ -86,6 +87,7 @@
             checkoutCommitButton = new Button();
             newBranchFromCommitTextBox = new TextBox();
             selectedCommitTextLabel = new Label();
+            branchesTooltip = new ToolTip(components);
             branchesControlPanel.SuspendLayout();
             checkedOutBranchPanel.SuspendLayout();
             commonBranchesButtonsPanel.SuspendLayout();
@@ -243,6 +245,7 @@
             activeRepositoryTextLabel.Size = new Size(267, 77);
             activeRepositoryTextLabel.TabIndex = 4;
             activeRepositoryTextLabel.Text = "Select a Local Repo to Set Workspace";
+            branchesTooltip.SetToolTip(activeRepositoryTextLabel, "Your current working repository");
             // 
             // activeRepoLabel
             // 
@@ -453,5 +456,6 @@
         private Button deleteBranchButton;
         private Button createBranchFromCurrentButton;
         private Button createBranchFromSelectedButton;
+        private ToolTip branchesTooltip;
     }
 }
