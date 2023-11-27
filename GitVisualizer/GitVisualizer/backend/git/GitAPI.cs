@@ -411,7 +411,7 @@ public static class GitAPI
                     com += $"git add {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
-                    Debug.WriteLine($"stageChange successful={result.success}");
+                    Debug.WriteLine($"stageChange successful={result.success} fpath=${fpath} dirpath={liveRepository.dirPath}");
                     if (result.psObjects != null)
                     {
                         foreach (PSObject pso in result.psObjects)
@@ -528,10 +528,17 @@ public static class GitAPI
                 foreach (PSObject pso in result.psObjects)
                 {
                     string line = pso.ToString().Trim();
+                    // line : eventNameChar     fpath
+                    /*
                     string[] splitLine = line.Split(" ");
                     string action = splitLine[0][0].ToString().ToUpper();
                     string fpath = string.Join(" ", splitLine[1..]);
+                    */
+                    string action = line[0].ToString().ToUpper();
+                    string fpath = line[1..].Trim();
+                    //fpath = fpath.Substring(1, fpath.Length - 1);
                     Debug.WriteLine("GOT STAGED CHANGE");
+                    Debug.WriteLine("LINE : " + line);
                     Debug.WriteLine("ACTION : " + action);
                     Debug.WriteLine("FPATH : " + fpath);
                     changes.Add(new Tuple<string, string>(action, fpath));
@@ -543,7 +550,6 @@ public static class GitAPI
 
         public static List<Tuple<string, string>> getUnStagedFiles()
         {
-
             if (liveRepository != null)
             {
                 string com = $"cd '{liveRepository.dirPath}'; ";
@@ -558,9 +564,14 @@ public static class GitAPI
                 foreach (PSObject pso in result.psObjects)
                 {
                     string line = pso.ToString().Trim();
+                    // line : eventName 'fpath'
                     string[] splitLine = line.Split(" ");
-                    string action = splitLine[0][0].ToString().ToUpper();
-                    string fpath = string.Join(" ", splitLine[1..])[1..^1];
+                    // extracting
+                    string action = line[0].ToString().ToUpper();
+                    // extracting fname
+                    string fpath = string.Join(" ", splitLine[1..]);
+                    // removing enclosing parens
+                    fpath = fpath.Substring(1, fpath.Length - 2);
                     Debug.WriteLine("UNSTAGED CHANGE");
                     Debug.WriteLine("ACTION : " + action);
                     Debug.WriteLine("FPATH : " + fpath);
@@ -614,6 +625,7 @@ public static class GitAPI
                     if (curLocal != null)
                     {
                         curLocals.Remove(curLocal);
+
                     }
                 }
                 // backed local without github
@@ -668,7 +680,6 @@ public static class GitAPI
                 Dictionary<string, Commit> longHashToCommitDict = new Dictionary<string, Commit>();
                 Dictionary<string, Commit> shortHashToCommitDict = new Dictionary<string, Commit>();
                 List<Commit> commits = new List<Commit>();
-                Commit? head = null;
                 string delim = " | ";
                 string com = baseCom + $"git log --oneline --pretty=format:\"%H{delim}%h{delim}%T{delim}%P\"";
                 ShellComRes comResult = Shell.exec(com);
@@ -697,11 +708,6 @@ public static class GitAPI
                             commit.parentHashes.Add(parentHash);
                         }
                     }
-                    else
-                    {
-                        head = commit;
-                    }
-
                     longHashToCommitDict[commit.longCommitHash] = commit;
                     shortHashToCommitDict[commit.shortCommitHash] = commit;
                     commits.Add(commit);
@@ -796,12 +802,14 @@ public static class GitAPI
                 {
                     string line = pso.ToString().Trim();
                     // commit
-                    if (line.Contains("*")){
+                    if (line.Contains("*"))
+                    {
                         Commit commit = commits[i];
                         i++;
                     }
                     // branching/connecting commits
-                    else {
+                    else
+                    {
 
                     }
                     //Debug.WriteLine(pso.ToString());
