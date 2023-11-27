@@ -174,19 +174,24 @@ public static class GitAPI
             public readonly static string description_createRemoteRepository = "";
             public static async void createRemoteRepository(RepositoryLocal localRepo, Action callback)
             {
-                await github.CreateRepo(localRepo.title);
+                string cloneURL = await github.CreateRepo(localRepo.title);
+
+                cloneURL = github.CreateAuthenticatedGit(cloneURL);
                 Scanning.scanForAllReposAsync(callback);
+                
+
+
                 //string remoteURL = localRepo.getRemoteURL();
                 //string remoteURL = localRepo.getRemoteURL();
 
-                /*
-                if (remoteURL != null) {
+                if (cloneURL != null) {
                     string com = $"cd '{localRepo.dirPath}'; ";
-                    com += $"git remote add origin {remoteURL}; ";
-                    //com += "git push --set-upstream origin ";
+                    com += $"git remote add origin {cloneURL}; ";
+                    // TODO
+                    string mainBranchTitle = "";
+                    //com += $"git push --set-upstream origin {mainBranchTitle}";
                     ShellComRes comResult = Shell.exec(com);
                 }
-                */
             }
 
 
