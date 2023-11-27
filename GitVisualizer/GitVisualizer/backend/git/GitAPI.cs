@@ -417,25 +417,38 @@ public static class GitAPI
             public static void stageChange(string fpath)
             {
                 // stage file changes to commit
+                if (liveRepository != null)
+                {
+                    string com = $"cd {liveRepository.dirPath}; ";
+                    com += $"git add {fpath}";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
             }
 
             public readonly static string description_unStageChanges = "";
             public static void unStageChange(string fpath)
             {
                 // unstage file changes to commit
-
+                if (liveRepository != null)
+                {
+                    string com = $"cd {liveRepository.dirPath}; ";
+                    com += $"git reset {fpath}";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
             }
 
             public readonly static string description_commitStagedChanges = "";
             public static void commitStagedChanges(string message)
             {
-
+                
             }
 
             public readonly static string description_undoUnstagedChanges = "";
             public static void undoUnstagedChange(string fpath)
             {
-
+                
             }
 
             public readonly static string description_undoLastCommit = "";
@@ -443,6 +456,20 @@ public static class GitAPI
             {
 
             }
+
+            public readonly static string description_unstageAllStagedChanges = "";
+            public static void unstageAllStagedChanges()
+            {
+                // unstage file changes to commit
+                if (liveRepository != null)
+                {
+                    string com = $"cd {liveRepository.dirPath}; ";
+                    com += $"git reset";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
+            }
+
         }
     }
 
