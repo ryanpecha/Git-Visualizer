@@ -547,7 +547,7 @@ public static class GitAPI
             return repoPairs;
         }
 
-        public static List<Commit> getCommits()
+        public static Tuple<List<Branch>, List<Commit>> getCommitsAndBranches()
         {
             if (liveRepository != null)
             {
@@ -559,7 +559,8 @@ public static class GitAPI
                 // Committer name (cn)
                 // Committer date (cd)
                 // Subject (s)
-                Dictionary<string, Commit> treeHashToCommitDict = new Dictionary<string, Commit>();
+                Dictionary<string, Commit> longHashToCommitDict = new Dictionary<string, Commit>();
+                Dictionary<string, Commit> shortHashToCommitDict = new Dictionary<string, Commit>();
                 List<Commit> commits = new List<Commit>();
                 Commit? head = null;
                 string delim = " | ";
@@ -567,7 +568,9 @@ public static class GitAPI
                 ShellComRes comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    return new List<Commit>();
+                    List<Branch> tb = new List<Branch>();
+                    List<Commit> tc = new List<Commit>();
+                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
                 }
                 foreach (PSObject pso in comResult.psObjects)
                 {
@@ -577,6 +580,7 @@ public static class GitAPI
 
                     Commit commit = new Commit();
                     commit.localRepository = liveRepository;
+                    commit.branches = new List<Branch>();
                     commit.parents = new List<Commit>();
                     commit.children = new List<Commit>();
 
@@ -596,7 +600,8 @@ public static class GitAPI
                         head = commit;
                     }
 
-                    treeHashToCommitDict[commit.longCommitHash] = commit;
+                    longHashToCommitDict[commit.longCommitHash] = commit;
+                    shortHashToCommitDict[commit.shortCommitHash] = commit;
                     commits.Add(commit);
                 }
 
@@ -646,13 +651,13 @@ public static class GitAPI
                     i++;
                 }
 
-                foreach (KeyValuePair<string, Commit> kvp in treeHashToCommitDict)
+                foreach (KeyValuePair<string, Commit> kvp in longHashToCommitDict)
                 {
                     string longHash = kvp.Key;
                     Commit commit = kvp.Value;
                     foreach (string parentHash in commit.parentHashes)
                     {
-                        Commit parentCommit = treeHashToCommitDict[parentHash];
+                        Commit parentCommit = longHashToCommitDict[parentHash];
                         commit.parents.Add(parentCommit);
                         parentCommit.children.Add(commit);
                     }
@@ -660,9 +665,33 @@ public static class GitAPI
 
                 List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
                 sortedCommits.Reverse();
-                return sortedCommits;
+
+                List<Branch> allBranches = new List<Branch>();
+                // getting commits
+                com = $"cd {liveRepository.dirPath}; ";
+                // list local branchs : *(live or not) | name | short hash | most recent commit msg
+                com += $"git branch -vv";
+                ShellComRes result = Shell.exec(com);
+                foreach (PSObject pso in result.psObjects)
+                {
+                    string line = pso.ToString().TrimEnd();
+                    Debug.WriteLine("BRANCH >" + line + "<");
+                    string[] items = line.Split(" ");
+                    bool live = items[0].Equals("*");
+                    string title = items[1];
+                    string shortCommitHash = items[2];
+                    Commit commit = shortHashToCommitDict[shortCommitHash];
+                    Branch branch = new Branch(title, commit);
+                    commit.branches.Add(branch);
+                    allBranches.Add(branch);
+                }
+
+                return new Tuple<List<Branch>, List<Commit>>(allBranches, sortedCommits);
             }
-            return new List<Commit>();
+
+            List<Branch> b = new List<Branch>();
+            List<Commit> c = new List<Commit>();
+            return new Tuple<List<Branch>, List<Commit>>(b, c);
         }
     }
 }

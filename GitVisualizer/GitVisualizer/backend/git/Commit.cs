@@ -3,6 +3,7 @@
 public class Commit
 {
     public RepositoryLocal localRepository;
+    public List<Branch> branches;
 
     public string longCommitHash;
     public string shortCommitHash;
