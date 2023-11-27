@@ -27,6 +27,7 @@ namespace GitVisualizer.UI.UI_Forms
             Color.Plum];
 
         private List<Commit> commitHistory = new();
+        Commit selectedCommit = null;
         private int currentDepth = 0;
 
 
@@ -48,7 +49,6 @@ namespace GitVisualizer.UI.UI_Forms
 
             activeRepositoryTextLabel.Text = GitAPI.liveRepository.title;
             activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
-
         }
         private void UpdateGridView()
         {
@@ -58,9 +58,39 @@ namespace GitVisualizer.UI.UI_Forms
             foreach (Commit commit in commitHistory)
             {
                 Debug.WriteLine(commit.subject);
-                int index = branchesGridView.Rows.Add(null, commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
+                int index = branchesGridView.Rows.Add(null, "branch?", commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
                 branchesGridView.Rows[index].Cells[0].ToolTipText = commit.longCommitHash;
             }
+        }
+
+        public void OnCheckoutToBranchButton()
+        {
+            Branch selected = null;
+            GitAPI.Actions.LocalActions.checkoutBranch(selected);
+        }
+
+        public void OnDeleteBranchButton()
+        {
+            Branch selected = null;
+            GitAPI.Actions.LocalActions.deleteBranchLocal(selected);
+        }
+
+        public void OnCreateBranchFromCurrentButton()
+        {
+            string title = null;
+            Branch branch = GitAPI.Actions.LocalActions.createLocalBranch(title, GitAPI.liveCommit);
+            GitAPI.Actions.RemoteActions.addLocalBranchToRemote(branch);
+        }
+
+        public void OnCheckoutToSelectedCommitButton()
+        {
+            if (selectedCommit == null) { return; }
+            GitAPI.Actions.LocalActions.checkoutCommit(selectedCommit);
+        }
+
+        public void OnCreateBranchFromSelectedButton()
+        {
+
         }
 
         /// <summary>
@@ -97,14 +127,12 @@ namespace GitVisualizer.UI.UI_Forms
             e.Handled = true;
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        private void branchesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
-        }
-
-        private void branchesControlPanel_Paint(object sender, PaintEventArgs e)
-        {
-
+            int index = e.RowIndex;
+            if (index < 1) { return; }
+            selectedCommit = commitHistory[index];
+            selectedCommitTextLabel.Text = "Selected Commit: " + selectedCommit.shortCommitHash;
         }
     }
 }
