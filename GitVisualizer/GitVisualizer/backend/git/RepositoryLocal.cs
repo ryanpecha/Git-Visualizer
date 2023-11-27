@@ -65,6 +65,7 @@ public class RepositoryLocal : Repository
         else {
             Debug.WriteLine($"getRemoteURL failed for {dirPath}");
         }
+        Debug.WriteLine($"getRemoteURL returning {res} for {dirPath}");
         return res;
     }
 }
