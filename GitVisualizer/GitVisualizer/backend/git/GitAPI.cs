@@ -239,8 +239,6 @@ public static class GitAPI
         public static class LocalActions
         {
 
-            public readonly static string description_getCloneURL = "";
-
             public readonly static string description_setLiveRepository = "";
             public static void setLiveRepository(RepositoryLocal repositoryLocal)
             {
