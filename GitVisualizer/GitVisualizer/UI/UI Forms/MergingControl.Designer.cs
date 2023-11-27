@@ -34,7 +34,6 @@
             activeRepoLabel = new Label();
             commonBranchesButtonsPanel = new Panel();
             commonBranchButtonsFlowPanel = new FlowLayoutPanel();
-            checkoutCommitButton = new Button();
             button1 = new Button();
             titleLabel = new Label();
             mergingPanel = new Panel();
@@ -129,7 +128,6 @@
             // 
             // commonBranchButtonsFlowPanel
             // 
-            commonBranchButtonsFlowPanel.Controls.Add(checkoutCommitButton);
             commonBranchButtonsFlowPanel.Controls.Add(button1);
             commonBranchButtonsFlowPanel.Dock = DockStyle.Fill;
             commonBranchButtonsFlowPanel.Location = new Point(12, 12);
@@ -138,24 +136,12 @@
             commonBranchButtonsFlowPanel.Size = new Size(254, 229);
             commonBranchButtonsFlowPanel.TabIndex = 10;
             // 
-            // checkoutCommitButton
-            // 
-            checkoutCommitButton.Dock = DockStyle.Top;
-            checkoutCommitButton.FlatStyle = FlatStyle.Flat;
-            checkoutCommitButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkoutCommitButton.Location = new Point(3, 3);
-            checkoutCommitButton.Name = "checkoutCommitButton";
-            checkoutCommitButton.Size = new Size(250, 38);
-            checkoutCommitButton.TabIndex = 6;
-            checkoutCommitButton.Text = "Checkout to Selected";
-            checkoutCommitButton.UseVisualStyleBackColor = true;
-            // 
             // button1
             // 
             button1.Dock = DockStyle.Top;
             button1.FlatStyle = FlatStyle.Flat;
             button1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.Location = new Point(3, 47);
+            button1.Location = new Point(3, 3);
             button1.Name = "button1";
             button1.Size = new Size(250, 38);
             button1.TabIndex = 7;
@@ -438,7 +424,6 @@
         private Button pushButton;
         private Panel commonBranchesButtonsPanel;
         private FlowLayoutPanel commonBranchButtonsFlowPanel;
-        private Button checkoutCommitButton;
         private Button button1;
         private Panel activeRepoPanel;
         private Label activeRepositoryTextLabel;

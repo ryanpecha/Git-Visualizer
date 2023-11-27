@@ -50,36 +50,94 @@
         private void InitializeComponent()
         {
             Button checkoutBranchButton;
+            Button deleteBranchButton;
+            Button createBranchFromCurrentButton;
+            Button createBranchFromSelectedButton;
             branchesControlPanel = new Panel();
             checkedOutBranchPanel = new Panel();
             checkedOutBranchTextLabel = new Label();
             checkedOutBranchLabel = new Label();
             commonBranchesButtonsPanel = new Panel();
             commonBranchButtonsFlowPanel = new FlowLayoutPanel();
+            branchComboBox = new ComboBox();
+            newBranchTextBox = new TextBox();
             activeRepoPanel = new Panel();
             activeRepositoryTextLabel = new Label();
             activeRepoLabel = new Label();
             titleLabel = new Label();
             branchesGridView = new DataGridView();
             graphColumn = new DataGridViewImageColumn();
+            branchColumn = new DataGridViewTextBoxColumn();
             idColumn = new DataGridViewTextBoxColumn();
             userColumn = new DataGridViewTextBoxColumn();
             dateColumn = new DataGridViewTextBoxColumn();
             commentColumn = new DataGridViewTextBoxColumn();
-            gitCommandPanel = new Panel();
+            commitCommandPanel = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
             checkoutCommitButton = new Button();
-            branchComboBox = new ComboBox();
+            newBranchFromCommitTextBox = new TextBox();
+            selectedCommitTextLabel = new Label();
             checkoutBranchButton = new Button();
+            deleteBranchButton = new Button();
+            createBranchFromCurrentButton = new Button();
+            createBranchFromSelectedButton = new Button();
             branchesControlPanel.SuspendLayout();
             checkedOutBranchPanel.SuspendLayout();
             commonBranchesButtonsPanel.SuspendLayout();
             commonBranchButtonsFlowPanel.SuspendLayout();
             activeRepoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).BeginInit();
-            gitCommandPanel.SuspendLayout();
+            commitCommandPanel.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
+            // 
+            // checkoutBranchButton
+            // 
+            checkoutBranchButton.Dock = DockStyle.Top;
+            checkoutBranchButton.FlatStyle = FlatStyle.Flat;
+            checkoutBranchButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            checkoutBranchButton.Location = new Point(3, 32);
+            checkoutBranchButton.Name = "checkoutBranchButton";
+            checkoutBranchButton.Size = new Size(250, 38);
+            checkoutBranchButton.TabIndex = 7;
+            checkoutBranchButton.Text = "Checkout To Branch";
+            checkoutBranchButton.UseVisualStyleBackColor = true;
+            // 
+            // deleteBranchButton
+            // 
+            deleteBranchButton.Dock = DockStyle.Top;
+            deleteBranchButton.FlatStyle = FlatStyle.Flat;
+            deleteBranchButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            deleteBranchButton.Location = new Point(3, 76);
+            deleteBranchButton.Name = "deleteBranchButton";
+            deleteBranchButton.Size = new Size(250, 38);
+            deleteBranchButton.TabIndex = 11;
+            deleteBranchButton.Text = "Delete Branch";
+            deleteBranchButton.UseVisualStyleBackColor = true;
+            // 
+            // createBranchFromCurrentButton
+            // 
+            createBranchFromCurrentButton.Dock = DockStyle.Top;
+            createBranchFromCurrentButton.FlatStyle = FlatStyle.Flat;
+            createBranchFromCurrentButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            createBranchFromCurrentButton.Location = new Point(3, 149);
+            createBranchFromCurrentButton.Name = "createBranchFromCurrentButton";
+            createBranchFromCurrentButton.Size = new Size(250, 68);
+            createBranchFromCurrentButton.TabIndex = 13;
+            createBranchFromCurrentButton.Text = "Create Branch From Current Commit";
+            createBranchFromCurrentButton.UseVisualStyleBackColor = true;
+            // 
+            // createBranchFromSelectedButton
+            // 
+            createBranchFromSelectedButton.Dock = DockStyle.Top;
+            createBranchFromSelectedButton.FlatStyle = FlatStyle.Flat;
+            createBranchFromSelectedButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            createBranchFromSelectedButton.Location = new Point(3, 66);
+            createBranchFromSelectedButton.Name = "createBranchFromSelectedButton";
+            createBranchFromSelectedButton.Size = new Size(180, 28);
+            createBranchFromSelectedButton.TabIndex = 15;
+            createBranchFromSelectedButton.Text = "Create Branch From Selected";
+            createBranchFromSelectedButton.UseVisualStyleBackColor = true;
             // 
             // branchesControlPanel
             // 
@@ -95,7 +153,6 @@
             branchesControlPanel.Name = "branchesControlPanel";
             branchesControlPanel.Size = new Size(280, 675);
             branchesControlPanel.TabIndex = 2;
-            branchesControlPanel.Paint += branchesControlPanel_Paint;
             // 
             // checkedOutBranchPanel
             // 
@@ -141,6 +198,9 @@
             // 
             commonBranchButtonsFlowPanel.Controls.Add(branchComboBox);
             commonBranchButtonsFlowPanel.Controls.Add(checkoutBranchButton);
+            commonBranchButtonsFlowPanel.Controls.Add(deleteBranchButton);
+            commonBranchButtonsFlowPanel.Controls.Add(newBranchTextBox);
+            commonBranchButtonsFlowPanel.Controls.Add(createBranchFromCurrentButton);
             commonBranchButtonsFlowPanel.Dock = DockStyle.Fill;
             commonBranchButtonsFlowPanel.Location = new Point(12, 12);
             commonBranchButtonsFlowPanel.Margin = new Padding(0);
@@ -148,17 +208,22 @@
             commonBranchButtonsFlowPanel.Size = new Size(254, 217);
             commonBranchButtonsFlowPanel.TabIndex = 10;
             // 
-            // checkoutBranchButton
+            // branchComboBox
             // 
-            checkoutBranchButton.Dock = DockStyle.Top;
-            checkoutBranchButton.FlatStyle = FlatStyle.Flat;
-            checkoutBranchButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkoutBranchButton.Location = new Point(3, 32);
-            checkoutBranchButton.Name = "checkoutBranchButton";
-            checkoutBranchButton.Size = new Size(250, 38);
-            checkoutBranchButton.TabIndex = 7;
-            checkoutBranchButton.Text = "Checkout To Branch";
-            checkoutBranchButton.UseVisualStyleBackColor = true;
+            branchComboBox.Dock = DockStyle.Top;
+            branchComboBox.FormattingEnabled = true;
+            branchComboBox.Location = new Point(3, 3);
+            branchComboBox.Name = "branchComboBox";
+            branchComboBox.Size = new Size(248, 23);
+            branchComboBox.TabIndex = 10;
+            // 
+            // newBranchTextBox
+            // 
+            newBranchTextBox.Dock = DockStyle.Top;
+            newBranchTextBox.Location = new Point(3, 120);
+            newBranchTextBox.Name = "newBranchTextBox";
+            newBranchTextBox.Size = new Size(248, 23);
+            newBranchTextBox.TabIndex = 12;
             // 
             // activeRepoPanel
             // 
@@ -210,7 +275,7 @@
             branchesGridView.AllowUserToResizeRows = false;
             branchesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             branchesGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            branchesGridView.Columns.AddRange(new DataGridViewColumn[] { graphColumn, idColumn, userColumn, dateColumn, commentColumn });
+            branchesGridView.Columns.AddRange(new DataGridViewColumn[] { graphColumn, branchColumn, idColumn, userColumn, dateColumn, commentColumn });
             branchesGridView.Dock = DockStyle.Fill;
             branchesGridView.ImeMode = ImeMode.Off;
             branchesGridView.Location = new Point(280, 0);
@@ -224,6 +289,7 @@
             branchesGridView.ShowEditingIcon = false;
             branchesGridView.Size = new Size(895, 675);
             branchesGridView.TabIndex = 3;
+            branchesGridView.CellClick += branchesGridView_CellContentClick;
             branchesGridView.CellPainting += BranchesGridViewDrawCell;
             // 
             // graphColumn
@@ -234,6 +300,15 @@
             graphColumn.Name = "graphColumn";
             graphColumn.ReadOnly = true;
             graphColumn.Resizable = DataGridViewTriState.True;
+            // 
+            // branchColumn
+            // 
+            branchColumn.FillWeight = 25F;
+            branchColumn.HeaderText = "Branch";
+            branchColumn.Name = "branchColumn";
+            branchColumn.ReadOnly = true;
+            branchColumn.Resizable = DataGridViewTriState.True;
+            branchColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // idColumn
             // 
@@ -270,51 +345,63 @@
             commentColumn.ReadOnly = true;
             commentColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // gitCommandPanel
+            // commitCommandPanel
             // 
-            gitCommandPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            gitCommandPanel.Controls.Add(flowLayoutPanel1);
-            gitCommandPanel.Dock = DockStyle.Bottom;
-            gitCommandPanel.Location = new Point(280, 475);
-            gitCommandPanel.Name = "gitCommandPanel";
-            gitCommandPanel.Size = new Size(895, 200);
-            gitCommandPanel.TabIndex = 6;
+            commitCommandPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            commitCommandPanel.Controls.Add(flowLayoutPanel1);
+            commitCommandPanel.Controls.Add(selectedCommitTextLabel);
+            commitCommandPanel.Dock = DockStyle.Bottom;
+            commitCommandPanel.Location = new Point(280, 521);
+            commitCommandPanel.Name = "commitCommandPanel";
+            commitCommandPanel.Size = new Size(895, 154);
+            commitCommandPanel.TabIndex = 6;
             // 
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.Controls.Add(checkoutCommitButton);
+            flowLayoutPanel1.Controls.Add(newBranchFromCommitTextBox);
+            flowLayoutPanel1.Controls.Add(createBranchFromSelectedButton);
             flowLayoutPanel1.Dock = DockStyle.Left;
-            flowLayoutPanel1.Location = new Point(0, 0);
+            flowLayoutPanel1.Location = new Point(0, 32);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(259, 200);
-            flowLayoutPanel1.TabIndex = 0;
+            flowLayoutPanel1.Size = new Size(189, 122);
+            flowLayoutPanel1.TabIndex = 6;
             // 
             // checkoutCommitButton
             // 
             checkoutCommitButton.Dock = DockStyle.Top;
             checkoutCommitButton.FlatStyle = FlatStyle.Flat;
-            checkoutCommitButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            checkoutCommitButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             checkoutCommitButton.Location = new Point(3, 3);
             checkoutCommitButton.Name = "checkoutCommitButton";
-            checkoutCommitButton.Size = new Size(250, 38);
+            checkoutCommitButton.Size = new Size(180, 28);
             checkoutCommitButton.TabIndex = 7;
-            checkoutCommitButton.Text = "Checkout to Commit";
+            checkoutCommitButton.Text = "Checkout to Selected Commit";
             checkoutCommitButton.UseVisualStyleBackColor = true;
             // 
-            // branchComboBox
+            // newBranchFromCommitTextBox
             // 
-            branchComboBox.Dock = DockStyle.Top;
-            branchComboBox.FormattingEnabled = true;
-            branchComboBox.Location = new Point(3, 3);
-            branchComboBox.Name = "branchComboBox";
-            branchComboBox.Size = new Size(248, 23);
-            branchComboBox.TabIndex = 10;
+            newBranchFromCommitTextBox.Dock = DockStyle.Top;
+            newBranchFromCommitTextBox.Location = new Point(3, 37);
+            newBranchFromCommitTextBox.Name = "newBranchFromCommitTextBox";
+            newBranchFromCommitTextBox.Size = new Size(180, 23);
+            newBranchFromCommitTextBox.TabIndex = 14;
+            // 
+            // selectedCommitTextLabel
+            // 
+            selectedCommitTextLabel.Dock = DockStyle.Top;
+            selectedCommitTextLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            selectedCommitTextLabel.Location = new Point(0, 0);
+            selectedCommitTextLabel.Name = "selectedCommitTextLabel";
+            selectedCommitTextLabel.Size = new Size(895, 32);
+            selectedCommitTextLabel.TabIndex = 5;
+            selectedCommitTextLabel.Text = "Selected Commit:";
             // 
             // BranchesControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(gitCommandPanel);
+            Controls.Add(commitCommandPanel);
             Controls.Add(branchesGridView);
             Controls.Add(branchesControlPanel);
             Name = "BranchesControl";
@@ -324,11 +411,13 @@
             checkedOutBranchPanel.PerformLayout();
             commonBranchesButtonsPanel.ResumeLayout(false);
             commonBranchButtonsFlowPanel.ResumeLayout(false);
+            commonBranchButtonsFlowPanel.PerformLayout();
             activeRepoPanel.ResumeLayout(false);
             activeRepoPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).EndInit();
-            gitCommandPanel.ResumeLayout(false);
+            commitCommandPanel.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
+            flowLayoutPanel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -345,14 +434,18 @@
         private Label checkedOutBranchLabel;
         private FlowLayoutPanel commonBranchButtonsFlowPanel;
         private Button checkoutBranchButton;
+        private ComboBox branchComboBox;
+        private Panel commitCommandPanel;
+        private TextBox newBranchTextBox;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Button checkoutCommitButton;
+        private TextBox newBranchFromCommitTextBox;
+        private Label selectedCommitTextLabel;
         private DataGridViewImageColumn graphColumn;
+        private DataGridViewTextBoxColumn branchColumn;
         private DataGridViewTextBoxColumn idColumn;
         private DataGridViewTextBoxColumn userColumn;
         private DataGridViewTextBoxColumn dateColumn;
         private DataGridViewTextBoxColumn commentColumn;
-        private ComboBox branchComboBox;
-        private Panel gitCommandPanel;
-        private FlowLayoutPanel flowLayoutPanel1;
-        private Button checkoutCommitButton;
     }
 }
