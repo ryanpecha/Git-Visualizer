@@ -512,7 +512,6 @@ public static class GitAPI
     /// <summary> Git Data Getters </summary>
     public static class Getters
     {
-
         public static List<Tuple<string, string>> getStagedFiles()
         {
             if (liveRepository != null)
@@ -560,7 +559,7 @@ public static class GitAPI
                     string line = pso.ToString().Trim();
                     string[] splitLine = line.Split(" ");
                     string action = splitLine[0][0].ToString().ToUpper();
-                    string fpath = string.Join(" ", splitLine[1..]);
+                    string fpath = string.Join(" ", splitLine[1..])[1..^1];
                     Debug.WriteLine("UNSTAGED CHANGE");
                     Debug.WriteLine("ACTION : " + action);
                     Debug.WriteLine("FPATH : " + fpath);
