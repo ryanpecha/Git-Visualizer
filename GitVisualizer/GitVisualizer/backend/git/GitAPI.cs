@@ -59,14 +59,11 @@ public static class GitAPI
 
     public class Scanning
     {
-
-        //
         public static void scanForLocalRepos(Action? callback)
         {
             Debug.WriteLine("scanDirs()");
             foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
             {
-                Debug.WriteLine($"SCANNING recursive={trackedDir.recursive} path={trackedDir.path}");
                 string dirPath = trackedDir.path;
                 bool recursive = trackedDir.recursive;
                 SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
@@ -95,13 +92,11 @@ public static class GitAPI
                     {
                         continue;
                     }
-                    Debug.WriteLine($"LOCATED LOCAL REPO title={repoName} path={repoDirPath}");
                     localRepositories[newLocalRepo.dirPath] = newLocalRepo;
                     // skipping remote refs for local only repos
                     string? remoteURL = newLocalRepo.getRemoteURL();
                     if (remoteURL == null)
                     {
-                        Debug.WriteLine($"remoteURL is null for {repoDirPath}");
                         continue;
                     }
                     if (remoteBackedLocalRepositories.ContainsKey(remoteURL))
@@ -112,12 +107,10 @@ public static class GitAPI
                     }
                     // initalizing with single local repo
                     remoteBackedLocalRepositories[remoteURL] = [newLocalRepo];
-                    Debug.WriteLine($"LOCATED BACKING FOR LOCAL REPO title={repoName} path={repoDirPath} remote={remoteURL}");
                 }
             }
             if (callback != null)
             {
-                Debug.WriteLine("scanDirs() calling callback");
                 callback();
             }
         }
@@ -140,13 +133,8 @@ public static class GitAPI
                     remoteRepositories[newRemoteRepo.cloneURL] = newRemoteRepo;
                 }
             }
-            else
-            {
-                Debug.WriteLine("WARNING : GitHub remote fetch returned null");
-            }
             if (callback != null)
             {
-                Debug.WriteLine("scanRemotesAsync() calling callback");
                 callback();
             }
         }
@@ -162,7 +150,6 @@ public static class GitAPI
             await scanForRemoteReposAsync(null);
             if (callback != null)
             {
-                Debug.WriteLine("scanAllAsync() calling callback");
                 callback();
             }
         }
@@ -424,7 +411,7 @@ public static class GitAPI
                     com += $"git add {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
-                    Debug.WriteLine($"stageChange succussful={result.success}");
+                    Debug.WriteLine($"stageChange successful={result.success}");
                     if (result.psObjects != null)
                     {
                         foreach (PSObject pso in result.psObjects)
@@ -445,7 +432,7 @@ public static class GitAPI
                     com += $"git reset {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
-                    Debug.WriteLine($"unStageChange succussful={result.success}");
+                    Debug.WriteLine($"unStageChange successful={result.success}");
                     if (result.psObjects != null)
                     {
                         foreach (PSObject pso in result.psObjects)
@@ -545,7 +532,7 @@ public static class GitAPI
                     string[] splitLine = line.Split(" ");
                     string action = splitLine[0][0].ToString().ToUpper();
                     string fpath = string.Join(" ", splitLine[1..]);
-                    Debug.WriteLine("STAGED CHANGE");
+                    Debug.WriteLine("GOT STAGED CHANGE");
                     Debug.WriteLine("ACTION : " + action);
                     Debug.WriteLine("FPATH : " + fpath);
                     changes.Add(new Tuple<string, string>(action, fpath));
@@ -622,7 +609,7 @@ public static class GitAPI
                         RepositoryRemote remote = remoteRepositories[remoteURL];
                         curLocal = local;
                         repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(local, remote));
-                        Debug.WriteLine($"LOCAL BACKED WITH GITHUB : {local.title}");
+                        Debug.WriteLine($"REPO : LOCAL BACKED WITH GITHUB : {local.title}");
                     }
                     if (curLocal != null)
                     {
@@ -637,7 +624,7 @@ public static class GitAPI
                     {
                         curLocal = local;
                         repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(local, null));
-                        Debug.WriteLine($"LOCAL BACKED WITHOUT GITHUB : {local.title} URL={local.getRemoteURL()}");
+                        Debug.WriteLine($"REPO : LOCAL BACKED WITHOUT GITHUB : {local.title} URL={local.getRemoteURL()}");
                     }
                     if (curLocal != null)
                     {
@@ -649,14 +636,14 @@ public static class GitAPI
                 {
                     RepositoryRemote remote = remoteRepositories[remoteURL];
                     repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(null, remote));
-                    Debug.WriteLine($"GITHUB ONLY : {remote.title} : URL={remote.cloneURL}");
+                    Debug.WriteLine($"REPO : GITHUB ONLY : {remote.title} : URL={remote.cloneURL}");
                 }
             }
             // local only
             foreach (RepositoryLocal local in curLocals)
             {
                 repoPairs.Add(new Tuple<RepositoryLocal?, RepositoryRemote?>(local, null));
-                Debug.WriteLine($"LOCAL ONLY : {local.title}");
+                Debug.WriteLine($"REPO : LOCAL ONLY : {local.title}");
             }
             //
             return repoPairs;
@@ -695,7 +682,6 @@ public static class GitAPI
                 // longCommitHash, shortCommitHash, longTreeHash, parentHashes
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine("COMMIT INFO >" + pso + "<");
                     string sline = pso.ToString().Trim();
                     string[] cols = sline.Split(delim);
 
@@ -733,7 +719,6 @@ public static class GitAPI
                 int i = 0;
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine("COMMITTER NAME >" + pso + "<");
                     string committerName = pso.ToString().Trim();
                     Commit commit = commits[i];
                     commit.committerName = committerName;
@@ -752,7 +737,6 @@ public static class GitAPI
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine("COMMITER DATE >" + pso + "<");
                     string gitDateFormat = pso.ToString().Trim();
                     DateTime committerDate;
                     DateTime.TryParseExact(
@@ -779,7 +763,6 @@ public static class GitAPI
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
                 {
-                    Debug.WriteLine("SUBJECT >" + pso + "<");
                     string subject = pso.ToString().Trim();
                     Commit commit = commits[i];
                     commit.subject = subject;
