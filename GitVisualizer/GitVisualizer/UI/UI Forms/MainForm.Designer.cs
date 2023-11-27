@@ -116,11 +116,12 @@
             // 
             // revokeAccessButton
             // 
+            revokeAccessButton.Dock = DockStyle.Right;
             revokeAccessButton.FlatStyle = FlatStyle.Flat;
             revokeAccessButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            revokeAccessButton.Location = new Point(1090, 5);
+            revokeAccessButton.Location = new Point(1093, 0);
             revokeAccessButton.Name = "revokeAccessButton";
-            revokeAccessButton.Size = new Size(91, 36);
+            revokeAccessButton.Size = new Size(91, 47);
             revokeAccessButton.TabIndex = 9;
             revokeAccessButton.Text = "Sign Out";
             revokeAccessButton.UseVisualStyleBackColor = true;

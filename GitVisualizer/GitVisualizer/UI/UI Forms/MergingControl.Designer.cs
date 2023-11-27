@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Button commitChangesButton;
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            commitChangesButton = new Button();
             mergingControlPanel = new Panel();
             panel1 = new Panel();
             commitMessageTextBox = new TextBox();
@@ -57,7 +57,6 @@
             dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             dataGridViewButtonColumn1 = new DataGridViewButtonColumn();
             undoColumn = new DataGridViewButtonColumn();
-            commitChangesButton = new Button();
             mergingControlPanel.SuspendLayout();
             panel1.SuspendLayout();
             activeRepoPanel.SuspendLayout();
@@ -83,6 +82,7 @@
             // 
             // commitChangesButton
             // 
+            commitChangesButton.Enabled = false;
             commitChangesButton.FlatStyle = FlatStyle.Flat;
             commitChangesButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             commitChangesButton.Location = new Point(17, 71);
@@ -123,6 +123,7 @@
             commitMessageTextBox.Name = "commitMessageTextBox";
             commitMessageTextBox.Size = new Size(228, 45);
             commitMessageTextBox.TabIndex = 8;
+            commitMessageTextBox.TextChanged += commitMessageTextBox_TextChanged;
             // 
             // activeRepoPanel
             // 
@@ -523,5 +524,6 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewButtonColumn dataGridViewButtonColumn1;
         private DataGridViewButtonColumn undoColumn;
+        private Button commitChangesButton;
     }
 }

@@ -75,5 +75,17 @@ namespace GitVisualizer.UI.UI_Forms
 
             }
         }
+
+        private void commitMessageTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (commitMessageTextBox.Text.Length == 0)
+            {
+                commitChangesButton.Enabled = false;
+            }
+            else
+            {
+                commitChangesButton.Enabled = true;
+            }
+        }
     }
 }
