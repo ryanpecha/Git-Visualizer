@@ -75,10 +75,6 @@ public static class GitAPI
                     continue;
                 }
                 string[] gitFolderPaths = Directory.GetDirectories(dirPath, ".git", searchOption);
-
-                //localRepositories.Clear();
-                //cloneableLocalRepositories.Clear();
-
                 foreach (string gitFolderPath in gitFolderPaths)
                 {
                     // getting parent folder of .git folder
@@ -170,29 +166,6 @@ public static class GitAPI
             }
         }
     }
-
-    /*
-        All repository actions
-
-        Remote
-        * Clone
-        * Delete
-        * Open on GitHub
-
-        Local 
-        * Create New
-        ---
-        * View
-        * Delete
-        * Add to GitHub (requires no existing remote)
-        * Open in File Explorer
-    */
-
-    /*
-        Current local repository actions
-
-        * 
-    */
 
     /// <summary> Git Actions </summary>
     public static class Actions
@@ -454,7 +427,7 @@ public static class GitAPI
             }
 
             public readonly static string description_commitStagedChanges = "";
-            public static void commitStagedChanges()
+            public static void commitStagedChanges(string message)
             {
 
             }
@@ -493,7 +466,6 @@ public static class GitAPI
         public readonly static string description_getAllRepositories = "";
         public static List<Tuple<RepositoryLocal?, RepositoryRemote?>> getAllRepositories()
         {
-            Debug.WriteLine("GETTING ALL REPOS");
             //
             List<Tuple<RepositoryLocal?, RepositoryRemote?>> repoPairs = new List<Tuple<RepositoryLocal?, RepositoryRemote?>>();
             //
@@ -504,7 +476,6 @@ public static class GitAPI
             allURLS.UnionWith(localBackedURLS);
             //
             HashSet<RepositoryLocal> curLocals = localRepositories.Values.ToHashSet();
-            //
             foreach (string remoteURL in allURLS)
             {
 
@@ -701,9 +672,8 @@ public static class GitAPI
                 // getting all branches
                 List<Branch> allBranches = new List<Branch>();
                 // getting commits
-                com = $"cd {liveRepository.dirPath}; ";
                 // list local branchs : *(live or not) | name | short hash | most recent commit msg
-                com += $"git branch -vv";
+                com = baseCom + $"git branch -vv";
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
