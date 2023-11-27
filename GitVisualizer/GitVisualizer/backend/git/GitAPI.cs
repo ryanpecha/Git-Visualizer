@@ -448,7 +448,7 @@ public static class GitAPI
             public readonly static string description_undoUnstagedChanges = "";
             public static void undoUnstagedChange(string fpath)
             {
-                
+                // reset file to state without any changes
             }
 
             public readonly static string description_undoLastCommit = "";
