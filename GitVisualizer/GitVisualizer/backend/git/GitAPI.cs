@@ -468,7 +468,7 @@ public static class GitAPI
                     string line = pso.ToString().Trim();
                     string[] splitLine = line.Split(" ");
                     string action = splitLine[0][0].ToString().ToUpper();
-                    string fpath = splitLine[1];
+                    string fpath = string.Join(" ", splitLine[1..]);
                     changes.Add(new Tuple<string, string>(action, fpath));
                 }
                 return changes;
@@ -494,12 +494,13 @@ public static class GitAPI
                     string line = pso.ToString().Trim();
                     string[] splitLine = line.Split(" ");
                     string action = splitLine[0][0].ToString().ToUpper();
-                    string fpath = splitLine[1];
+                    string fpath = string.Join(" ", splitLine[1..]);
                     changes.Add(new Tuple<string, string>(action, fpath));
                 }
                 return changes;
             }
             return new();
+
         }
 
         public readonly static string description_getRemoteRepositories = "";
