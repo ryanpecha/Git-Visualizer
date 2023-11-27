@@ -718,8 +718,9 @@ public static class GitAPI
                     string line = result.psObjects[0].ToString().Trim();
                     line = Regex.Replace(line, @"\s+", " ");
                     string[] nums = line.Split(" ");
-                    //commitsAhead = int.Parse(nums[1]);
-                    //commitsBehind = int.Parse(nums[0]);
+                    commitsAhead = int.Parse(nums[1]);
+                    commitsBehind = int.Parse(nums[0]);
+                    Debug.WriteLine($"SET COMMIT COUNTS : ahead={commitsAhead} behind={commitsBehind}");
                 }
                 else
                 {
