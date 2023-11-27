@@ -11,4 +11,8 @@ public class Branch
         this.commit = commit;
     }
 
+    public override string ToString()
+    {
+        return title;
+    }
 }
