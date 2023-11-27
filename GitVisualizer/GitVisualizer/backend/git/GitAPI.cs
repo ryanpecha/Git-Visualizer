@@ -675,6 +675,7 @@ public static class GitAPI
                 foreach (PSObject pso in result.psObjects)
                 {
                     string line = pso.ToString().TrimEnd();
+                    line = System.Text.RegularExpressions.Regex.Replace(line, @"\s+", " ");
                     Debug.WriteLine("BRANCH >" + line + "<");
                     string[] items = line.Split(" ");
                     bool live = items[0].Equals("*");
