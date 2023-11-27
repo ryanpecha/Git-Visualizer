@@ -469,6 +469,9 @@ public static class GitAPI
                     string[] splitLine = line.Split(" ");
                     string action = splitLine[0][0].ToString().ToUpper();
                     string fpath = string.Join(" ", splitLine[1..]);
+                    Debug.WriteLine("STAGED CHANGE");
+                    Debug.WriteLine("ACTION : " + action);
+                    Debug.WriteLine("FPATH : " + fpath);
                     changes.Add(new Tuple<string, string>(action, fpath));
                 }
                 return changes;
@@ -495,12 +498,14 @@ public static class GitAPI
                     string[] splitLine = line.Split(" ");
                     string action = splitLine[0][0].ToString().ToUpper();
                     string fpath = string.Join(" ", splitLine[1..]);
+                    Debug.WriteLine("UNSTAGED CHANGE");
+                    Debug.WriteLine("ACTION : " + action);
+                    Debug.WriteLine("FPATH : " + fpath);
                     changes.Add(new Tuple<string, string>(action, fpath));
                 }
                 return changes;
             }
             return new();
-
         }
 
         public readonly static string description_getRemoteRepositories = "";
