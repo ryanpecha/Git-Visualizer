@@ -73,7 +73,8 @@ namespace GitVisualizer.UI.UI_Forms
             if (branchComboBox.Items.Count == 0) { return; }
             Branch selected = (Branch)branchComboBox.SelectedItem;
             GitAPI.Actions.LocalActions.checkoutBranch(selected);
-            checkedOutBranchTextLabel.Text = GitAPI.liveBranch.title;
+            if (GitAPI.liveBranch == null) { return; }
+            checkedOutBranchTextLabel.Text = "Branch: " + GitAPI.liveBranch.title;
         }
 
         public void OnDeleteBranchButton(object sender, EventArgs e)
@@ -95,9 +96,8 @@ namespace GitVisualizer.UI.UI_Forms
         public void OnCheckoutToSelectedCommitButton(object sender, EventArgs e)
         {
             if (selectedCommit == null) { return; }
-            checkedOutBranchTextLabel.Text = selectedCommit.shortCommitHash;
+            checkedOutBranchTextLabel.Text = "Commit: " + selectedCommit.shortCommitHash;
             GitAPI.Actions.LocalActions.checkoutCommit(selectedCommit);
-            checkedOutBranchTextLabel.Text = GitAPI.liveBranch.title;
         }
 
         public void OnCreateBranchFromSelectedButton(object sender, EventArgs e)
@@ -146,7 +146,7 @@ namespace GitVisualizer.UI.UI_Forms
         private void branchesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             int index = e.RowIndex;
-            if (index < 1) { return; }
+            if (index < 0) { return; }
             selectedCommit = commitHistory.Item2[index];
             selectedCommitTextLabel.Text = "Selected Commit: " + selectedCommit.shortCommitHash;
         }
