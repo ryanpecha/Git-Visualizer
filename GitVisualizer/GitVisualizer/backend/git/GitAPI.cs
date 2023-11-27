@@ -176,6 +176,17 @@ public static class GitAPI
             {
                 await github.CreateRepo(localRepo.title);
                 Scanning.scanForAllReposAsync(callback);
+                //string remoteURL = localRepo.getRemoteURL();
+                //string remoteURL = localRepo.getRemoteURL();
+
+                /*
+                if (remoteURL != null) {
+                    string com = $"cd '{localRepo.dirPath}'; ";
+                    com += $"git remote add origin {remoteURL}; ";
+                    //com += "git push --set-upstream origin ";
+                    ShellComRes comResult = Shell.exec(com);
+                }
+                */
             }
 
 
