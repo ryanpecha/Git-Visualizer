@@ -489,7 +489,7 @@ public static class GitAPI
             }
 
             public readonly static string description_revertAllUnstagedChanges = "";
-            public static void revertAllUnstagedChanges(string fpath)
+            public static void revertAllUnstagedChanges()
             {
                 // reset file to state without any changes
                 if (liveRepository != null)
