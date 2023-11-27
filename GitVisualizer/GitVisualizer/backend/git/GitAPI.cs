@@ -325,15 +325,12 @@ public static class GitAPI
                     com += $"git pull --all";
                     result = Shell.exec(com);
                     // TODO check for command success
+                    com = $"cd '{liveCommit.localRepository.dirPath}'; ";
+                    com += $"git push";
+                    result = Shell.exec(com);
+                    // TODO check for command success
                 }
             }
-
-
-            public readonly static string description_commit = "";
-            public static void commit()
-            {
-            }
-
 
             public readonly static string description_trackDirectory = "";
             public static void trackDirectory(string dirPath, bool recursive, Action? callback)
@@ -440,6 +437,7 @@ public static class GitAPI
                             Debug.WriteLine(pso.ToString());
                         }
                     }
+
                 }
             }
 
