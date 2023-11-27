@@ -469,7 +469,18 @@ public static class GitAPI
                     // TODO check for command success
                 }
             }
-
+            public readonly static string description_stageAllStagedChanges = "";
+            public static void stageAllStagedChanges()
+            {
+                // unstage file changes to commit
+                if (liveRepository != null)
+                {
+                    string com = $"cd {liveRepository.dirPath}; ";
+                    com += $"git add -u";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
+            }
         }
     }
 
