@@ -423,6 +423,12 @@ public static class GitAPI
                     com += $"git add {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
+                    Debug.WriteLine($"stageChange succussful={result.success}");
+                    if (result.psObjects != null){
+                        foreach(PSObject pso in result.psObjects) {
+                            Debug.WriteLine(pso.ToString());
+                        }
+                    }
                 }
             }
 
