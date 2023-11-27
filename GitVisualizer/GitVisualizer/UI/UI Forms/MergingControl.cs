@@ -22,7 +22,6 @@ namespace GitVisualizer.UI.UI_Forms
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            commitMessageTextBox.PlaceholderText = "Enter commit message... <Required>";
         }
 
         public void OnMergingControlFocus()

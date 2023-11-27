@@ -35,12 +35,9 @@ namespace GitVisualizer.UI.UI_Forms
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            newBranchFromCommitTextBox.PlaceholderText = "Enter name for new branch...";
             checkoutBranchButton.Visible = false;
             deleteBranchButton.Visible = false;
-            branchComboBox.Text = "No branches found";
         }
-
 
 
         public void OnBranchesControlFocus()
