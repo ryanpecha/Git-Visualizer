@@ -55,6 +55,10 @@ namespace GitVisualizer.UI.UI_Forms
                 SetVisibleCore(false);
             }
             ShowControlInMainPanel(repositoriesControl);
+            if (Github.LoadStoredCredentials())
+            {
+                revokeAccessButton.Enabled = true;
+            }
             repositoriesControl.EnterControl();
         }
 

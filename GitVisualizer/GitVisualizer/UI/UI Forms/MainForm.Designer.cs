@@ -83,6 +83,7 @@
             mergingPageButton.Size = new Size(156, 32);
             mergingPageButton.TabIndex = 2;
             mergingPageButton.Text = "Changes";
+            navigationTooltip.SetToolTip(mergingPageButton, "Allows for staging and syncing changes with repository, and shows differences.\r\n");
             mergingPageButton.UseVisualStyleBackColor = true;
             mergingPageButton.Click += OnMergingButtonPress;
             // 
@@ -120,6 +121,7 @@
             // revokeAccessButton
             // 
             revokeAccessButton.Dock = DockStyle.Right;
+            revokeAccessButton.Enabled = false;
             revokeAccessButton.FlatStyle = FlatStyle.Flat;
             revokeAccessButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             revokeAccessButton.Location = new Point(1093, 0);
@@ -127,6 +129,7 @@
             revokeAccessButton.Size = new Size(91, 47);
             revokeAccessButton.TabIndex = 9;
             revokeAccessButton.Text = "Sign Out";
+            navigationTooltip.SetToolTip(revokeAccessButton, "Revoke access of your credentials to Github, so you will need to login again next time.");
             revokeAccessButton.UseVisualStyleBackColor = true;
             revokeAccessButton.Click += revokeAccessButton_Click;
             // 
