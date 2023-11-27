@@ -79,7 +79,6 @@ public static class GitAPI
                     }
                     // getting repo folder abs path
                     string repoDirPath = repoDirInfo.FullName;
-                    // TODO extract repo name from .git via git command
                     string repoName = repoDirInfo.Name;
                     RepositoryLocal newLocalRepo = new RepositoryLocal(repoName, repoDirPath);
 
