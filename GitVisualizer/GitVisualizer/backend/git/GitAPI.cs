@@ -450,6 +450,29 @@ public static class GitAPI
     public static class Getters
     {
 
+        public static List<string> getStagedFiles()
+        {
+
+        }
+
+        public static List<Tuple<string, string>> getUnStagedFiles()
+        {
+            string com = $"cd {liveRepository.dirPath}; ";
+            com += $"git add -A -n";
+            ShellComRes result = Shell.exec(com);
+            // action(add,del,mod), fpath
+            List<Tuple<string, string>> changes = new();
+            foreach (PSObject pso in result.psObjects)
+            {
+                string line = pso.ToString().Trim();
+                string[] splitLine = line.Split(" ");
+                string action = splitLine[0];
+                string fpath = splitLine[1];
+                changes.Add(new Tuple<string, string>(action, fpath));
+            }
+            return changes;
+        }
+
         public readonly static string description_getRemoteRepositories = "";
         public static List<RepositoryRemote> getRemoteRepositories()
         {
