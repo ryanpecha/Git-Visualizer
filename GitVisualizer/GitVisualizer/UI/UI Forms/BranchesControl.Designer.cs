@@ -55,10 +55,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Button checkoutBranchButton;
-            Button deleteBranchButton;
-            Button createBranchFromCurrentButton;
-            Button createBranchFromSelectedButton;
+            createBranchFromCurrentButton = new Button();
+            createBranchFromSelectedButton = new Button();
+            checkoutBranchButton = new Button();
+            deleteBranchButton = new Button();
             branchesControlPanel = new Panel();
             checkedOutBranchPanel = new Panel();
             checkedOutBranchTextLabel = new Label();
@@ -66,7 +66,6 @@
             commonBranchesButtonsPanel = new Panel();
             commonBranchButtonsFlowPanel = new FlowLayoutPanel();
             branchComboBox = new ComboBox();
-            newBranchTextBox = new TextBox();
             activeRepoPanel = new Panel();
             activeRepositoryTextLabel = new Label();
             activeRepoLabel = new Label();
@@ -83,10 +82,6 @@
             checkoutCommitButton = new Button();
             newBranchFromCommitTextBox = new TextBox();
             selectedCommitTextLabel = new Label();
-            checkoutBranchButton = new Button();
-            deleteBranchButton = new Button();
-            createBranchFromCurrentButton = new Button();
-            createBranchFromSelectedButton = new Button();
             branchesControlPanel.SuspendLayout();
             checkedOutBranchPanel.SuspendLayout();
             commonBranchesButtonsPanel.SuspendLayout();
@@ -96,6 +91,32 @@
             commitCommandPanel.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
+            // 
+            // createBranchFromCurrentButton
+            // 
+            createBranchFromCurrentButton.Dock = DockStyle.Top;
+            createBranchFromCurrentButton.FlatStyle = FlatStyle.Flat;
+            createBranchFromCurrentButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            createBranchFromCurrentButton.Location = new Point(209, 37);
+            createBranchFromCurrentButton.Name = "createBranchFromCurrentButton";
+            createBranchFromCurrentButton.Size = new Size(250, 28);
+            createBranchFromCurrentButton.TabIndex = 16;
+            createBranchFromCurrentButton.Text = "Create Branch From Current Commit";
+            createBranchFromCurrentButton.UseVisualStyleBackColor = true;
+            createBranchFromCurrentButton.Visible = false;
+            // 
+            // createBranchFromSelectedButton
+            // 
+            createBranchFromSelectedButton.Dock = DockStyle.Top;
+            createBranchFromSelectedButton.FlatStyle = FlatStyle.Flat;
+            createBranchFromSelectedButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            createBranchFromSelectedButton.Location = new Point(465, 37);
+            createBranchFromSelectedButton.Name = "createBranchFromSelectedButton";
+            createBranchFromSelectedButton.Size = new Size(200, 28);
+            createBranchFromSelectedButton.TabIndex = 17;
+            createBranchFromSelectedButton.Text = "Create Branch From Selected";
+            createBranchFromSelectedButton.UseVisualStyleBackColor = true;
+            createBranchFromSelectedButton.Visible = false;
             // 
             // checkoutBranchButton
             // 
@@ -121,32 +142,6 @@
             deleteBranchButton.TabIndex = 11;
             deleteBranchButton.Text = "Delete Branch";
             deleteBranchButton.UseVisualStyleBackColor = true;
-            // 
-            // createBranchFromCurrentButton
-            // 
-            createBranchFromCurrentButton.Dock = DockStyle.Top;
-            createBranchFromCurrentButton.FlatStyle = FlatStyle.Flat;
-            createBranchFromCurrentButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            createBranchFromCurrentButton.Location = new Point(3, 149);
-            createBranchFromCurrentButton.Name = "createBranchFromCurrentButton";
-            createBranchFromCurrentButton.Size = new Size(250, 68);
-            createBranchFromCurrentButton.TabIndex = 13;
-            createBranchFromCurrentButton.Text = "Create Branch From Current Commit";
-            createBranchFromCurrentButton.UseVisualStyleBackColor = true;
-            createBranchFromCurrentButton.Click += OnCreateBranchFromCurrentButton;
-            // 
-            // createBranchFromSelectedButton
-            // 
-            createBranchFromSelectedButton.Dock = DockStyle.Top;
-            createBranchFromSelectedButton.FlatStyle = FlatStyle.Flat;
-            createBranchFromSelectedButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            createBranchFromSelectedButton.Location = new Point(3, 66);
-            createBranchFromSelectedButton.Name = "createBranchFromSelectedButton";
-            createBranchFromSelectedButton.Size = new Size(200, 28);
-            createBranchFromSelectedButton.TabIndex = 15;
-            createBranchFromSelectedButton.Text = "Create Branch From Selected";
-            createBranchFromSelectedButton.UseVisualStyleBackColor = true;
-            createBranchFromSelectedButton.Click += OnCreateBranchFromSelectedButton;
             // 
             // branchesControlPanel
             // 
@@ -197,10 +192,10 @@
             // 
             commonBranchesButtonsPanel.Controls.Add(commonBranchButtonsFlowPanel);
             commonBranchesButtonsPanel.Dock = DockStyle.Bottom;
-            commonBranchesButtonsPanel.Location = new Point(0, 432);
+            commonBranchesButtonsPanel.Location = new Point(0, 520);
             commonBranchesButtonsPanel.Name = "commonBranchesButtonsPanel";
             commonBranchesButtonsPanel.Padding = new Padding(12);
-            commonBranchesButtonsPanel.Size = new Size(278, 241);
+            commonBranchesButtonsPanel.Size = new Size(278, 153);
             commonBranchesButtonsPanel.TabIndex = 8;
             // 
             // commonBranchButtonsFlowPanel
@@ -208,13 +203,11 @@
             commonBranchButtonsFlowPanel.Controls.Add(branchComboBox);
             commonBranchButtonsFlowPanel.Controls.Add(checkoutBranchButton);
             commonBranchButtonsFlowPanel.Controls.Add(deleteBranchButton);
-            commonBranchButtonsFlowPanel.Controls.Add(newBranchTextBox);
-            commonBranchButtonsFlowPanel.Controls.Add(createBranchFromCurrentButton);
             commonBranchButtonsFlowPanel.Dock = DockStyle.Fill;
             commonBranchButtonsFlowPanel.Location = new Point(12, 12);
             commonBranchButtonsFlowPanel.Margin = new Padding(0);
             commonBranchButtonsFlowPanel.Name = "commonBranchButtonsFlowPanel";
-            commonBranchButtonsFlowPanel.Size = new Size(254, 217);
+            commonBranchButtonsFlowPanel.Size = new Size(254, 129);
             commonBranchButtonsFlowPanel.TabIndex = 10;
             // 
             // branchComboBox
@@ -225,14 +218,6 @@
             branchComboBox.Name = "branchComboBox";
             branchComboBox.Size = new Size(248, 23);
             branchComboBox.TabIndex = 10;
-            // 
-            // newBranchTextBox
-            // 
-            newBranchTextBox.Dock = DockStyle.Top;
-            newBranchTextBox.Location = new Point(3, 120);
-            newBranchTextBox.Name = "newBranchTextBox";
-            newBranchTextBox.Size = new Size(248, 23);
-            newBranchTextBox.TabIndex = 12;
             // 
             // activeRepoPanel
             // 
@@ -369,17 +354,19 @@
             // 
             flowLayoutPanel1.Controls.Add(checkoutCommitButton);
             flowLayoutPanel1.Controls.Add(newBranchFromCommitTextBox);
+            flowLayoutPanel1.Controls.Add(createBranchFromCurrentButton);
             flowLayoutPanel1.Controls.Add(createBranchFromSelectedButton);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Location = new Point(0, 32);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(211, 122);
+            flowLayoutPanel1.Size = new Size(684, 122);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // checkoutCommitButton
             // 
             checkoutCommitButton.Dock = DockStyle.Top;
             checkoutCommitButton.FlatStyle = FlatStyle.Flat;
+            flowLayoutPanel1.SetFlowBreak(checkoutCommitButton, true);
             checkoutCommitButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             checkoutCommitButton.Location = new Point(3, 3);
             checkoutCommitButton.Name = "checkoutCommitButton";
@@ -387,6 +374,7 @@
             checkoutCommitButton.TabIndex = 7;
             checkoutCommitButton.Text = "Checkout to Selected Commit";
             checkoutCommitButton.UseVisualStyleBackColor = true;
+            checkoutCommitButton.Visible = false;
             checkoutCommitButton.Click += OnCheckoutToSelectedCommitButton;
             // 
             // newBranchFromCommitTextBox
@@ -396,6 +384,7 @@
             newBranchFromCommitTextBox.Name = "newBranchFromCommitTextBox";
             newBranchFromCommitTextBox.Size = new Size(200, 23);
             newBranchFromCommitTextBox.TabIndex = 14;
+            newBranchFromCommitTextBox.Visible = false;
             // 
             // selectedCommitTextLabel
             // 
@@ -421,7 +410,6 @@
             checkedOutBranchPanel.PerformLayout();
             commonBranchesButtonsPanel.ResumeLayout(false);
             commonBranchButtonsFlowPanel.ResumeLayout(false);
-            commonBranchButtonsFlowPanel.PerformLayout();
             activeRepoPanel.ResumeLayout(false);
             activeRepoPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).EndInit();
@@ -446,7 +434,6 @@
         private Button checkoutBranchButton;
         private ComboBox branchComboBox;
         private Panel commitCommandPanel;
-        private TextBox newBranchTextBox;
         private FlowLayoutPanel flowLayoutPanel1;
         private Button checkoutCommitButton;
         private TextBox newBranchFromCommitTextBox;
@@ -457,5 +444,8 @@
         private DataGridViewTextBoxColumn userColumn;
         private DataGridViewTextBoxColumn dateColumn;
         private DataGridViewTextBoxColumn commentColumn;
+        private Button deleteBranchButton;
+        private Button createBranchFromCurrentButton;
+        private Button createBranchFromSelectedButton;
     }
 }

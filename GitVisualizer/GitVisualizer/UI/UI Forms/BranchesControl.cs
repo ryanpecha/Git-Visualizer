@@ -35,9 +35,13 @@ namespace GitVisualizer.UI.UI_Forms
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            newBranchTextBox.PlaceholderText = "Enter name for new branch...";
             newBranchFromCommitTextBox.PlaceholderText = "Enter name for new branch...";
+            checkoutBranchButton.Visible = false;
+            deleteBranchButton.Visible = false;
+            branchComboBox.Text = "No branches found";
         }
+
+
 
         public void OnBranchesControlFocus()
         {
@@ -66,6 +70,14 @@ namespace GitVisualizer.UI.UI_Forms
                 branchesGridView.Rows[index].Cells[0].ToolTipText = commit.longCommitHash;
             }
             branchComboBox.DataSource = commitHistory.Item1;
+            if (commitHistory.Item1.Count > 0)
+            {
+                checkoutBranchButton.Visible = true;
+                deleteBranchButton.Visible = true;
+                newBranchFromCommitTextBox.Visible = true;
+                createBranchFromCurrentButton.Visible = true;
+            }
+
         }
 
         public void OnCheckoutToBranchButton(object sender, EventArgs e)
@@ -148,7 +160,11 @@ namespace GitVisualizer.UI.UI_Forms
             int index = e.RowIndex;
             if (index < 0) { return; }
             selectedCommit = commitHistory.Item2[index];
-            selectedCommitTextLabel.Text = "Selected Commit: " + selectedCommit.shortCommitHash;
+            selectedCommitTextLabel.Text = "Selected Commit: " + selectedCommit.shortCommitHash + " - " + selectedCommit.subject;
+            checkoutCommitButton.Visible = true;
+            newBranchFromCommitTextBox.Visible = true;
+            createBranchFromSelectedButton.Visible = true;
         }
+
     }
 }
