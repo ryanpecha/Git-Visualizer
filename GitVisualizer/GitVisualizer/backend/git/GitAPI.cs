@@ -207,7 +207,7 @@ public static class GitAPI
                 }
             }
 
-            
+
             public readonly static string description_sync = "";
             public static void sync()
             {
@@ -441,8 +441,9 @@ public static class GitAPI
                 // unstage all staged changes
                 if (liveRepository != null)
                 {
+                    Debug.Write($"COMMITTING : message={message}");
                     string com = $"cd '{liveRepository.dirPath}'; ";
-                    com += $"git commit -m {message}";
+                    com += $"git commit -m '{message}'";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                 }
@@ -811,7 +812,7 @@ public static class GitAPI
                 // sorting commits by date
                 //List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
                 List<Commit> sortedCommits = commits;
-                sortedCommits.Reverse();
+                //sortedCommits.Reverse();
 
                 // getting all branches
                 List<Branch> allBranches = new List<Branch>();
