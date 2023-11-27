@@ -35,6 +35,10 @@
             branchesGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
             branchesGridView.EnableHeadersVisualStyles = false;
 
+            branchesGridView.DefaultCellStyle.SelectionBackColor = theme.ElementSelected;
+            branchesGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = branchesGridView.DefaultCellStyle.BackColor;
+
+
             commitCommandPanel.BackColor = theme.ElementBackground;
             commitCommandPanel.ForeColor = theme.TextSelectable;
 
@@ -361,7 +365,7 @@
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.Location = new Point(0, 32);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(684, 122);
+            flowLayoutPanel1.Size = new Size(698, 122);
             flowLayoutPanel1.TabIndex = 6;
             // 
             // checkoutCommitButton

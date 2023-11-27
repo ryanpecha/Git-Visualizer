@@ -379,6 +379,10 @@
             repositoriesGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
             repositoriesGridView.EnableHeadersVisualStyles = false;
 
+            repositoriesGridView.DefaultCellStyle.SelectionBackColor = theme.ElementSelected;
+            repositoriesGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = repositoriesGridView.DefaultCellStyle.BackColor;
+
+
             repositoriesControlPanel.BackColor = theme.PanelBackground;
             repositoriesControlPanel.ForeColor = theme.TextBright;
 

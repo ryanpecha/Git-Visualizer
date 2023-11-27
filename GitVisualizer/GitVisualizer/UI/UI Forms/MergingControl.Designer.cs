@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             commitChangesButton = new Button();
             mergingControlPanel = new Panel();
             panel1 = new Panel();
@@ -48,15 +45,20 @@
             buttonSplitContainer = new SplitContainer();
             commonBranchesButtonsPanel = new Panel();
             stageChangesSplitContainer = new SplitContainer();
-            stagedChangesGroup = new GroupBox();
             stagedChangesDataGridView = new DataGridView();
             fileColumn = new DataGridViewTextBoxColumn();
             unstageColumn = new DataGridViewButtonColumn();
-            unstagedChangesBox = new GroupBox();
+            stagedChangesBarPanel = new Panel();
+            stagedChangesLabel = new Label();
+            unstageAllButton = new Button();
             unstagedChangesDataGridView = new DataGridView();
             dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
             dataGridViewButtonColumn1 = new DataGridViewButtonColumn();
             undoColumn = new DataGridViewButtonColumn();
+            unstagedChangesBarPanel = new Panel();
+            stageAllButton = new Button();
+            unstagedChangesLabel = new Label();
+            undoAllButton = new Button();
             mergingControlPanel.SuspendLayout();
             panel1.SuspendLayout();
             activeRepoPanel.SuspendLayout();
@@ -74,10 +76,10 @@
             stageChangesSplitContainer.Panel1.SuspendLayout();
             stageChangesSplitContainer.Panel2.SuspendLayout();
             stageChangesSplitContainer.SuspendLayout();
-            stagedChangesGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)stagedChangesDataGridView).BeginInit();
-            unstagedChangesBox.SuspendLayout();
+            stagedChangesBarPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).BeginInit();
+            unstagedChangesBarPanel.SuspendLayout();
             SuspendLayout();
             // 
             // commitChangesButton
@@ -273,29 +275,17 @@
             // 
             // stageChangesSplitContainer.Panel1
             // 
-            stageChangesSplitContainer.Panel1.Controls.Add(stagedChangesGroup);
+            stageChangesSplitContainer.Panel1.Controls.Add(stagedChangesDataGridView);
+            stageChangesSplitContainer.Panel1.Controls.Add(stagedChangesBarPanel);
             // 
             // stageChangesSplitContainer.Panel2
             // 
-            stageChangesSplitContainer.Panel2.Controls.Add(unstagedChangesBox);
+            stageChangesSplitContainer.Panel2.Controls.Add(unstagedChangesDataGridView);
+            stageChangesSplitContainer.Panel2.Controls.Add(unstagedChangesBarPanel);
             stageChangesSplitContainer.Size = new Size(871, 176);
             stageChangesSplitContainer.SplitterDistance = 428;
             stageChangesSplitContainer.SplitterWidth = 12;
             stageChangesSplitContainer.TabIndex = 0;
-            // 
-            // stagedChangesGroup
-            // 
-            stagedChangesGroup.Controls.Add(stagedChangesDataGridView);
-            stagedChangesGroup.Dock = DockStyle.Fill;
-            stagedChangesGroup.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            stagedChangesGroup.Location = new Point(0, 0);
-            stagedChangesGroup.Margin = new Padding(0);
-            stagedChangesGroup.Name = "stagedChangesGroup";
-            stagedChangesGroup.Padding = new Padding(0);
-            stagedChangesGroup.Size = new Size(428, 176);
-            stagedChangesGroup.TabIndex = 0;
-            stagedChangesGroup.TabStop = false;
-            stagedChangesGroup.Text = "Staged Changes";
             // 
             // stagedChangesDataGridView
             // 
@@ -303,42 +293,18 @@
             stagedChangesDataGridView.AllowUserToDeleteRows = false;
             stagedChangesDataGridView.AllowUserToResizeColumns = false;
             stagedChangesDataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            stagedChangesDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             stagedChangesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             stagedChangesDataGridView.Columns.AddRange(new DataGridViewColumn[] { fileColumn, unstageColumn });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            stagedChangesDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             stagedChangesDataGridView.Dock = DockStyle.Fill;
-            stagedChangesDataGridView.Location = new Point(0, 16);
+            stagedChangesDataGridView.Location = new Point(0, 25);
             stagedChangesDataGridView.MultiSelect = false;
             stagedChangesDataGridView.Name = "stagedChangesDataGridView";
             stagedChangesDataGridView.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            stagedChangesDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             stagedChangesDataGridView.RowHeadersVisible = false;
             stagedChangesDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             stagedChangesDataGridView.RowTemplate.Height = 25;
             stagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            stagedChangesDataGridView.Size = new Size(428, 160);
+            stagedChangesDataGridView.Size = new Size(428, 151);
             stagedChangesDataGridView.TabIndex = 0;
             stagedChangesDataGridView.CellContentClick += stagedChangesDataGridView_CellContentClick;
             // 
@@ -360,18 +326,38 @@
             unstageColumn.Text = "unstage";
             unstageColumn.Width = 60;
             // 
-            // unstagedChangesBox
+            // stagedChangesBarPanel
             // 
-            unstagedChangesBox.Controls.Add(unstagedChangesDataGridView);
-            unstagedChangesBox.Dock = DockStyle.Fill;
-            unstagedChangesBox.Location = new Point(0, 0);
-            unstagedChangesBox.Margin = new Padding(0);
-            unstagedChangesBox.Name = "unstagedChangesBox";
-            unstagedChangesBox.Padding = new Padding(0);
-            unstagedChangesBox.Size = new Size(431, 176);
-            unstagedChangesBox.TabIndex = 1;
-            unstagedChangesBox.TabStop = false;
-            unstagedChangesBox.Text = "Unstaged Changes";
+            stagedChangesBarPanel.Controls.Add(stagedChangesLabel);
+            stagedChangesBarPanel.Controls.Add(unstageAllButton);
+            stagedChangesBarPanel.Dock = DockStyle.Top;
+            stagedChangesBarPanel.Location = new Point(0, 0);
+            stagedChangesBarPanel.Name = "stagedChangesBarPanel";
+            stagedChangesBarPanel.Size = new Size(428, 25);
+            stagedChangesBarPanel.TabIndex = 0;
+            // 
+            // stagedChangesLabel
+            // 
+            stagedChangesLabel.AutoSize = true;
+            stagedChangesLabel.Dock = DockStyle.Left;
+            stagedChangesLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            stagedChangesLabel.Location = new Point(0, 0);
+            stagedChangesLabel.Name = "stagedChangesLabel";
+            stagedChangesLabel.Size = new Size(108, 19);
+            stagedChangesLabel.TabIndex = 10;
+            stagedChangesLabel.Text = "Staged Changes";
+            // 
+            // unstageAllButton
+            // 
+            unstageAllButton.Dock = DockStyle.Right;
+            unstageAllButton.FlatStyle = FlatStyle.Flat;
+            unstageAllButton.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            unstageAllButton.Location = new Point(350, 0);
+            unstageAllButton.Name = "unstageAllButton";
+            unstageAllButton.Size = new Size(78, 25);
+            unstageAllButton.TabIndex = 9;
+            unstageAllButton.Text = "Unstage All";
+            unstageAllButton.UseVisualStyleBackColor = true;
             // 
             // unstagedChangesDataGridView
             // 
@@ -382,7 +368,7 @@
             unstagedChangesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             unstagedChangesDataGridView.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewButtonColumn1, undoColumn });
             unstagedChangesDataGridView.Dock = DockStyle.Fill;
-            unstagedChangesDataGridView.Location = new Point(0, 16);
+            unstagedChangesDataGridView.Location = new Point(0, 25);
             unstagedChangesDataGridView.MultiSelect = false;
             unstagedChangesDataGridView.Name = "unstagedChangesDataGridView";
             unstagedChangesDataGridView.ReadOnly = true;
@@ -391,7 +377,7 @@
             unstagedChangesDataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             unstagedChangesDataGridView.RowTemplate.Height = 25;
             unstagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            unstagedChangesDataGridView.Size = new Size(431, 160);
+            unstagedChangesDataGridView.Size = new Size(431, 151);
             unstagedChangesDataGridView.TabIndex = 1;
             unstagedChangesDataGridView.CellContentClick += unstagedChangesDataGridView_CellContentClick;
             // 
@@ -420,6 +406,54 @@
             undoColumn.Name = "undoColumn";
             undoColumn.ReadOnly = true;
             undoColumn.Width = 44;
+            // 
+            // unstagedChangesBarPanel
+            // 
+            unstagedChangesBarPanel.Controls.Add(stageAllButton);
+            unstagedChangesBarPanel.Controls.Add(unstagedChangesLabel);
+            unstagedChangesBarPanel.Controls.Add(undoAllButton);
+            unstagedChangesBarPanel.Dock = DockStyle.Top;
+            unstagedChangesBarPanel.Location = new Point(0, 0);
+            unstagedChangesBarPanel.Name = "unstagedChangesBarPanel";
+            unstagedChangesBarPanel.Size = new Size(431, 25);
+            unstagedChangesBarPanel.TabIndex = 1;
+            // 
+            // stageAllButton
+            // 
+            stageAllButton.Dock = DockStyle.Right;
+            stageAllButton.FlatStyle = FlatStyle.Flat;
+            stageAllButton.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            stageAllButton.Location = new Point(299, 0);
+            stageAllButton.Name = "stageAllButton";
+            stageAllButton.RightToLeft = RightToLeft.Yes;
+            stageAllButton.Size = new Size(66, 25);
+            stageAllButton.TabIndex = 11;
+            stageAllButton.Text = "Stage All";
+            stageAllButton.UseVisualStyleBackColor = true;
+            // 
+            // unstagedChangesLabel
+            // 
+            unstagedChangesLabel.AutoSize = true;
+            unstagedChangesLabel.Dock = DockStyle.Left;
+            unstagedChangesLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            unstagedChangesLabel.Location = new Point(0, 0);
+            unstagedChangesLabel.Name = "unstagedChangesLabel";
+            unstagedChangesLabel.Size = new Size(125, 19);
+            unstagedChangesLabel.TabIndex = 10;
+            unstagedChangesLabel.Text = "Unstaged Changes";
+            // 
+            // undoAllButton
+            // 
+            undoAllButton.Dock = DockStyle.Right;
+            undoAllButton.FlatStyle = FlatStyle.Flat;
+            undoAllButton.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            undoAllButton.Location = new Point(365, 0);
+            undoAllButton.Name = "undoAllButton";
+            undoAllButton.RightToLeft = RightToLeft.Yes;
+            undoAllButton.Size = new Size(66, 25);
+            undoAllButton.TabIndex = 9;
+            undoAllButton.Text = "Undo All";
+            undoAllButton.UseVisualStyleBackColor = true;
             // 
             // MergingControl
             // 
@@ -452,10 +486,12 @@
             stageChangesSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)stageChangesSplitContainer).EndInit();
             stageChangesSplitContainer.ResumeLayout(false);
-            stagedChangesGroup.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)stagedChangesDataGridView).EndInit();
-            unstagedChangesBox.ResumeLayout(false);
+            stagedChangesBarPanel.ResumeLayout(false);
+            stagedChangesBarPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)unstagedChangesDataGridView).EndInit();
+            unstagedChangesBarPanel.ResumeLayout(false);
+            unstagedChangesBarPanel.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -477,6 +513,9 @@
             stagedChangesDataGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
             stagedChangesDataGridView.EnableHeadersVisualStyles = false;
 
+            stagedChangesDataGridView.DefaultCellStyle.SelectionBackColor = theme.ElementSelected;
+            stagedChangesDataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = stagedChangesDataGridView.DefaultCellStyle.BackColor;
+
             unstagedChangesDataGridView.BackColor = theme.ElementBackground;
             unstagedChangesDataGridView.ForeColor = theme.TextSelectable;
 
@@ -487,9 +526,13 @@
             unstagedChangesDataGridView.ColumnHeadersDefaultCellStyle.ForeColor = theme.TextSelectable;
             unstagedChangesDataGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
             unstagedChangesDataGridView.EnableHeadersVisualStyles = false;
+            unstagedChangesDataGridView.DefaultCellStyle.SelectionBackColor = theme.TextBright;
 
-            stagedChangesGroup.ForeColor = theme.TextNormal;
-            unstagedChangesBox.ForeColor = theme.TextNormal;
+            unstagedChangesDataGridView.DefaultCellStyle.SelectionBackColor = theme.ElementSelected;
+            unstagedChangesDataGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = unstagedChangesDataGridView.DefaultCellStyle.BackColor;
+
+            stageChangesSplitContainer.ForeColor = theme.TextNormal;
+
 
             diffFile1Group.ForeColor = theme.TextHeader;
             diffFile2Group.ForeColor = theme.TextHeader;
@@ -515,7 +558,6 @@
         private Panel panel1;
         private Panel commonBranchesButtonsPanel;
         private SplitContainer stageChangesSplitContainer;
-        private GroupBox stagedChangesGroup;
         private DataGridView stagedChangesDataGridView;
         private GroupBox unstagedChangesBox;
         private DataGridView unstagedChangesDataGridView;
@@ -525,5 +567,12 @@
         private DataGridViewButtonColumn dataGridViewButtonColumn1;
         private DataGridViewButtonColumn undoColumn;
         private Button commitChangesButton;
+        private Panel stagedChangesBarPanel;
+        private Button unstageAllButton;
+        private Label stagedChangesLabel;
+        private Panel unstagedChangesBarPanel;
+        private Label unstagedChangesLabel;
+        private Button undoAllButton;
+        private Button stageAllButton;
     }
 }

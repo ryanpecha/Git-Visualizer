@@ -14,6 +14,7 @@ namespace GitVisualizer.UI.UI_Forms
 {
     public partial class MergingControl : UserControl
     {
+        private UI.UITheme.AppTheme theme = MainForm.AppTheme;
         private List<Tuple<string, string>> stagedChanges = new List<Tuple<string, string>>();
         private List<Tuple<string, string>> unstagedChanges = new List<Tuple<string, string>>();
 
@@ -40,6 +41,8 @@ namespace GitVisualizer.UI.UI_Forms
                 string filename = Path.GetFileName(change.Item2) + " (" + change.Item2 + ")";
                 int index = stagedChangesDataGridView.Rows.Add(filename, "-");
                 stagedChangesDataGridView.Rows[index].Cells[0].ToolTipText = change.Item2;
+                stagedChangesDataGridView.Rows[index].Cells[1].Style.ForeColor = theme.TextSelectable;
+                stagedChangesDataGridView.Rows[index].Cells[1].Style.BackColor = theme.ElementBackground;
             }
             foreach (Tuple<string, string> change in unstagedChanges)
             {
@@ -72,7 +75,7 @@ namespace GitVisualizer.UI.UI_Forms
             }
             else if (e.ColumnIndex == 2)
             {
-
+                GitAPI.Actions.LocalActions.revertUnstagedChange(unstagedChanges[e.RowIndex].Item2);
             }
         }
 
