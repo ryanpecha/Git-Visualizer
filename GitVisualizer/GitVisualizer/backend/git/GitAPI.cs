@@ -446,7 +446,14 @@ public static class GitAPI
             public readonly static string description_commitStagedChanges = "";
             public static void commitStagedChanges(string message)
             {
-
+                // unstage all staged changes
+                if (liveRepository != null)
+                {
+                    string com = $"cd '{liveRepository.dirPath}'; ";
+                    com += $"git commit -m {message}";
+                    ShellComRes result = Shell.exec(com);
+                    // TODO check for command success
+                }
             }
 
             public readonly static string description_unstageAllStagedChanges = "";
