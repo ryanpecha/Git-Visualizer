@@ -102,6 +102,7 @@
             checkoutBranchButton.TabIndex = 7;
             checkoutBranchButton.Text = "Checkout To Branch";
             checkoutBranchButton.UseVisualStyleBackColor = true;
+            checkoutBranchButton.Click += OnCheckoutToBranchButton;
             // 
             // deleteBranchButton
             // 
@@ -126,6 +127,7 @@
             createBranchFromCurrentButton.TabIndex = 13;
             createBranchFromCurrentButton.Text = "Create Branch From Current Commit";
             createBranchFromCurrentButton.UseVisualStyleBackColor = true;
+            createBranchFromCurrentButton.Click += OnCreateBranchFromCurrentButton;
             // 
             // createBranchFromSelectedButton
             // 
@@ -138,6 +140,7 @@
             createBranchFromSelectedButton.TabIndex = 15;
             createBranchFromSelectedButton.Text = "Create Branch From Selected";
             createBranchFromSelectedButton.UseVisualStyleBackColor = true;
+            createBranchFromSelectedButton.Click += OnCreateBranchFromSelectedButton;
             // 
             // branchesControlPanel
             // 
@@ -287,7 +290,7 @@
             branchesGridView.RowTemplate.Height = 25;
             branchesGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             branchesGridView.ShowEditingIcon = false;
-            branchesGridView.Size = new Size(895, 675);
+            branchesGridView.Size = new Size(895, 521);
             branchesGridView.TabIndex = 3;
             branchesGridView.CellClick += branchesGridView_CellContentClick;
             branchesGridView.CellPainting += BranchesGridViewDrawCell;
@@ -378,6 +381,7 @@
             checkoutCommitButton.TabIndex = 7;
             checkoutCommitButton.Text = "Checkout to Selected Commit";
             checkoutCommitButton.UseVisualStyleBackColor = true;
+            checkoutCommitButton.Click += OnCheckoutToSelectedCommitButton;
             // 
             // newBranchFromCommitTextBox
             // 
@@ -401,8 +405,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(commitCommandPanel);
             Controls.Add(branchesGridView);
+            Controls.Add(commitCommandPanel);
             Controls.Add(branchesControlPanel);
             Name = "BranchesControl";
             Size = new Size(1175, 675);

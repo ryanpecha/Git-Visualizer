@@ -35,6 +35,8 @@ namespace GitVisualizer.UI.UI_Forms
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
+            newBranchTextBox.PlaceholderText = "Enter name for new branch...";
+            newBranchFromCommitTextBox.PlaceholderText = "Enter name for new branch...";
         }
 
         public void OnBranchesControlFocus()
@@ -63,36 +65,46 @@ namespace GitVisualizer.UI.UI_Forms
                 int index = branchesGridView.Rows.Add(null, branchList, commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
                 branchesGridView.Rows[index].Cells[0].ToolTipText = commit.longCommitHash;
             }
+            branchComboBox.DataSource = commitHistory.Item1;
         }
 
-        public void OnCheckoutToBranchButton()
+        public void OnCheckoutToBranchButton(object sender, EventArgs e)
         {
-            Branch selected = null;
+            if (branchComboBox.Items.Count == 0) { return; }
+            Branch selected = (Branch)branchComboBox.SelectedItem;
             GitAPI.Actions.LocalActions.checkoutBranch(selected);
         }
 
-        public void OnDeleteBranchButton()
+        public void OnDeleteBranchButton(object sender, EventArgs e)
         {
+            if (branchComboBox.Items.Count == 0) { return; }
+            //Branch selected = (Branch)branchComboBox.SelectedItem;
             Branch selected = null;
             GitAPI.Actions.LocalActions.deleteBranchLocal(selected);
         }
 
-        public void OnCreateBranchFromCurrentButton()
+        public void OnCreateBranchFromCurrentButton(object sender, EventArgs e)
         {
-            string title = null;
+            string title = newBranchFromCommitTextBox.Text;
+            if (title.Length == 0) { return; }
             Branch branch = GitAPI.Actions.LocalActions.createLocalBranch(title, GitAPI.liveCommit);
             GitAPI.Actions.RemoteActions.addLocalBranchToRemote(branch);
         }
 
-        public void OnCheckoutToSelectedCommitButton()
+        public void OnCheckoutToSelectedCommitButton(object sender, EventArgs e)
         {
             if (selectedCommit == null) { return; }
+            checkedOutBranchTextLabel.Text = selectedCommit.shortCommitHash;
             GitAPI.Actions.LocalActions.checkoutCommit(selectedCommit);
         }
 
-        public void OnCreateBranchFromSelectedButton()
+        public void OnCreateBranchFromSelectedButton(object sender, EventArgs e)
         {
-
+            if (branchComboBox.Items.Count == 0) { return; }
+            string title = newBranchFromCommitTextBox.Text;
+            if (title.Length == 0) { return; }
+            Branch selected = (Branch)branchComboBox.SelectedItem;
+            //Branch branch = GitAPI.Actions.LocalActions.createLocalBranch(title, selected);
         }
 
         /// <summary>
