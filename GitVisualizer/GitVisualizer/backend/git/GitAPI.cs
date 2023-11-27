@@ -697,6 +697,7 @@ public static class GitAPI
 
         public static void setCommitsAheadAndBehind()
         {
+            Debug.WriteLine($"setCommitsAheadAndBehind()");
             if (liveRepository != null)
             {
                 if (liveBranch != null)
@@ -708,13 +709,14 @@ public static class GitAPI
                     {
                         commitsAhead = null;
                         commitsBehind = null;
+                        Debug.WriteLine($"setCommitsAheadAndBehind : res is null");
                         return;
                     }
                     if (result.psObjects.Count == 0) {
                         commitsAhead = null;
                         commitsBehind = null;
+                        Debug.WriteLine($"setCommitsAheadAndBehind : res line count is 0");
                         return;
-                        
                     }
                     string line = result.psObjects[0].ToString().Trim();
                     line = Regex.Replace(line, @"\s+", " ");
@@ -725,6 +727,7 @@ public static class GitAPI
                 }
                 else
                 {
+                    Debug.WriteLine($"setCommitsAheadAndBehind : live branch is null");
                     commitsAhead = null;
                     commitsBehind = null;
                     return;
