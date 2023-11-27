@@ -26,7 +26,7 @@ namespace GitVisualizer.UI.UI_Forms
             Color.Gold,
             Color.Plum];
 
-        private List<Commit> commitHistory = new();
+        private Tuple<List<Branch>, List<Commit>> commitHistory = null;
         Commit selectedCommit = null;
         private int currentDepth = 0;
 
@@ -54,11 +54,13 @@ namespace GitVisualizer.UI.UI_Forms
         {
             // Update view by getting branch info
             branchesGridView.Rows.Clear();
-            commitHistory = GitAPI.Getters.getCommits();
-            foreach (Commit commit in commitHistory)
+            commitHistory = GitAPI.Getters.getCommitsAndBranches();
+            foreach (Commit commit in commitHistory.Item2)
             {
+                List<Branch> branches = commit.branches;
+                string branchList = String.Join(", ", branches);
                 Debug.WriteLine(commit.subject);
-                int index = branchesGridView.Rows.Add(null, "branch?", commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
+                int index = branchesGridView.Rows.Add(null, branchList, commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
                 branchesGridView.Rows[index].Cells[0].ToolTipText = commit.longCommitHash;
             }
         }
@@ -103,7 +105,7 @@ namespace GitVisualizer.UI.UI_Forms
             // Ignore header row and any columns besides Graph column
             if (e.ColumnIndex > 0 || e.RowIndex == -1) { return; }
 
-            Commit commit = commitHistory[e.RowIndex];
+            Commit commit = commitHistory.Item2[e.RowIndex];
 
 
             // Get Branch index for offset
@@ -131,7 +133,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             int index = e.RowIndex;
             if (index < 1) { return; }
-            selectedCommit = commitHistory[index];
+            selectedCommit = commitHistory.Item2[index];
             selectedCommitTextLabel.Text = "Selected Commit: " + selectedCommit.shortCommitHash;
         }
     }
