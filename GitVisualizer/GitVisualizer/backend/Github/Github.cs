@@ -554,7 +554,7 @@ public class Github
     /// </summary>
     /// <param name="repoName">The repo name.</param>
     /// <returns>The git clone url of the newly created GitHub repo.</returns>
-    private async Task<string?> CreateRepo(string repoName)
+    public async Task<string?> CreateRepo(string repoName)
     {
         if (accessToken == null)
         {

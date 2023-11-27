@@ -28,7 +28,6 @@ public static class GitAPI
     /// <summary> currently tracked local repository </summary>
     public static RepositoryLocal? liveRepository { get; private set; }
 
-
     // url -> remoteRepo
     private static Dictionary<string, RepositoryRemote> remoteRepositories;
     // dirPath -> localRepo;
@@ -173,9 +172,10 @@ public static class GitAPI
 
 
             public readonly static string description_createRemoteRepository = "";
-            public static void createRemoteRepository()
+            public static async void createRemoteRepository(RepositoryLocal localRepo, Action callback)
             {
-
+                await github.CreateRepo(localRepo.title);
+                Scanning.scanForAllReposAsync(callback);
             }
 
 
