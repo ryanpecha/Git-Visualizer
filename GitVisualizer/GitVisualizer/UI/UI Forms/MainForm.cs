@@ -96,6 +96,10 @@ namespace GitVisualizer.UI.UI_Forms
             this.SetVisibleCore(true);
             this.MaximizeBox = true;
         }
-  
+
+        private void revokeAccessButton_Click(object sender, EventArgs e)
+        {
+            Program.Github.DeleteToken();
+        }
     }
 }

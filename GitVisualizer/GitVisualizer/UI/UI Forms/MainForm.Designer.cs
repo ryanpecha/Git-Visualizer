@@ -37,6 +37,7 @@
             mainPanel = new Panel();
             pageButtonsPanel = new Panel();
             buttonsMenuPanel = new Panel();
+            revokeAccessButton = new Button();
             ((System.ComponentModel.ISupportInitialize)githubBindingSource).BeginInit();
             pageButtonsPanel.SuspendLayout();
             buttonsMenuPanel.SuspendLayout();
@@ -105,12 +106,25 @@
             // 
             // buttonsMenuPanel
             // 
+            buttonsMenuPanel.Controls.Add(revokeAccessButton);
             buttonsMenuPanel.Controls.Add(pageButtonsPanel);
             buttonsMenuPanel.Dock = DockStyle.Top;
             buttonsMenuPanel.Location = new Point(0, 0);
             buttonsMenuPanel.Name = "buttonsMenuPanel";
             buttonsMenuPanel.Size = new Size(1184, 47);
             buttonsMenuPanel.TabIndex = 5;
+            // 
+            // revokeAccessButton
+            // 
+            revokeAccessButton.FlatStyle = FlatStyle.Flat;
+            revokeAccessButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            revokeAccessButton.Location = new Point(1090, 5);
+            revokeAccessButton.Name = "revokeAccessButton";
+            revokeAccessButton.Size = new Size(91, 36);
+            revokeAccessButton.TabIndex = 9;
+            revokeAccessButton.Text = "Sign Out";
+            revokeAccessButton.UseVisualStyleBackColor = true;
+            revokeAccessButton.Click += revokeAccessButton_Click;
             // 
             // MainForm
             // 
@@ -150,5 +164,6 @@
         private Panel mainPanel;
         private Panel pageButtonsPanel;
         private Panel buttonsMenuPanel;
+        private Button revokeAccessButton;
     }
 }
