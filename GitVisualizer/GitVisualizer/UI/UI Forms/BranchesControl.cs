@@ -28,7 +28,7 @@ namespace GitVisualizer.UI.UI_Forms
 
         private List<Commit> commitHistory = new();
         private int currentDepth = 0;
-        
+
 
         public BranchesControl()
         {
@@ -74,8 +74,8 @@ namespace GitVisualizer.UI.UI_Forms
             if (e.ColumnIndex > 0 || e.RowIndex == -1) { return; }
 
             Commit commit = commitHistory[e.RowIndex];
-            
-            
+
+
             // Get Branch index for offset
             int branchIndex = 1;
             // get node area in graph
@@ -95,6 +95,16 @@ namespace GitVisualizer.UI.UI_Forms
             e.Graphics.SmoothingMode = prevSmoothing;
             // Handle event and return to continue drawing
             e.Handled = true;
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void branchesControlPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

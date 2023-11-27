@@ -42,5 +42,6 @@ namespace GitVisualizer.UI.UI_Forms
         {
 
         }
+
     }
 }

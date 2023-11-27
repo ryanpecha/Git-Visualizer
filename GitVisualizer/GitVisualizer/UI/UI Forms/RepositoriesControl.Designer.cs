@@ -114,7 +114,6 @@
             repositoriesControlPanel.Name = "repositoriesControlPanel";
             repositoriesControlPanel.Size = new Size(280, 675);
             repositoriesControlPanel.TabIndex = 1;
-            //repositoriesControlPanel.Paint += repositoriesControlPanel_Paint;
             // 
             // commonRepoButtonsPanel
             // 
