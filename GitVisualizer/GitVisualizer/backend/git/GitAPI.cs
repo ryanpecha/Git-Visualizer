@@ -101,6 +101,7 @@ public static class GitAPI
                     string? remoteURL = newLocalRepo.getRemoteURL();
                     if (remoteURL == null)
                     {
+                        Debug.WriteLine($"remoteURL is null for {repoDirPath}");
                         continue;
                     }
                     if (remoteBackedLocalRepositories.ContainsKey(remoteURL))

@@ -1,15 +1,14 @@
-﻿namespace GitVisualizer;
+﻿using System.Diagnostics;
+
+namespace GitVisualizer;
 
 public class RepositoryLocal : Repository
 {
-    //public RepositoryRemote? remoteRepository { get; private set; }
-    //public string? remoteURL { get; private set; }
 
     public string dirPath { get; private set; }
     public RepositoryLocal(string title, string dirPath) : base(title)
     {
         this.dirPath = dirPath;
-        //remoteURL = getRemoteURL();
     }
 
     public override string ToString()
@@ -17,17 +16,11 @@ public class RepositoryLocal : Repository
         return dirPath;
     }
 
-    /*
-    public void setRemoteRepository(RepositoryRemote remoteRepository){
-        this.remoteRepository = remoteRepository;
-    }
-    */
-
     public string? getRemoteURL()
     {
         string? res = null;
         // TODO check that .git folder and repo exist
-        string com = $"cd {dirPath}; ";
+        string com = $"cd '{dirPath}'; ";
         com += $"git config --get remote.origin.url";
         ShellComRes result = Shell.exec(com);
         // TODO check for command success
@@ -37,16 +30,40 @@ public class RepositoryLocal : Repository
             {
                 if (result.psObjects.Count() > 0)
                 {
-
                     if (result.psObjects[0] != null)
                     {
                         res = result.psObjects[0].ToString();
-                        if (res.StartsWith("https://")){
+                        if (res.StartsWith("https://github.com/")){
+                            // https 
+                            Debug.WriteLine($"getRemoteURL got res https : {res} | {dirPath}");
+                            // stripping "https://"
                             res = res.Substring(8);
                         }
+                        else if (res.StartsWith("git@github.com:")) {
+                            // ssh
+                            Debug.WriteLine($"getRemoteURL got res ssh : {res} | {dirPath}");
+                            // stripping "https://"
+                            res = "github.com/" + res.Substring(15);
+                        }
+                        else {
+                            // invalid
+                            Debug.WriteLine($"getRemoteURL res is not https for : {res} | {dirPath}");
+                        }
+                    }
+                    else {
+                        Debug.WriteLine($"getRemoteURL cmd output line 0 null {dirPath}");
                     }
                 }
+                else {
+                    Debug.WriteLine($"getRemoteURL cmd output count is 0 {dirPath}");
+                }
             }
+            else {
+                Debug.WriteLine($"getRemoteURL cmd output is null {dirPath}");
+            }
+        }
+        else {
+            Debug.WriteLine($"getRemoteURL failed for {dirPath}");
         }
         return res;
     }
