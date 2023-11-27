@@ -35,12 +35,18 @@ public class RepositoryLocal : Repository
                         res = result.psObjects[0].ToString();
                         if (res.StartsWith("https://github.com/")){
                             // https 
+                            if (! res.EndsWith(".git")){
+                                res += ".git";
+                            }
                             Debug.WriteLine($"getRemoteURL got res https : {res} | {dirPath}");
                             // stripping "https://"
                             res = res.Substring(8);
                         }
                         else if (res.StartsWith("git@github.com:")) {
                             // ssh
+                            if (! res.EndsWith(".git")){
+                                res += ".git";
+                            }
                             Debug.WriteLine($"getRemoteURL got res ssh : {res} | {dirPath}");
                             // stripping "https://"
                             res = "github.com/" + res.Substring(15);
