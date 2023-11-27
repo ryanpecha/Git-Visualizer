@@ -57,6 +57,13 @@ namespace GitVisualizer.UI.UI_Forms
             Debug.WriteLine("AddReposToTable()");
             allRepos = GitAPI.Getters.getAllRepositories();
 
+            if (GitAPI.liveRepository != null)
+            {
+                activeRepositoryTextLabel.Text = GitAPI.liveRepository.title;
+                activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
+            }
+
+
             //repositoriesGridView.Rows.Clear();
             repositoriesGridView.Columns.Clear();
             repositoriesGridView.DataSource = allRepos;
