@@ -41,8 +41,8 @@ public static class GitAPI
     // url -> list<localRepo>
     private static Dictionary<string, HashSet<RepositoryLocal>> remoteBackedLocalRepositories;
 
-    public static int? commitsAhead {get; private set;} = null;
-    public static int? commitsBehind {get; private set;} = null;
+    public static int? commitsAhead { get; private set; } = null;
+    public static int? commitsBehind { get; private set; } = null;
 
     /// <summary> GitAPI initialization </summary>
     static GitAPI()
@@ -656,43 +656,61 @@ public static class GitAPI
         }
 
 
-        public static Tuple<string?,string?> getLiveCommitShortHashAndBranch() {
-            if (liveRepository != null) {
+        public static Tuple<string?, string?> getLiveCommitShortHashAndBranch()
+        {
+            if (liveRepository != null)
+            {
                 string com = $"cd '{liveRepository.dirPath}'; ";
                 com += $"git log -1 --pretty=format:%h";
                 ShellComRes result = Shell.exec(com);
                 if (result.psObjects == null)
                 {
-                    return new(null,null);
+                    return new(null, null);
                 }
                 string shortHash = result.psObjects[0].ToString().Trim();
                 Debug.WriteLine($"CURRENT COMMIT SHORT HASH {shortHash}");
 
                 com = $"cd '{liveRepository.dirPath}'; ";
-                com += $"git git rev-parse --abbrev-ref HEAD";
+                com += $"git rev-parse --abbrev-ref HEAD";
                 result = Shell.exec(com);
                 if (result.psObjects == null)
                 {
-                    return new(null,null);
+                    return new(null, null);
                 }
-                string branchName = result.psObjects[0].ToString().Trim();
-                Debug.WriteLine($"CURRENT COMMIT SHORT HASH {shortHash}");
+                string? branchName = result.psObjects[0].ToString().Trim();
+                Debug.WriteLine($"CURRENT BRANCH NAME {branchName}");
+                if (branchName == "HEAD")
+                {
+                    branchName = null;
+                }
 
-                return new Tuple<string,string>(shortHash,);
+                return new(shortHash, branchName);
             }
-            return null;
+            return new(null, null);
         }
 
 
-        public static void setCommitsAheadAndBehind() {
-            if (liveRepository != null) {
-                "git rev-list --left-right --count origin/master...origin/test-branch";
+        public static void setCommitsAheadAndBehind()
+        {
+            if (liveRepository != null)
+            {
+                string com = $"cd '{liveRepository.dirPath}'; ";
+                com += $"git rev-list --left-right --count origin/master...origin/test-branch";
+                ShellComRes result = Shell.exec(com);
+                if (result.psObjects == null)
+                {
+                    return;
+                }
             }
         }
 
 
         public static Tuple<List<Branch>, List<Commit>> getCommitsAndBranches()
         {
+            Tuple<string?, string?> liveCommitShortHashAndBranchName = getLiveCommitShortHashAndBranch();
+            string? liveCommitShortHash = liveCommitShortHashAndBranchName.Item1;
+            string? liveBranchName = liveCommitShortHashAndBranchName.Item2;
+
             if (liveRepository != null)
             {
                 string baseCom = $"cd '{liveRepository.dirPath}'; ";
@@ -740,6 +758,14 @@ public static class GitAPI
                     longHashToCommitDict[commit.longCommitHash] = commit;
                     shortHashToCommitDict[commit.shortCommitHash] = commit;
                     commits.Add(commit);
+
+                    if (liveCommitShortHash != null)
+                    {
+                        if (commit.shortCommitHash == liveCommitShortHash)
+                        {
+                            liveCommit = commit;
+                        }
+                    }
                 }
 
                 // committer name
@@ -876,6 +902,14 @@ public static class GitAPI
                         Branch branch = new Branch(title, commit);
                         commit.branches.Add(branch);
                         allBranches.Add(branch);
+
+                        if (liveCommitShortHash != null && liveBranchName != null)
+                        {
+                            if (liveCommitShortHash == shortCommitHash && liveBranchName == branch.title)
+                            {
+                                liveBranch = branch;
+                            }
+                        }
                     }
                 }
 
