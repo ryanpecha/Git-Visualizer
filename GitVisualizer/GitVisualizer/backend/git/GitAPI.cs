@@ -330,6 +330,7 @@ public static class GitAPI
                     result = Shell.exec(com);
                     // TODO check for command success
                 }
+                
             }
 
             public readonly static string description_trackDirectory = "";
