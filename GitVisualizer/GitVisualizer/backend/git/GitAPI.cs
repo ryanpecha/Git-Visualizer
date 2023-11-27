@@ -215,7 +215,7 @@ public static class GitAPI
 
 
             public readonly static string description_addLocalBranchToRemote = "";
-            public static void addLocalBranchToRemote()
+            public static void addLocalBranchToRemote(Branch branch)
             {
                 // git push -u origin <branch>
             }
