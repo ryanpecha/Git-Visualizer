@@ -58,17 +58,20 @@ public static class GVSettings
     {
         public bool rememberGitHubLogin { get; set; }
         public List<LocalTrackedDir> trackedLocalDirs { get; set; }
+        public string? liveRepostoryPath {get; set;}
 
-        public GVSettingsData(bool rememberGitHubLogin, List<LocalTrackedDir> trackedLocalDirs)
+        public GVSettingsData(bool rememberGitHubLogin, List<LocalTrackedDir> trackedLocalDirs, string liveRepostoryPath)
         {
             this.rememberGitHubLogin = rememberGitHubLogin;
             this.trackedLocalDirs = trackedLocalDirs;
+            this.liveRepostoryPath = liveRepostoryPath;
         }
 
         public GVSettingsData()
         {
             rememberGitHubLogin = true;
             trackedLocalDirs = new List<LocalTrackedDir>();
+            liveRepostoryPath = null;
         }
     }
 }

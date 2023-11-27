@@ -150,6 +150,16 @@ public static class GitAPI
             scanForLocalRepos(null);
             // loading remote repositories
             await scanForRemoteReposAsync(null);
+            //
+            if (GVSettings.data.liveRepostoryPath != null) {
+                if (liveRepository == null) {
+                    if (localRepositories.ContainsKey(GVSettings.data.liveRepostoryPath)) {
+                        RepositoryLocal curRepo = localRepositories[GVSettings.data.liveRepostoryPath];
+                        Actions.LocalActions.setLiveRepository(curRepo);
+                    }
+                }
+            }
+            //
             if (callback != null)
             {
                 callback();
@@ -179,7 +189,11 @@ public static class GitAPI
             public readonly static string description_addLocalBranchToRemote = "";
             public static void addLocalBranchToRemote(Branch branch)
             {
-                // git push -u origin <branch>
+                if (liveRepository != null) {
+                    string com = $"cd '{liveRepository.dirPath}'; ";
+                    com += $"git push -u {branch.title}";
+                    ShellComRes comResult = Shell.exec(com);
+                }
             }
 
 
@@ -253,6 +267,9 @@ public static class GitAPI
                     liveRepository = repositoryLocal;
                     // set commit to currently checked out repo commit
                     Getters.getCommitsAndBranches();
+                    // updating settings
+                    GVSettings.data.liveRepostoryPath = liveRepository.dirPath;
+                    GVSettings.saveSettings();
                 }
                 Getters.setCommitsAheadAndBehind();
             }
@@ -703,7 +720,8 @@ public static class GitAPI
                 if (liveBranch != null)
                 {
                     string com = $"cd '{liveRepository.dirPath}'; ";
-                    com += $"git rev-list --left-right --count {liveRepository.title}...origin/{liveRepository.title}";
+                    com += $"git rev-list --left-right --count {liveBranch.title}...origin/{liveBranch.title}";
+                    Debug.WriteLine($"setCommitsAheadAndBehind : com= >{com}<");
                     ShellComRes result = Shell.exec(com);
                     if (result.psObjects == null)
                     {
@@ -721,8 +739,8 @@ public static class GitAPI
                     string line = result.psObjects[0].ToString().Trim();
                     line = Regex.Replace(line, @"\s+", " ");
                     string[] nums = line.Split(" ");
-                    commitsAhead = int.Parse(nums[1]);
-                    commitsBehind = int.Parse(nums[0]);
+                    commitsBehind = int.Parse(nums[1]);
+                    commitsAhead = int.Parse(nums[0]);
                     Debug.WriteLine($"SET COMMIT COUNTS : ahead={commitsAhead} behind={commitsBehind}");
                 }
                 else
