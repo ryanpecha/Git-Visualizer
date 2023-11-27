@@ -449,18 +449,16 @@ public static class GitAPI
             public static void undoUnstagedChange(string fpath)
             {
                 // reset file to state without any changes
-            }
-
-            public readonly static string description_undoLastCommit = "";
-            public static void undoLastCommit()
-            {
-
+                string com = $"cd {liveRepository.dirPath}; ";
+                com += $"git checkout {fpath}";
+                ShellComRes result = Shell.exec(com);
+                // TODO check for command success
             }
 
             public readonly static string description_unstageAllStagedChanges = "";
             public static void unstageAllStagedChanges()
             {
-                // unstage file changes to commit
+                // unstage all staged changes
                 if (liveRepository != null)
                 {
                     string com = $"cd {liveRepository.dirPath}; ";
@@ -469,10 +467,11 @@ public static class GitAPI
                     // TODO check for command success
                 }
             }
-            public readonly static string description_stageAllStagedChanges = "";
-            public static void stageAllStagedChanges()
+            
+            public readonly static string description_stageAllUnStagedChanges = "";
+            public static void stageAllUnStagedChanges()
             {
-                // unstage file changes to commit
+                // stage all changed files
                 if (liveRepository != null)
                 {
                     string com = $"cd {liveRepository.dirPath}; ";
@@ -480,6 +479,12 @@ public static class GitAPI
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                 }
+            }
+
+            public readonly static string description_undoLastCommit = "";
+            public static void undoLastCommit()
+            {
+                // 
             }
         }
     }
