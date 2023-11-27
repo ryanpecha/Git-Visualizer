@@ -432,8 +432,8 @@ public static class GitAPI
 
             }
 
-            public readonly static string description_undoChanges = "";
-            public static void undoChanges(List<string> fpaths)
+            public readonly static string description_undoUnstagedChanges = "";
+            public static void undoUnstagedChanges(List<string> fpaths)
             {
 
             }
