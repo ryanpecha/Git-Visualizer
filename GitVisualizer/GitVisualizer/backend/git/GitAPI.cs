@@ -243,7 +243,7 @@ public static class GitAPI
                 {
                     // TODO check that .git folder and repo exist
                     string com = $"cd '{repositoryLocal.dirPath}'; ";
-                    com += $"git init {repositoryLocal.dirPath}";
+                    com += $"git init '{repositoryLocal.dirPath}'";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     liveRepository = repositoryLocal;
