@@ -450,9 +450,9 @@ public static class GitAPI
     public static class Getters
     {
 
-        public static List<string> getStagedFiles()
+        public static List<Tuple<string, string>> getStagedFiles()
         {
-
+            return new();
         }
 
         public static List<Tuple<string, string>> getUnStagedFiles()
@@ -460,6 +460,9 @@ public static class GitAPI
             string com = $"cd {liveRepository.dirPath}; ";
             com += $"git add -A -n";
             ShellComRes result = Shell.exec(com);
+            if (result.psObjects == null) {
+                return new();
+            }
             // action(add,del,mod), fpath
             List<Tuple<string, string>> changes = new();
             foreach (PSObject pso in result.psObjects)
