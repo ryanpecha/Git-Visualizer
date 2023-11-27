@@ -307,7 +307,7 @@ public static class GitAPI
 
 
             public readonly static string description_createLocalBranch = "";
-            public static void createLocalBranch(string title, Commit commit)
+            public static Branch createLocalBranch(string title, Commit commit)
             {
                 // TODO check that branch does not exist
                 string com = $"cd {commit.localRepository.dirPath}; ";
@@ -317,6 +317,7 @@ public static class GitAPI
                 Branch branch = new Branch(title, commit);
                 // TODO add new branch to global branch
                 liveCommit = branch.commit;
+                return branch;
             }
 
 
