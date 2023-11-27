@@ -22,7 +22,6 @@ namespace GitVisualizer.UI.UI_Forms
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            commitMessageTextBox.PlaceholderText = "Enter commit message... <Required>";
         }
 
         public void OnMergingControlFocus()
@@ -72,7 +71,7 @@ namespace GitVisualizer.UI.UI_Forms
             }
 
             if (GitAPI.commitsBehind != null) { incomingCountTextLabel.Text = GitAPI.commitsBehind.ToString(); }
-            if (GitAPI.commitsAhead != null) { outgoingCountLabel.Text = GitAPI.commitsAhead.ToString(); }
+            if (GitAPI.commitsAhead != null) { outgoingCountTextLabel.Text = GitAPI.commitsAhead.ToString(); }
 
         }
         private void MergingControl_Load(object sender, EventArgs e)

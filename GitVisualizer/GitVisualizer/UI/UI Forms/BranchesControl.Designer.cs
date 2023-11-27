@@ -226,6 +226,7 @@
             branchComboBox.Name = "branchComboBox";
             branchComboBox.Size = new Size(248, 23);
             branchComboBox.TabIndex = 10;
+            branchComboBox.Text = "Branches";
             // 
             // activeRepoPanel
             // 
@@ -391,6 +392,7 @@
             newBranchFromCommitTextBox.Dock = DockStyle.Top;
             newBranchFromCommitTextBox.Location = new Point(3, 37);
             newBranchFromCommitTextBox.Name = "newBranchFromCommitTextBox";
+            newBranchFromCommitTextBox.PlaceholderText = "Enter name for new branch...";
             newBranchFromCommitTextBox.Size = new Size(200, 23);
             newBranchFromCommitTextBox.TabIndex = 14;
             newBranchFromCommitTextBox.Visible = false;

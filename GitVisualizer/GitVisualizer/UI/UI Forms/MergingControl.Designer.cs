@@ -180,8 +180,10 @@
             // 
             commitMessageTextBox.Dock = DockStyle.Top;
             commitMessageTextBox.Location = new Point(15, 15);
+            commitMessageTextBox.MaxLength = 150;
             commitMessageTextBox.Multiline = true;
             commitMessageTextBox.Name = "commitMessageTextBox";
+            commitMessageTextBox.PlaceholderText = "Enter commit message... <Required>";
             commitMessageTextBox.Size = new Size(243, 45);
             commitMessageTextBox.TabIndex = 8;
             commitMessageTextBox.TextChanged += commitMessageTextBox_TextChanged;
