@@ -74,17 +74,19 @@ namespace GitVisualizer.UI.UI_Forms
             }
 
             bool syncDone = false;
-            if (GitAPI.commitsBehind != null) {
+            if (GitAPI.commitsBehind != null)
+            {
                 int newBehind = (int)GitAPI.commitsBehind;
                 if (newBehind != syncstate[0]) { syncDone = true; }
                 syncstate[0] = newBehind;
-                incomingCountTextLabel.Text = GitAPI.commitsBehind.ToString(); 
+                incomingCountTextLabel.Text = GitAPI.commitsBehind.ToString();
             }
-            if (GitAPI.commitsAhead != null) {
+            if (GitAPI.commitsAhead != null)
+            {
                 int newAhead = (int)GitAPI.commitsAhead;
                 if (newAhead != syncstate[1]) { syncDone = true; }
                 syncstate[1] = (int)GitAPI.commitsAhead;
-                outgoingCountTextLabel.Text = GitAPI.commitsAhead.ToString(); 
+                outgoingCountTextLabel.Text = GitAPI.commitsAhead.ToString();
             }
             if (syncDone)
             {
@@ -162,6 +164,14 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Actions.RemoteActions.sync();
             UpdateGridViews();
             syncButton.Enabled = false;
+            if (GitAPI.commitsBehind != null)
+            {
+                syncstate[0] = (int)GitAPI.commitsBehind;
+            }
+            if (GitAPI.commitsAhead != null)
+            {
+                syncstate[1] = (int)GitAPI.commitsAhead;
+            }
         }
     }
 }
