@@ -947,7 +947,7 @@ public static class GitAPI
             return false;
         }
 
-        public static Tuple<List<Branch>, List<Commit>, List<string>> getCommitsAndBranches()
+        public static Tuple<List<Branch>, List<Commit>> getCommitsAndBranches()
         {
             Tuple<string?, string?> liveCommitShortHashAndBranchName = getLiveCommitShortHashAndBranch();
             string? liveCommitShortHash = liveCommitShortHashAndBranchName.Item1;
@@ -974,7 +974,7 @@ public static class GitAPI
                 ShellComRes comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    return new(new(), new(), new());
+                    return new(new(), new());
                 }
 
                 // longCommitHash, shortCommitHash, longTreeHash, parentHashes
@@ -1016,7 +1016,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    return new(new(), new(), new());
+                    return new(new(), new());
                 }
                 int i = 0;
                 foreach (PSObject pso in comResult.psObjects)
@@ -1032,7 +1032,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    return new(new(), new(), new());
+                    return new(new(), new());
                 }
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
@@ -1056,7 +1056,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    return new(new(), new(), new());
+                    return new(new(), new());
                 }
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
@@ -1117,7 +1117,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    return new(new(), new(), new());
+                    return new(new(), new());
                 }
                 foreach (PSObject pso in comResult.psObjects)
                 {
@@ -1148,10 +1148,10 @@ public static class GitAPI
                 setCommitsAheadAndBehind();
 
                 // branches-commits tuples
-                return new Tuple<List<Branch>, List<Commit>, List<string>>(allBranches, sortedCommits, graphLines);
+                return new Tuple<List<Branch>, List<Commit>>(allBranches, sortedCommits);
             }
 
-            return new(new(), new(), new());
+            return new(new(), new());
         }
     }
 }
