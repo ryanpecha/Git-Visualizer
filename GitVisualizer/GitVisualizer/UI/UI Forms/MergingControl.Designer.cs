@@ -439,6 +439,7 @@
             stagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             stagedChangesDataGridView.Size = new Size(428, 151);
             stagedChangesDataGridView.TabIndex = 0;
+            stagedChangesDataGridView.CellClick += OnFileCellSelected;
             stagedChangesDataGridView.CellContentClick += stagedChangesDataGridView_CellContentClick;
             // 
             // fileColumn

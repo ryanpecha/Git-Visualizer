@@ -26,7 +26,8 @@ namespace GitVisualizer.UI.UI_Forms
             Color.Gold,
             Color.Plum];
 
-        private Tuple<List<Branch>, List<Commit>> commitHistory = null;
+        private Tuple<List<Branch>, List<Commit>, List<string>> commitHistory = null;
+        //private Tuple<List<Branch>, List<Commit>> commitHistory = null;
         Commit selectedCommit = null;
         private int currentDepth = 0;
 
@@ -94,6 +95,7 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Actions.LocalActions.checkoutBranch(selected);
             if (GitAPI.liveBranch == null) { return; }
             checkedOutBranchTextLabel.Text = "Branch: " + GitAPI.liveBranch.title;
+            branchesGridView.Refresh();
         }
 
         public void OnDeleteBranchButton(object sender, EventArgs e)
@@ -117,6 +119,7 @@ namespace GitVisualizer.UI.UI_Forms
             if (selectedCommit == null) { return; }
             checkedOutBranchTextLabel.Text = "Commit: " + selectedCommit.shortCommitHash;
             GitAPI.Actions.LocalActions.checkoutCommit(selectedCommit);
+            branchesGridView.Refresh();
         }
 
         public void OnCreateBranchFromSelectedButton(object sender, EventArgs e)
@@ -125,6 +128,17 @@ namespace GitVisualizer.UI.UI_Forms
             string title = newBranchFromCommitTextBox.Text;
             if (title.Length == 0) { return; }
             GitAPI.Actions.LocalActions.createLocalBranch(title, selectedCommit);
+        }
+
+        private void branchesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            if (index < 0) { return; }
+            selectedCommit = commitHistory.Item2[index];
+            selectedCommitTextLabel.Text = "Selected Commit: " + selectedCommit.shortCommitHash + " - " + selectedCommit.subject;
+            checkoutCommitButton.Visible = true;
+            newBranchFromCommitTextBox.Visible = true;
+            createBranchFromSelectedButton.Visible = true;
         }
 
         /// <summary>
@@ -139,7 +153,6 @@ namespace GitVisualizer.UI.UI_Forms
 
             Commit commit = commitHistory.Item2[e.RowIndex];
 
-
             // Get Branch index for offset
             int branchIndex = 1;
             // get node area in graph
@@ -147,6 +160,7 @@ namespace GitVisualizer.UI.UI_Forms
 
             // Get branch color from index
             Pen pen = new Pen(branchNodeColors[branchIndex], 3);
+
             // Set position based on cell bounds using branch offset and radius
             int x = e.CellBounds.X + (xOffset / 2);
             int y = e.CellBounds.Y + ((e.CellBounds.Height / 2) - (branchNodeRadius / 2));
@@ -155,21 +169,18 @@ namespace GitVisualizer.UI.UI_Forms
             // Save smoothing mode before changing, then change to antialias for smooth node drawing
             SmoothingMode prevSmoothing = e.Graphics.SmoothingMode;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
             e.Graphics.DrawEllipse(pen, x, y, branchNodeRadius, branchNodeRadius);
+            if (commit == GitAPI.liveCommit)
+            {
+                e.Graphics.FillEllipse(pen.Brush, x, y, branchNodeRadius, branchNodeRadius);
+            }
+
             e.Graphics.SmoothingMode = prevSmoothing;
             // Handle event and return to continue drawing
             e.Handled = true;
         }
 
-        private void branchesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int index = e.RowIndex;
-            if (index < 0) { return; }
-            selectedCommit = commitHistory.Item2[index];
-            selectedCommitTextLabel.Text = "Selected Commit: " + selectedCommit.shortCommitHash + " - " + selectedCommit.subject;
-            checkoutCommitButton.Visible = true;
-            newBranchFromCommitTextBox.Visible = true;
-            createBranchFromSelectedButton.Visible = true;
-        }
+
     }
 }

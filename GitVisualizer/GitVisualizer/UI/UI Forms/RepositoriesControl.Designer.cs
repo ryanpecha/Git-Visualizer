@@ -52,8 +52,8 @@
             openInFileExplorerButton = new Button();
             createNewRemoteRepoButton = new Button();
             flowLayoutPanel4 = new FlowLayoutPanel();
-            openOnGithubComButton = new Button();
             remoteRepoButtonsLabel = new Label();
+            openOnGithubComButton = new Button();
             cloneToLocalButton = new Button();
             ((System.ComponentModel.ISupportInitialize)repositoriesGridView).BeginInit();
             repositoriesControlPanel.SuspendLayout();
@@ -375,6 +375,18 @@
             flowLayoutPanel4.Size = new Size(452, 138);
             flowLayoutPanel4.TabIndex = 10;
             // 
+            // remoteRepoButtonsLabel
+            // 
+            remoteRepoButtonsLabel.AutoSize = true;
+            remoteRepoButtonsLabel.Dock = DockStyle.Top;
+            flowLayoutPanel4.SetFlowBreak(remoteRepoButtonsLabel, true);
+            remoteRepoButtonsLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            remoteRepoButtonsLabel.Location = new Point(11, 8);
+            remoteRepoButtonsLabel.Name = "remoteRepoButtonsLabel";
+            remoteRepoButtonsLabel.Size = new Size(71, 21);
+            remoteRepoButtonsLabel.TabIndex = 5;
+            remoteRepoButtonsLabel.Text = "Remote: ";
+            // 
             // openOnGithubComButton
             // 
             openOnGithubComButton.FlatStyle = FlatStyle.Flat;
@@ -389,18 +401,6 @@
             openOnGithubComButton.UseVisualStyleBackColor = true;
             openOnGithubComButton.Visible = false;
             openOnGithubComButton.Click += OnOpenOnGithubComButton;
-            // 
-            // remoteRepoButtonsLabel
-            // 
-            remoteRepoButtonsLabel.AutoSize = true;
-            remoteRepoButtonsLabel.Dock = DockStyle.Top;
-            flowLayoutPanel4.SetFlowBreak(remoteRepoButtonsLabel, true);
-            remoteRepoButtonsLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            remoteRepoButtonsLabel.Location = new Point(11, 8);
-            remoteRepoButtonsLabel.Name = "remoteRepoButtonsLabel";
-            remoteRepoButtonsLabel.Size = new Size(71, 21);
-            remoteRepoButtonsLabel.TabIndex = 5;
-            remoteRepoButtonsLabel.Text = "Remote: ";
             // 
             // cloneToLocalButton
             // 

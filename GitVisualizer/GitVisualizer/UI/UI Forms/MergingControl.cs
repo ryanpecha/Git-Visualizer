@@ -154,5 +154,11 @@ namespace GitVisualizer.UI.UI_Forms
             UpdateGridViews();
 
         }
+
+        private void OnFileCellSelected(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex != 0) { return; }
+            Debug.WriteLine(stagedChangesDataGridView.Rows[e.RowIndex].Cells[0].Value); ;
+        }
     }
 }

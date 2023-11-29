@@ -37,7 +37,7 @@ namespace GitVisualizer.UI.UI_Forms
             //GetLocalRepositoriesData();
             //GetRemoteRepositoriesData();
             //AddReposToTable();
-            GitAPI.Scanning.scanForAllReposAsync(UpdateGridCallback);
+            GitAPI.Scanning.scanForAllRepos(UpdateGridCallback);
         }
 
 
