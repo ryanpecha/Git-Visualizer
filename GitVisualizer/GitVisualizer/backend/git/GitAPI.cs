@@ -143,9 +143,12 @@ public static class GitAPI
             // loading remote repositories
             await scanForRemoteReposAsync(null);
             //
-            if (GVSettings.data.liveRepostoryPath != null) {
-                if (liveRepository == null) {
-                    if (localRepositories.ContainsKey(GVSettings.data.liveRepostoryPath)) {
+            if (GVSettings.data.liveRepostoryPath != null)
+            {
+                if (liveRepository == null)
+                {
+                    if (localRepositories.ContainsKey(GVSettings.data.liveRepostoryPath))
+                    {
                         RepositoryLocal curRepo = localRepositories[GVSettings.data.liveRepostoryPath];
                         Actions.LocalActions.setLiveRepository(curRepo);
                     }
@@ -178,13 +181,14 @@ public static class GitAPI
 
                 cloneURL = github.CreateAuthenticatedGit(cloneURL);
                 Scanning.scanForAllReposAsync(callback);
-                
+
 
 
                 //string remoteURL = localRepo.getRemoteURL();
                 //string remoteURL = localRepo.getRemoteURL();
 
-                if (cloneURL != null) {
+                if (cloneURL != null)
+                {
                     string com = $"cd '{localRepo.dirPath}'; ";
                     com += $"git remote add origin {cloneURL}; ";
                     // TODO
@@ -198,7 +202,8 @@ public static class GitAPI
             public readonly static string description_addLocalBranchToRemote = "";
             public static void addLocalBranchToRemote(Branch branch)
             {
-                if (liveRepository != null) {
+                if (liveRepository != null)
+                {
                     string com = $"cd '{liveRepository.dirPath}'; ";
                     com += $"git push -u {branch.title}";
                     ShellComRes comResult = Shell.exec(com);
@@ -374,6 +379,19 @@ public static class GitAPI
                 Scanning.scanForLocalRepos(callback);
             }
 
+            public readonly static string description_untrackDirectory = "";
+            public static void untrackDirectory(string dirPath, Action? callback)
+            {
+                foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
+                {
+                    if (trackedDir.path == dirPath)
+                    {
+                        GVSettings.data.trackedLocalDirs.Remove(trackedDir);
+                    }
+                }
+                GVSettings.saveSettings();
+                Scanning.scanForLocalRepos(callback);
+            }
 
             public readonly static string description_userSelectTrackDirectory = "";
             public static void userSelectTrackDirectory(bool recursive, Action? callback)
@@ -387,6 +405,12 @@ public static class GitAPI
                 }
             }
 
+            public readonly static string description_getTrackedDirs = "";
+            public static List<string> getTrackedDirs()
+            {
+                List<string> trackedDirs = GVSettings.data.trackedLocalDirs.Select(o => o.path).ToList();
+                return trackedDirs;
+            }
 
             public readonly static string description_createLocalRepository = "";
             public static void createLocalRepository(Action? callback)
@@ -740,7 +764,8 @@ public static class GitAPI
                         Debug.WriteLine($"setCommitsAheadAndBehind : res is null");
                         return;
                     }
-                    if (result.psObjects.Count == 0) {
+                    if (result.psObjects.Count == 0)
+                    {
                         commitsAhead = null;
                         commitsBehind = null;
                         Debug.WriteLine($"setCommitsAheadAndBehind : res line count is 0");
