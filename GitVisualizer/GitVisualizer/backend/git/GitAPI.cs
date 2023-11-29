@@ -260,16 +260,17 @@ public static class GitAPI
             public readonly static string description_cloneRemoteRepository = "";
             public static void cloneRemoteRepository(RepositoryRemote repositoryRemote, Action? callback)
             {
+                Debug.WriteLine("CLONING : " + repositoryRemote.cloneURL);
                 // TODO check that .git folder and repo exist
                 FolderBrowserDialog dialog = new FolderBrowserDialog();
                 DialogResult fdResult = dialog.ShowDialog();
                 if (fdResult == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
                 {
                     string cloneDirPath = Path.GetFullPath(dialog.SelectedPath);
-                    string clonedRepoPath = cloneDirPath + "/" + repositoryRemote.title;
+                    string clonedRepoPath = cloneDirPath + "\\" + repositoryRemote.title;
                     //
                     string com = $"cd '{cloneDirPath}'; ";
-                    com += $"git clone {repositoryRemote.cloneURL}";
+                    com += $"git clone https://{repositoryRemote.cloneURL}";
                     ShellComRes comResult = Shell.exec(com);
                     // TODO check for command success
                     LocalActions.trackDirectory(clonedRepoPath, true, callback);
@@ -608,7 +609,7 @@ public static class GitAPI
     public static class Getters
     {
 
-        public static List<Tuple<string,string>> getFileDiff(string fpath, bool isStaged)
+        public static List<Tuple<string, string>> getFileDiff(string fpath, bool isStaged)
         {
             Debug.WriteLine("getFileDiff : " + fpath);
             // assumes valid fpath
@@ -630,9 +631,10 @@ public static class GitAPI
             List<string> diffLines = result.psObjects.Select(s => s.ToString()).ToList();
             //List<string> diffOld = new();
             //List<string> diffNew = new();
-            List<Tuple<string,string>> diff = new();
+            List<Tuple<string, string>> diff = new();
 
-            foreach (string line in diffLines) {
+            foreach (string line in diffLines)
+            {
                 Debug.WriteLine("DIFF LINE : " + line);
             }
 
@@ -641,12 +643,14 @@ public static class GitAPI
             // stripping command output header
             foreach (string line in diffLines)
             {
-                if (line[0].Equals('@')){
+                if (line[0].Equals('@'))
+                {
                     break;
                 }
                 i++;
             }
-            for (int j = 0; j < i; j++) {
+            for (int j = 0; j < i; j++)
+            {
                 string line = diffLines[0];
                 diffLines.RemoveAt(0);
                 Debug.WriteLine("DIFF REMOVING HEADER LINE : " + line);
@@ -656,7 +660,7 @@ public static class GitAPI
             {
                 if (line[0].Equals('-'))
                 {
-                    diff.Add(new("\n",line));
+                    diff.Add(new("\n", line));
                     /*
                     diffNew.Add("\n#");
                     diffOld.Add(line);
@@ -664,7 +668,7 @@ public static class GitAPI
                 }
                 else if (line[0].Equals('+'))
                 {
-                    diff.Add(new(line,"\n"));
+                    diff.Add(new(line, "\n"));
                     /*
                     diffNew.Add(line);
                     diffOld.Add("\n#");
@@ -672,7 +676,7 @@ public static class GitAPI
                 }
                 else
                 {
-                    diff.Add(new(line,line));
+                    diff.Add(new(line, line));
                     /*
                     diffNew.Add(line);
                     diffOld.Add(line);
@@ -915,6 +919,33 @@ public static class GitAPI
         }
 
 
+        public static bool populateCommitGraphData(Commit cur, int colIndex)
+        {
+            if (cur.graphColIndex != -1)
+            {
+                // cur has already been visited
+                return true;
+            }
+            cur.graphColIndex = colIndex;
+            int childColIndex = colIndex;
+            foreach (Commit child in cur.children)
+            {
+                bool alreadyVisited = populateCommitGraphData(child, childColIndex);
+                if (alreadyVisited)
+                {
+                    childColIndex--;
+                }
+                else
+                {
+                    childColIndex++;
+                }
+                Tuple<int,int> outRowColPair = new(child.graphRowIndex,child.graphColIndex);
+                cur.graphOutRowColPairs.Add(outRowColPair);
+            }
+            // cur has been visited for the first time
+            return false;
+        }
+
         public static Tuple<List<Branch>, List<Commit>, List<string>> getCommitsAndBranches()
         {
             Tuple<string?, string?> liveCommitShortHashAndBranchName = getLiveCommitShortHashAndBranch();
@@ -1044,34 +1075,28 @@ public static class GitAPI
                         parentCommit.children.Add(commit);
                     }
                 }
-                // temp graph
-                com = baseCom + $"git log --graph --oneline";
-                comResult = Shell.exec(com);
-                if (comResult.psObjects == null)
-                {
-                    return new(new(), new(), new());
-                }
-                List<string> graphLines = comResult.psObjects.Select(s => s.ToString()).ToList();
 
-                /*
-                i = 0; // commit index
-                foreach (PSObject pso in comResult.psObjects)
+                // populating graph row properties of commits
+                int commitGraphRowIndex = commits.Count - 1;
+                foreach (Commit c in commits)
                 {
-                    string line = pso.ToString().Trim();
-                    // commit
-                    if (line.Contains("*"))
-                    {
-                        Commit commit = commits[i];
-                        i++;
-                    }
-                    // branching/connecting commits
-                    else
-                    {
-
-                    }
-                    //Debug.WriteLine(pso.ToString());
+                    c.graphRowIndex = commitGraphRowIndex;
+                    commitGraphRowIndex--;
                 }
-                */
+                // populating graph col properties of commits
+                if (commits.Count > 0)
+                {
+                    Commit initCommit = commits.Last();
+                    populateCommitGraphData(initCommit, 0);
+                }
+                // printing graph
+                foreach (Commit c in commits)
+                {
+                    string leftOffset = string.Concat(Enumerable.Repeat(" ", c.graphColIndex));
+                    Debug.WriteLine(leftOffset  + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count})" + c.subject);
+                }
+
+                List<string> graphLines = new();
 
                 // sorting commits by date
                 //List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
@@ -1082,7 +1107,7 @@ public static class GitAPI
                 List<Branch> allBranches = new List<Branch>();
                 // getting commits
                 // list local branchs : *(live or not) | name | short hash | most recent commit msg
-                com = baseCom + $"git branch -vv";
+                com = baseCom + $"git branch -vva";
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {

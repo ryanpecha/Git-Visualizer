@@ -2,6 +2,12 @@
 
 public class Commit
 {
+
+    public int graphRowIndex; // row 0 at bottom; 
+    public int graphColIndex = -1; // col 0 is leftmost;
+    
+    public List<Tuple<int,int>> graphOutRowColPairs = new();
+
     public RepositoryLocal localRepository {get; set;}
     public List<Branch> branches {get; set;} = new();
 
