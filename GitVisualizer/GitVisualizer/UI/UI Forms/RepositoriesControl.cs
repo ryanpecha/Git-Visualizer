@@ -66,6 +66,7 @@ namespace GitVisualizer.UI.UI_Forms
 
             //repositoriesGridView.Rows.Clear();
             repositoriesGridView.Columns.Clear();
+            repositoriesGridView.DataSource = null;
             repositoriesGridView.DataSource = allRepos;
             repositoriesGridView.Columns[0].HeaderCell.Value = "Local Repositories";
             repositoriesGridView.Columns[1].HeaderCell.Value = "Remote Repositories";
