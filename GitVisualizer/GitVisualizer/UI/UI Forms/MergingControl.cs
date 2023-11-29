@@ -161,8 +161,8 @@ namespace GitVisualizer.UI.UI_Forms
             if (e.RowIndex < 0 || e.ColumnIndex != 0) { return; }
             string filePath = stagedChanges[e.RowIndex].Item2;
 
-            Debug.WriteLine("SELECTED FILE FOR DIFF: " + filePath); 
-            Tuple<List<string>, List<string>> diffResults = GitAPI.Getters.getFileDiff(filePath);
+            Debug.WriteLine("SELECTED FILE FOR DIFF: " + filePath);
+            Tuple<List<string>, List<string>> diffResults = GitAPI.Getters.getFileDiff(filePath, true);
             List<string> newDiffs = diffResults.Item1;
             List<string> oldDiffs = diffResults.Item2;
             oldDiffListBox.DataSource = oldDiffs;

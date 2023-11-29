@@ -24,7 +24,11 @@ namespace GitVisualizer.UI.UI_Forms
             Color.LightGreen,
             Color.DarkSalmon,
             Color.Gold,
-            Color.Plum];
+            Color.Plum,
+            Color.Aqua,
+            Color.Bisque,
+            Color.DarkOliveGreen,
+            Color.Orange];
 
         private Tuple<List<Branch>, List<Commit>, List<string>> commitHistory = null;
         //private Tuple<List<Branch>, List<Commit>> commitHistory = null;
@@ -150,19 +154,58 @@ namespace GitVisualizer.UI.UI_Forms
         {
             // Ignore header row and any columns besides Graph column
             if (e.ColumnIndex > 0 || e.RowIndex == -1) { return; }
-
+            
             Commit commit = commitHistory.Item2[e.RowIndex];
+            List<string> graph = commitHistory.Item3;
+            string curGraphLine = graph[e.RowIndex];
 
+            int curOffset = 0;
+
+            
+
+            foreach (char symbol in curGraphLine)
+            {
+                Pen pen = new Pen(branchNodeColors[curOffset], 3);
+                int xOffset = curOffset * pixelsPerBranchNode;
+
+                if (symbol == ' ') { 
+                     curOffset++;
+                }
+                else if (symbol == '|')
+                {
+
+                }
+                else if (symbol == '*')
+                {
+                    int x = e.CellBounds.X + (xOffset / 2);
+                    int y = e.CellBounds.Y + ((e.CellBounds.Height / 2) - (branchNodeRadius / 2));
+                    e.PaintBackground(e.CellBounds, true);
+                    SmoothingMode prevSmoothing = e.Graphics.SmoothingMode;
+                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    e.Graphics.DrawEllipse(pen, x, y, branchNodeRadius, branchNodeRadius);
+                    if (commit == GitAPI.liveCommit)
+                    {
+                        e.Graphics.FillEllipse(pen.Brush, x, y, branchNodeRadius, branchNodeRadius);
+                    }
+
+                    e.Graphics.SmoothingMode = prevSmoothing;
+                    // Handle event and return to continue drawing
+   
+                    e.Handled = true;
+                }
+            }
+            
+            /*
             // Get Branch index for offset
             int branchIndex = 1;
-            // get node area in graph
-            int xOffset = branchIndex * pixelsPerBranchNode;
+            
 
             // Get branch color from index
             Pen pen = new Pen(branchNodeColors[branchIndex], 3);
 
             // Set position based on cell bounds using branch offset and radius
-            int x = e.CellBounds.X + (xOffset / 2);
+            //int x = e.CellBounds.X + (xOffset / 2);
             int y = e.CellBounds.Y + ((e.CellBounds.Height / 2) - (branchNodeRadius / 2));
             // Paint background first, how the cell was going to do it anyways
             e.PaintBackground(e.CellBounds, true);
@@ -178,7 +221,9 @@ namespace GitVisualizer.UI.UI_Forms
 
             e.Graphics.SmoothingMode = prevSmoothing;
             // Handle event and return to continue drawing
+            */
             e.Handled = true;
+
         }
 
 
