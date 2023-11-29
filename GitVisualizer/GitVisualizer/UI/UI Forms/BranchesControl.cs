@@ -161,7 +161,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             //// Ignore header row and any columns besides Graph column
             if (e.ColumnIndex > 0 || e.RowIndex == -1) { return; }
-            //int lineXOffset = 6;
+            int lineXOffset = 6;
 
             Commit commit = commitHistory.Item2[e.RowIndex];
 
@@ -174,6 +174,7 @@ namespace GitVisualizer.UI.UI_Forms
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
             e.PaintBackground(e.CellBounds, true);
+            
 
             int colorOffset = depthOffset % branchNodeColors.Count;
             
@@ -191,12 +192,23 @@ namespace GitVisualizer.UI.UI_Forms
 
             Point start = new Point(x, y);
 
-            foreach(Tuple<int,int> targetCoord in commit.graphOutRowColPairs)
+            // Parents
+            foreach (Tuple<int, int> targetCoord in commit.graphOutRowColPairs)
             {
-                int xDiff = (commit.graphColIndex - targetCoord.Item2) * pixelsPerBranchNode;
-                int yDiff = (commit.graphRowIndex - targetCoord.Item1 ) * pixelsPerBranchNode;
-                e.Graphics.DrawLine(pen, start.X, start.Y, start.X + xDiff, start.Y + yDiff);
+                int xDiff = (targetCoord.Item2 - commit.graphColIndex) * (pixelsPerBranchNode);
+                int yDiff = (targetCoord.Item1 - commit.graphRowIndex) * (pixelsPerBranchNode + 12);
+                Pen linepen = new Pen(branchNodeColors[(targetCoord.Item2 + 1) % branchNodeColors.Count], 3);
+                e.Graphics.DrawLine(linepen, start.X + lineXOffset, start.Y, start.X + xDiff + lineXOffset, start.Y - yDiff);
             }
+            //// Children
+            //foreach (Tuple<int, int> targetCoord in commit.graphInRowColPairs)
+            //{
+            //    int xDiff = (commit.graphColIndex - targetCoord.Item2) * pixelsPerBranchNode;
+            //    int yDiff = (commit.graphRowIndex - targetCoord.Item1) * pixelsPerBranchNode;
+            //    e.Graphics.DrawLine(pen, start.X + lineXOffset, start.Y, start.X - xDiff + lineXOffset, start.Y + yDiff);
+            //}
+
+
 
             e.Graphics.FillEllipse(pen.Brush, x, y, branchNodeRadius, branchNodeRadius);
             if (commit == GitAPI.liveCommit)
