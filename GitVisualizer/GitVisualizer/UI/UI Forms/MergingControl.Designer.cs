@@ -50,6 +50,7 @@
             diffPanel = new Panel();
             diffSplitContainer = new SplitContainer();
             diffFile1Group = new GroupBox();
+            oldDiffListBox = new ListBox();
             diffFile2Group = new GroupBox();
             diffControlPanel = new Panel();
             buttonSplitContainer = new SplitContainer();
@@ -80,6 +81,7 @@
             diffSplitContainer.Panel1.SuspendLayout();
             diffSplitContainer.Panel2.SuspendLayout();
             diffSplitContainer.SuspendLayout();
+            diffFile1Group.SuspendLayout();
             diffControlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).BeginInit();
             buttonSplitContainer.SuspendLayout();
@@ -345,6 +347,7 @@
             // diffFile1Group
             // 
             diffFile1Group.AutoSize = true;
+            diffFile1Group.Controls.Add(oldDiffListBox);
             diffFile1Group.Dock = DockStyle.Fill;
             diffFile1Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             diffFile1Group.Location = new Point(0, 0);
@@ -354,7 +357,17 @@
             diffFile1Group.Size = new Size(437, 425);
             diffFile1Group.TabIndex = 0;
             diffFile1Group.TabStop = false;
-            diffFile1Group.Text = "Diff_File1.txt";
+            diffFile1Group.Text = "Old Changes";
+            // 
+            // oldDiffListBox
+            // 
+            oldDiffListBox.Dock = DockStyle.Fill;
+            oldDiffListBox.FormattingEnabled = true;
+            oldDiffListBox.ItemHeight = 21;
+            oldDiffListBox.Location = new Point(6, 28);
+            oldDiffListBox.Name = "oldDiffListBox";
+            oldDiffListBox.Size = new Size(425, 391);
+            oldDiffListBox.TabIndex = 0;
             // 
             // diffFile2Group
             // 
@@ -366,7 +379,7 @@
             diffFile2Group.Size = new Size(440, 425);
             diffFile2Group.TabIndex = 1;
             diffFile2Group.TabStop = false;
-            diffFile2Group.Text = "Diff_File2.txt";
+            diffFile2Group.Text = "New Changes";
             // 
             // diffControlPanel
             // 
@@ -618,6 +631,7 @@
             diffSplitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)diffSplitContainer).EndInit();
             diffSplitContainer.ResumeLayout(false);
+            diffFile1Group.ResumeLayout(false);
             diffControlPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).EndInit();
             buttonSplitContainer.ResumeLayout(false);
@@ -730,5 +744,6 @@
         private Label incomingCountLabel;
         private Label incomingCountTextLabel;
         private Label commitSyncLabel;
+        private ListBox oldDiffListBox;
     }
 }

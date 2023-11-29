@@ -153,12 +153,23 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Actions.RemoteActions.sync();
             UpdateGridViews();
 
+
         }
 
         private void OnFileCellSelected(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex != 0) { return; }
-            Debug.WriteLine(stagedChangesDataGridView.Rows[e.RowIndex].Cells[0].Value); ;
+            string filePath = stagedChanges[e.RowIndex].Item2;
+
+            Debug.WriteLine("SELECTED FILE FOR DIFF: " + filePath); ;
+            Tuple<List<string>, List<string>> diffResults = GitAPI.Getters.getFileDiff(filePath);
+            List<string> newDiffs = diffResults.Item1;
+            List<string> oldDiffs = diffResults.Item2;
+            oldDiffListBox.DataSource = oldDiffs;
+            foreach (string diff in oldDiffs)
+            {
+                Debug.WriteLine(diff);
+            }
         }
     }
 }
