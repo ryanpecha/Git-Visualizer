@@ -629,18 +629,17 @@
             outgoingCountLabel.ForeColor = theme.TextNormal;
             commitSyncLabel.ForeColor = theme.TextNormal;
 
+            diffGridView.ColumnHeadersDefaultCellStyle.BackColor = theme.ElementBackground;
+            diffGridView.ColumnHeadersDefaultCellStyle.ForeColor = theme.TextSelectable;
 
+            diffGridView.BackgroundColor = theme.ElementBackground;
             diffGridView.DefaultCellStyle.ForeColor = theme.TextNormal;
             diffGridView.DefaultCellStyle.BackColor = theme.ElementBackground;
             diffGridView.CellBorderStyle = DataGridViewCellBorderStyle.None;
+            diffGridView.EnableHeadersVisualStyles = false;
 
-            //diffFile1Group.ForeColor = theme.TextHeader;
-            //diffFile2Group.ForeColor = theme.TextHeader;
+            diffGridView.DefaultCellStyle.SelectionBackColor = theme.ElementSelected;
 
-            //chooseLocalButton.BackColor = theme.ElementBackground;
-            //chooseRemoteButton.BackColor = theme.ElementBackground;
-            //chooseLocalButton.ForeColor = theme.TextSelectable;
-            //chooseRemoteButton.ForeColor = theme.TextSelectable;
         }
         private Panel mergingControlPanel;
         private Label titleLabel;
