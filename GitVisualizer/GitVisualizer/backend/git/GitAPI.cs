@@ -1097,13 +1097,13 @@ public static class GitAPI
                 {
                     Commit initCommit = commits.Last();
                     populateCommitGraphData(initCommit, 0);
-                }
-                // printing graph
-                foreach (Commit c in commits)
-                {
-                    string leftOffset = string.Concat(Enumerable.Repeat("  ", c.graphColIndex));
-                    Debug.WriteLine(leftOffset + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count} parentHashes={c.parentHashes.Count})" + c.subject);
-                    //Debug.WriteLine(leftOffset  + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count} parentHashes={c.parentHashes.Count} comRes={c.comRes})" + c.subject);
+                    // printing graph
+                    foreach (Commit c in commits)
+                    {
+                        string leftOffset = string.Concat(Enumerable.Repeat("  ", c.graphColIndex));
+                        Debug.WriteLine(leftOffset + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count} parentHashes={c.parentHashes.Count})" + c.subject);
+                        //Debug.WriteLine(leftOffset  + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count} parentHashes={c.parentHashes.Count} comRes={c.comRes})" + c.subject);
+                    }
                 }
 
                 // getting all branches
