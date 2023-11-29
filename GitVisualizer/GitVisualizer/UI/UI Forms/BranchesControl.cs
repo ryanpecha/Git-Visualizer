@@ -171,6 +171,5 @@ namespace GitVisualizer.UI.UI_Forms
             newBranchFromCommitTextBox.Visible = true;
             createBranchFromSelectedButton.Visible = true;
         }
-
     }
 }

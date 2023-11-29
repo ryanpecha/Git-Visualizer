@@ -187,7 +187,7 @@
             localReposGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             localReposGroupBox.Location = new Point(11, 11);
             localReposGroupBox.Name = "localReposGroupBox";
-            localReposGroupBox.Size = new Size(259, 117);
+            localReposGroupBox.Size = new Size(259, 120);
             localReposGroupBox.TabIndex = 8;
             localReposGroupBox.TabStop = false;
             localReposGroupBox.Text = "Local Repos";
@@ -200,7 +200,7 @@
             flowLayoutPanel2.Location = new Point(3, 21);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(4);
-            flowLayoutPanel2.Size = new Size(253, 93);
+            flowLayoutPanel2.Size = new Size(253, 96);
             flowLayoutPanel2.TabIndex = 8;
             // 
             // trackExistingReposButton
@@ -235,9 +235,9 @@
             trackingGroupBox.Controls.Add(flowLayoutPanel3);
             trackingGroupBox.Dock = DockStyle.Top;
             trackingGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            trackingGroupBox.Location = new Point(11, 134);
+            trackingGroupBox.Location = new Point(11, 137);
             trackingGroupBox.Name = "trackingGroupBox";
-            trackingGroupBox.Size = new Size(259, 105);
+            trackingGroupBox.Size = new Size(259, 109);
             trackingGroupBox.TabIndex = 9;
             trackingGroupBox.TabStop = false;
             trackingGroupBox.Text = "Tracked Repos";
@@ -250,7 +250,7 @@
             flowLayoutPanel3.Location = new Point(3, 21);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
             flowLayoutPanel3.Padding = new Padding(4);
-            flowLayoutPanel3.Size = new Size(253, 81);
+            flowLayoutPanel3.Size = new Size(253, 85);
             flowLayoutPanel3.TabIndex = 8;
             // 
             // localRepoComboBox
