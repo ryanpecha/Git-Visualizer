@@ -156,7 +156,24 @@ namespace GitVisualizer.UI.UI_Forms
 
         }
 
-        private void OnFileCellSelected(object sender, DataGridViewCellEventArgs e)
+        private void OnUnstagedFileCellSelected(object sender, DataGridViewCellEventArgs e)
+        {
+            {
+                if (e.RowIndex < 0 || e.ColumnIndex != 0) { return; }
+                string filePath = unstagedChanges[e.RowIndex].Item2;
+
+                Debug.WriteLine("SELECTED FILE FOR DIFF: " + filePath);
+                Tuple<List<string>, List<string>> diffResults = GitAPI.Getters.getFileDiff(filePath, false);
+                List<string> newDiffs = diffResults.Item1;
+                List<string> oldDiffs = diffResults.Item2;
+
+                oldDiffListBox.DataSource = oldDiffs;
+                newDiffListBox.DataSource = newDiffs;
+            }
+        }
+
+
+        private void OnStagedFileCellSelected(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex != 0) { return; }
             string filePath = stagedChanges[e.RowIndex].Item2;
@@ -165,11 +182,9 @@ namespace GitVisualizer.UI.UI_Forms
             Tuple<List<string>, List<string>> diffResults = GitAPI.Getters.getFileDiff(filePath, true);
             List<string> newDiffs = diffResults.Item1;
             List<string> oldDiffs = diffResults.Item2;
+
             oldDiffListBox.DataSource = oldDiffs;
-            foreach (string diff in oldDiffs)
-            {
-                Debug.WriteLine(diff);
-            }
+            newDiffListBox.DataSource = newDiffs;
         }
     }
 }

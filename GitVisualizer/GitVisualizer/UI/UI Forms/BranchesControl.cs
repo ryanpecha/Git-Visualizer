@@ -159,13 +159,14 @@ namespace GitVisualizer.UI.UI_Forms
             List<string> graph = commitHistory.Item3;
             string curGraphLine = graph[e.RowIndex];
 
-            int curOffset = 0;
+            int curOffset = 1;
 
-            
 
+            Debug.WriteLine(curGraphLine);
             foreach (char symbol in curGraphLine)
             {
-                Pen pen = new Pen(branchNodeColors[curOffset], 3);
+                int colorOffset = curOffset % branchNodeColors.Count;
+                Pen pen = new Pen(branchNodeColors[colorOffset], 3);
                 int xOffset = curOffset * pixelsPerBranchNode;
 
                 if (symbol == ' ') { 

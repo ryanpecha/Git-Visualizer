@@ -52,6 +52,7 @@
             diffFile1Group = new GroupBox();
             oldDiffListBox = new ListBox();
             diffFile2Group = new GroupBox();
+            newDiffListBox = new ListBox();
             diffControlPanel = new Panel();
             buttonSplitContainer = new SplitContainer();
             commonBranchesButtonsPanel = new Panel();
@@ -82,6 +83,7 @@
             diffSplitContainer.Panel2.SuspendLayout();
             diffSplitContainer.SuspendLayout();
             diffFile1Group.SuspendLayout();
+            diffFile2Group.SuspendLayout();
             diffControlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).BeginInit();
             buttonSplitContainer.SuspendLayout();
@@ -372,6 +374,7 @@
             // diffFile2Group
             // 
             diffFile2Group.AutoSize = true;
+            diffFile2Group.Controls.Add(newDiffListBox);
             diffFile2Group.Dock = DockStyle.Fill;
             diffFile2Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             diffFile2Group.Location = new Point(0, 0);
@@ -380,6 +383,16 @@
             diffFile2Group.TabIndex = 1;
             diffFile2Group.TabStop = false;
             diffFile2Group.Text = "New Changes";
+            // 
+            // newDiffListBox
+            // 
+            newDiffListBox.Dock = DockStyle.Fill;
+            newDiffListBox.FormattingEnabled = true;
+            newDiffListBox.ItemHeight = 21;
+            newDiffListBox.Location = new Point(3, 25);
+            newDiffListBox.Name = "newDiffListBox";
+            newDiffListBox.Size = new Size(434, 397);
+            newDiffListBox.TabIndex = 1;
             // 
             // diffControlPanel
             // 
@@ -452,7 +465,7 @@
             stagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             stagedChangesDataGridView.Size = new Size(428, 151);
             stagedChangesDataGridView.TabIndex = 0;
-            stagedChangesDataGridView.CellClick += OnFileCellSelected;
+            stagedChangesDataGridView.CellClick += OnStagedFileCellSelected;
             stagedChangesDataGridView.CellContentClick += stagedChangesDataGridView_CellContentClick;
             // 
             // fileColumn
@@ -527,6 +540,7 @@
             unstagedChangesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             unstagedChangesDataGridView.Size = new Size(431, 151);
             unstagedChangesDataGridView.TabIndex = 1;
+            unstagedChangesDataGridView.CellClick += OnUnstagedFileCellSelected;
             unstagedChangesDataGridView.CellContentClick += unstagedChangesDataGridView_CellContentClick;
             // 
             // dataGridViewTextBoxColumn1
@@ -632,6 +646,7 @@
             ((System.ComponentModel.ISupportInitialize)diffSplitContainer).EndInit();
             diffSplitContainer.ResumeLayout(false);
             diffFile1Group.ResumeLayout(false);
+            diffFile2Group.ResumeLayout(false);
             diffControlPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).EndInit();
             buttonSplitContainer.ResumeLayout(false);
@@ -745,5 +760,6 @@
         private Label incomingCountTextLabel;
         private Label commitSyncLabel;
         private ListBox oldDiffListBox;
+        private ListBox newDiffListBox;
     }
 }
