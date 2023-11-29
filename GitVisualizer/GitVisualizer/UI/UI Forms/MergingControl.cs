@@ -18,8 +18,6 @@ namespace GitVisualizer.UI.UI_Forms
         private List<Tuple<string, string>> stagedChanges = new List<Tuple<string, string>>();
         private List<Tuple<string, string>> unstagedChanges = new List<Tuple<string, string>>();
 
-        int[] syncstate = { 0, 0 };
-
         public MergingControl()
         {
             InitializeComponent();
@@ -73,25 +71,16 @@ namespace GitVisualizer.UI.UI_Forms
                 unstagedChangesDataGridView.Rows[index].Cells[0].ToolTipText = change.Item2;
             }
 
-            bool syncDone = false;
             if (GitAPI.commitsBehind != null)
             {
-                int newBehind = (int)GitAPI.commitsBehind;
-                if (newBehind != syncstate[0]) { syncDone = true; }
-                syncstate[0] = newBehind;
                 incomingCountTextLabel.Text = GitAPI.commitsBehind.ToString();
             }
             if (GitAPI.commitsAhead != null)
             {
-                int newAhead = (int)GitAPI.commitsAhead;
-                if (newAhead != syncstate[1]) { syncDone = true; }
-                syncstate[1] = (int)GitAPI.commitsAhead;
+
                 outgoingCountTextLabel.Text = GitAPI.commitsAhead.ToString();
             }
-            if (syncDone)
-            {
-                syncButton.Enabled = true;
-            }
+
         }
         private void MergingControl_Load(object sender, EventArgs e)
         {
@@ -163,15 +152,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             GitAPI.Actions.RemoteActions.sync();
             UpdateGridViews();
-            syncButton.Enabled = false;
-            if (GitAPI.commitsBehind != null)
-            {
-                syncstate[0] = (int)GitAPI.commitsBehind;
-            }
-            if (GitAPI.commitsAhead != null)
-            {
-                syncstate[1] = (int)GitAPI.commitsAhead;
-            }
+
         }
     }
 }
