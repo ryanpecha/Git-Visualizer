@@ -640,7 +640,7 @@ public static class GitAPI
             // stripping command output header
             foreach (string line in diffLines)
             {
-                if (line[0].Equals("@")){
+                if (line[0].Equals('@')){
                     break;
                 }
                 i++;
@@ -653,17 +653,17 @@ public static class GitAPI
             // building new and old
             foreach (string line in diffLines)
             {
-                if (line[0].Equals("-"))
+                if (line[0].Equals('-'))
                 {
                     diffNew.Add("\n");
                     diffOld.Add("\033[91m" + line + "\033[0m");
                 }
-                else if (line[0].Equals("+"))
+                else if (line[0].Equals('+'))
                 {
                     diffNew.Add("\033[92m" + line + "\033[0m");
                     diffOld.Add("\n");
                 }
-                else if (line[0].Equals("@"))
+                else if (line[0].Equals('@'))
                 {
                     //diffNew += line;
                     //diffOld += line;
