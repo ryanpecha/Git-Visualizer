@@ -48,13 +48,9 @@
             titleLabel = new Label();
             mergingPanel = new Panel();
             diffPanel = new Panel();
-            diffSplitContainer = new SplitContainer();
-            diffFile1Group = new GroupBox();
-            oldDiffListBox = new ListBox();
-            diffFile2Group = new GroupBox();
-            newDiffListBox = new ListBox();
-            diffControlPanel = new Panel();
-            buttonSplitContainer = new SplitContainer();
+            diffGridView = new DataGridView();
+            oldChangesColumn = new DataGridViewTextBoxColumn();
+            newChangesColumn = new DataGridViewTextBoxColumn();
             commonBranchesButtonsPanel = new Panel();
             stageChangesSplitContainer = new SplitContainer();
             stagedChangesDataGridView = new DataGridView();
@@ -78,15 +74,7 @@
             activeRepoPanel.SuspendLayout();
             mergingPanel.SuspendLayout();
             diffPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)diffSplitContainer).BeginInit();
-            diffSplitContainer.Panel1.SuspendLayout();
-            diffSplitContainer.Panel2.SuspendLayout();
-            diffSplitContainer.SuspendLayout();
-            diffFile1Group.SuspendLayout();
-            diffFile2Group.SuspendLayout();
-            diffControlPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).BeginInit();
-            buttonSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)diffGridView).BeginInit();
             commonBranchesButtonsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)stageChangesSplitContainer).BeginInit();
             stageChangesSplitContainer.Panel1.SuspendLayout();
@@ -318,103 +306,44 @@
             // 
             // diffPanel
             // 
-            diffPanel.Controls.Add(diffSplitContainer);
-            diffPanel.Controls.Add(diffControlPanel);
+            diffPanel.Controls.Add(diffGridView);
             diffPanel.Dock = DockStyle.Fill;
             diffPanel.Location = new Point(0, 0);
             diffPanel.Name = "diffPanel";
             diffPanel.Size = new Size(895, 475);
             diffPanel.TabIndex = 4;
             // 
-            // diffSplitContainer
+            // diffGridView
             // 
-            diffSplitContainer.Dock = DockStyle.Fill;
-            diffSplitContainer.IsSplitterFixed = true;
-            diffSplitContainer.Location = new Point(0, 50);
-            diffSplitContainer.Margin = new Padding(8);
-            diffSplitContainer.Name = "diffSplitContainer";
+            diffGridView.AllowUserToAddRows = false;
+            diffGridView.AllowUserToDeleteRows = false;
+            diffGridView.AllowUserToResizeColumns = false;
+            diffGridView.AllowUserToResizeRows = false;
+            diffGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            diffGridView.Columns.AddRange(new DataGridViewColumn[] { oldChangesColumn, newChangesColumn });
+            diffGridView.Dock = DockStyle.Fill;
+            diffGridView.Location = new Point(0, 0);
+            diffGridView.Name = "diffGridView";
+            diffGridView.RowHeadersVisible = false;
+            diffGridView.RowTemplate.Height = 25;
+            diffGridView.Size = new Size(895, 475);
+            diffGridView.TabIndex = 19;
             // 
-            // diffSplitContainer.Panel1
+            // oldChangesColumn
             // 
-            diffSplitContainer.Panel1.Controls.Add(diffFile1Group);
+            oldChangesColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            oldChangesColumn.HeaderText = "Old Changes";
+            oldChangesColumn.Name = "oldChangesColumn";
+            oldChangesColumn.Resizable = DataGridViewTriState.False;
+            oldChangesColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
-            // diffSplitContainer.Panel2
+            // newChangesColumn
             // 
-            diffSplitContainer.Panel2.Controls.Add(diffFile2Group);
-            diffSplitContainer.Size = new Size(895, 425);
-            diffSplitContainer.SplitterDistance = 437;
-            diffSplitContainer.SplitterWidth = 18;
-            diffSplitContainer.TabIndex = 1;
-            // 
-            // diffFile1Group
-            // 
-            diffFile1Group.AutoSize = true;
-            diffFile1Group.Controls.Add(oldDiffListBox);
-            diffFile1Group.Dock = DockStyle.Fill;
-            diffFile1Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            diffFile1Group.Location = new Point(0, 0);
-            diffFile1Group.Margin = new Padding(6);
-            diffFile1Group.Name = "diffFile1Group";
-            diffFile1Group.Padding = new Padding(6);
-            diffFile1Group.Size = new Size(437, 425);
-            diffFile1Group.TabIndex = 0;
-            diffFile1Group.TabStop = false;
-            diffFile1Group.Text = "Old Changes";
-            // 
-            // oldDiffListBox
-            // 
-            oldDiffListBox.Dock = DockStyle.Fill;
-            oldDiffListBox.FormattingEnabled = true;
-            oldDiffListBox.ItemHeight = 21;
-            oldDiffListBox.Location = new Point(6, 28);
-            oldDiffListBox.Name = "oldDiffListBox";
-            oldDiffListBox.Size = new Size(425, 391);
-            oldDiffListBox.TabIndex = 0;
-            // 
-            // diffFile2Group
-            // 
-            diffFile2Group.AutoSize = true;
-            diffFile2Group.Controls.Add(newDiffListBox);
-            diffFile2Group.Dock = DockStyle.Fill;
-            diffFile2Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            diffFile2Group.Location = new Point(0, 0);
-            diffFile2Group.Name = "diffFile2Group";
-            diffFile2Group.Padding = new Padding(6);
-            diffFile2Group.Size = new Size(440, 425);
-            diffFile2Group.TabIndex = 1;
-            diffFile2Group.TabStop = false;
-            diffFile2Group.Text = "New Changes";
-            // 
-            // newDiffListBox
-            // 
-            newDiffListBox.Dock = DockStyle.Fill;
-            newDiffListBox.FormattingEnabled = true;
-            newDiffListBox.ItemHeight = 21;
-            newDiffListBox.Location = new Point(6, 28);
-            newDiffListBox.Name = "newDiffListBox";
-            newDiffListBox.Size = new Size(428, 391);
-            newDiffListBox.TabIndex = 1;
-            // 
-            // diffControlPanel
-            // 
-            diffControlPanel.Controls.Add(buttonSplitContainer);
-            diffControlPanel.Dock = DockStyle.Top;
-            diffControlPanel.Location = new Point(0, 0);
-            diffControlPanel.Name = "diffControlPanel";
-            diffControlPanel.Size = new Size(895, 50);
-            diffControlPanel.TabIndex = 0;
-            // 
-            // buttonSplitContainer
-            // 
-            buttonSplitContainer.Dock = DockStyle.Top;
-            buttonSplitContainer.IsSplitterFixed = true;
-            buttonSplitContainer.Location = new Point(0, 0);
-            buttonSplitContainer.Margin = new Padding(8);
-            buttonSplitContainer.Name = "buttonSplitContainer";
-            buttonSplitContainer.Size = new Size(895, 50);
-            buttonSplitContainer.SplitterDistance = 437;
-            buttonSplitContainer.SplitterWidth = 18;
-            buttonSplitContainer.TabIndex = 2;
+            newChangesColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            newChangesColumn.HeaderText = "New Changes";
+            newChangesColumn.Name = "newChangesColumn";
+            newChangesColumn.Resizable = DataGridViewTriState.False;
+            newChangesColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             // 
             // commonBranchesButtonsPanel
             // 
@@ -640,17 +569,7 @@
             activeRepoPanel.PerformLayout();
             mergingPanel.ResumeLayout(false);
             diffPanel.ResumeLayout(false);
-            diffSplitContainer.Panel1.ResumeLayout(false);
-            diffSplitContainer.Panel1.PerformLayout();
-            diffSplitContainer.Panel2.ResumeLayout(false);
-            diffSplitContainer.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)diffSplitContainer).EndInit();
-            diffSplitContainer.ResumeLayout(false);
-            diffFile1Group.ResumeLayout(false);
-            diffFile2Group.ResumeLayout(false);
-            diffControlPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)buttonSplitContainer).EndInit();
-            buttonSplitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)diffGridView).EndInit();
             commonBranchesButtonsPanel.ResumeLayout(false);
             stageChangesSplitContainer.Panel1.ResumeLayout(false);
             stageChangesSplitContainer.Panel2.ResumeLayout(false);
@@ -710,8 +629,13 @@
             outgoingCountLabel.ForeColor = theme.TextNormal;
             commitSyncLabel.ForeColor = theme.TextNormal;
 
-            diffFile1Group.ForeColor = theme.TextHeader;
-            diffFile2Group.ForeColor = theme.TextHeader;
+
+            diffGridView.DefaultCellStyle.ForeColor = theme.TextNormal;
+            diffGridView.DefaultCellStyle.BackColor = theme.ElementBackground;
+            diffGridView.CellBorderStyle = DataGridViewCellBorderStyle.None;
+
+            //diffFile1Group.ForeColor = theme.TextHeader;
+            //diffFile2Group.ForeColor = theme.TextHeader;
 
             //chooseLocalButton.BackColor = theme.ElementBackground;
             //chooseRemoteButton.BackColor = theme.ElementBackground;
@@ -722,11 +646,6 @@
         private Label titleLabel;
         private Panel mergingPanel;
         private Panel diffPanel;
-        private SplitContainer diffSplitContainer;
-        private GroupBox diffFile1Group;
-        private GroupBox diffFile2Group;
-        private Panel diffControlPanel;
-        private SplitContainer buttonSplitContainer;
         private Panel activeRepoPanel;
         private Label activeRepositoryTextLabel;
         private Label activeRepoLabel;
@@ -760,7 +679,8 @@
         private Label incomingCountLabel;
         private Label incomingCountTextLabel;
         private Label commitSyncLabel;
-        private ListBox oldDiffListBox;
-        private ListBox newDiffListBox;
+        private DataGridView diffGridView;
+        private DataGridViewTextBoxColumn oldChangesColumn;
+        private DataGridViewTextBoxColumn newChangesColumn;
     }
 }

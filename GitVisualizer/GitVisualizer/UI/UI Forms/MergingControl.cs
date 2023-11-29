@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,9 +15,12 @@ namespace GitVisualizer.UI.UI_Forms
 {
     public partial class MergingControl : UserControl
     {
+
+
         private UI.UITheme.AppTheme theme = MainForm.AppTheme;
         private List<Tuple<string, string>> stagedChanges = new List<Tuple<string, string>>();
         private List<Tuple<string, string>> unstagedChanges = new List<Tuple<string, string>>();
+        private List<Tuple<string, string>> diffResults = new List<Tuple<string, string>>();
 
         public MergingControl()
         {
@@ -156,22 +160,48 @@ namespace GitVisualizer.UI.UI_Forms
 
         }
 
+        private void UpdateDiffGridView()
+        {
+            diffGridView.Rows.Clear();
+            foreach (Tuple<string, string> diff in diffResults)
+            {
+                int rowIndex = diffGridView.Rows.Add(diff.Item1, diff.Item2);
+                if (diff.Item1.StartsWith("@"))
+                {
+                    diffGridView.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Aquamarine;
+                }
+                
+                if (diff.Item1.StartsWith("+"))
+                {
+                    diffGridView.Rows[rowIndex].Cells[0].Style.BackColor = Color.DarkOliveGreen;
+                }
+                if (diff.Item1.StartsWith("-"))
+                {
+                    diffGridView.Rows[rowIndex].Cells[0].Style.BackColor = Color.DarkRed;
+                }
+
+
+                if (diff.Item2.StartsWith("+"))
+                {
+                    diffGridView.Rows[rowIndex].Cells[1].Style.BackColor = Color.DarkOliveGreen;
+                }
+                if (diff.Item2.StartsWith("-"))
+                {
+                    diffGridView.Rows[rowIndex].Cells[1].Style.BackColor = Color.DarkRed;
+                }
+
+            }
+        }
+
         private void OnUnstagedFileCellSelected(object sender, DataGridViewCellEventArgs e)
         {
-            {
-                if (e.RowIndex < 0 || e.ColumnIndex != 0) { return; }
-                string filePath = unstagedChanges[e.RowIndex].Item2;
 
-                Debug.WriteLine("SELECTED FILE FOR DIFF: " + filePath);
-                Tuple<List<string>, List<string>> diffResults = GitAPI.Getters.getFileDiff(filePath, false);
-                List<string> newDiffs = diffResults.Item1;
-                List<string> oldDiffs = diffResults.Item2;
+            if (e.RowIndex < 0 || e.ColumnIndex != 0) { return; }
+            string filePath = unstagedChanges[e.RowIndex].Item2;
 
-                oldDiffListBox.DataSource = oldDiffs;
-                newDiffListBox.DataSource = newDiffs;
-                diffFile1Group.Text = "Old Changes - " + stagedChanges[e.RowIndex].Item1;
-                diffFile2Group.Text = "New Changes - " + stagedChanges[e.RowIndex].Item1;
-            }
+            Debug.WriteLine("SELECTED FILE FOR DIFF: " + filePath);
+            diffResults = GitAPI.Getters.getFileDiff(filePath, false);
+            UpdateDiffGridView();
         }
 
 
@@ -181,14 +211,9 @@ namespace GitVisualizer.UI.UI_Forms
             string filePath = stagedChanges[e.RowIndex].Item2;
 
             Debug.WriteLine("SELECTED FILE FOR DIFF: " + filePath);
-            Tuple<List<string>, List<string>> diffResults = GitAPI.Getters.getFileDiff(filePath, true);
-            List<string> newDiffs = diffResults.Item1;
-            List<string> oldDiffs = diffResults.Item2;
-
-            oldDiffListBox.DataSource = oldDiffs;
-            newDiffListBox.DataSource = newDiffs;
-            diffFile1Group.Text = "Old Changes - " + stagedChanges[e.RowIndex].Item1;
-            diffFile2Group.Text = "New Changes - " + stagedChanges[e.RowIndex].Item1;
+            diffResults = GitAPI.Getters.getFileDiff(filePath, true);
+            UpdateDiffGridView();
         }
+
     }
 }

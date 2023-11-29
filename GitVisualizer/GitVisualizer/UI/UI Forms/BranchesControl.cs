@@ -161,6 +161,8 @@ namespace GitVisualizer.UI.UI_Forms
 
             int curOffset = 1;
 
+            SmoothingMode prevSmoothing = e.Graphics.SmoothingMode;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
             Debug.WriteLine(curGraphLine);
             foreach (char symbol in curGraphLine)
@@ -174,15 +176,11 @@ namespace GitVisualizer.UI.UI_Forms
                 }
                 else if (symbol == '|')
                 {
-
-                }
-                else if (symbol == '*')
-                {
                     int x = e.CellBounds.X + (xOffset / 2);
                     int y = e.CellBounds.Y + ((e.CellBounds.Height / 2) - (branchNodeRadius / 2));
                     e.PaintBackground(e.CellBounds, true);
-                    SmoothingMode prevSmoothing = e.Graphics.SmoothingMode;
-                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    
+
 
                     e.Graphics.DrawEllipse(pen, x, y, branchNodeRadius, branchNodeRadius);
                     if (commit == GitAPI.liveCommit)
@@ -192,11 +190,33 @@ namespace GitVisualizer.UI.UI_Forms
 
                     e.Graphics.SmoothingMode = prevSmoothing;
                     // Handle event and return to continue drawing
-   
+
                     e.Handled = true;
                 }
+                else if (symbol == '*')
+                {
+                    int x = e.CellBounds.X + (xOffset / 2);
+                    int y = e.CellBounds.Y + ((e.CellBounds.Height / 2) - (branchNodeRadius / 2));
+                    e.PaintBackground(e.CellBounds, true);
+
+                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    e.Graphics.DrawEllipse(pen, x, y, branchNodeRadius, branchNodeRadius);
+                    if (commit == GitAPI.liveCommit)
+                    {
+                        e.Graphics.FillEllipse(pen.Brush, x, y, branchNodeRadius, branchNodeRadius);
+                    }
+
+                    
+                    // Handle event and return to continue drawing
+   
+                    
+                }
             }
-            
+
+            e.Graphics.SmoothingMode = prevSmoothing;
+            e.Handled = true;
+
             /*
             // Get Branch index for offset
             int branchIndex = 1;
