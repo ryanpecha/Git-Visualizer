@@ -1102,13 +1102,6 @@ public static class GitAPI
                     //Debug.WriteLine(leftOffset  + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count} parentHashes={c.parentHashes.Count} comRes={c.comRes})" + c.subject);
                 }
 
-                List<string> graphLines = new();
-
-                // sorting commits by date
-                //List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
-                List<Commit> sortedCommits = commits;
-                //sortedCommits.Reverse();
-
                 // getting all branches
                 List<Branch> allBranches = new List<Branch>();
                 // getting commits
@@ -1148,7 +1141,7 @@ public static class GitAPI
                 setCommitsAheadAndBehind();
 
                 // branches-commits tuples
-                return new Tuple<List<Branch>, List<Commit>>(allBranches, sortedCommits);
+                return new Tuple<List<Branch>, List<Commit>>(allBranches, commits);
             }
 
             return new(new(), new());
