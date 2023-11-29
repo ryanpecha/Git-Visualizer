@@ -56,9 +56,12 @@ public static class GitAPI
     {
         public static void scanForLocalRepos(Action? callback)
         {
+            localRepositories.Clear();
+            remoteBackedLocalRepositories.Clear();
             Debug.WriteLine("scanDirs()");
             foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
             {
+                Debug.WriteLine($"scanning dir {trackedDir.path}");
                 string dirPath = trackedDir.path;
                 bool recursive = trackedDir.recursive;
                 SearchOption searchOption = recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
@@ -167,6 +170,12 @@ public static class GitAPI
     {
         public static class RemoteActions
         {
+
+            public static void untrackRemoteRepos(Action callback) {
+                remoteRepositories.Clear();
+                callback();
+            }
+
             public readonly static string description_deleteRemoteRepository = "";
             public static void deleteRemoteRepository()
             {
