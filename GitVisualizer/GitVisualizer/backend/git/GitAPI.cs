@@ -608,23 +608,23 @@ public static class GitAPI
     public static class Getters
     {
 
-        public static Tuple<string, string> getFileDiff(string fpath)
+        public static Tuple<List<string>, List<string>> getFileDiff(string fpath)
         {
             // assumes valid fpath
             if (liveRepository == null)
             {
-                return new("", "");
+                return new(new(), new());
             }
             string com = $"cd '{liveRepository.dirPath}'; ";
             com += $"git diff '{fpath}'; ";
             ShellComRes result = Shell.exec(com);
             if (result.psObjects == null)
             {
-                return new("", "");
+                return new(new(), new());
             }
             List<string> diffLines = result.psObjects.Select(s => s.ToString()).ToList();
-            string diffOld = "";
-            string diffNew = "";
+            List<string> diffOld = new();
+            List<string> diffNew = new();
             // stripping command output header
             foreach (String line in diffLines)
             {
@@ -638,13 +638,13 @@ public static class GitAPI
             {
                 if (line[0].Equals("-"))
                 {
-                    diffNew += "\n";
-                    diffOld += line;
+                    diffNew.Add("\n");
+                    diffOld.Add("\033[91m" + line + "\033[0m");
                 }
                 else if (line[0].Equals("+"))
                 {
-                    diffNew += line;
-                    diffOld += "\n";
+                    diffNew.Add("\033[92m" + line + "\033[0m");
+                    diffOld.Add("\n");
                 }
                 else if (line[0].Equals("@"))
                 {
@@ -653,8 +653,8 @@ public static class GitAPI
                 }
                 else
                 {
-                    diffNew += line;
-                    diffOld += line;
+                    diffNew.Add(line);
+                    diffOld.Add(line);
                 }
             }
             return new(diffNew,diffOld);
