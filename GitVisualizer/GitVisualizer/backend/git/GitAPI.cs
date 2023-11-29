@@ -1093,7 +1093,7 @@ public static class GitAPI
                 foreach (Commit c in commits)
                 {
                     string leftOffset = string.Concat(Enumerable.Repeat(" ", c.graphColIndex));
-                    Debug.WriteLine(leftOffset  + $"* ({c.graphRowIndex}) " + c.subject);
+                    Debug.WriteLine(leftOffset  + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count})" + c.subject);
                 }
 
                 List<string> graphLines = new();
