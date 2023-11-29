@@ -16,6 +16,8 @@ public class Commit
     public string longTreeHash {get; set;}
     public List<string> parentHashes {get; set;} = new();
 
+    public string comRes {get; set;}
+
     public string committerName {get; set;}
     public DateTime committerDate {get; set;}
     public string subject {get; set;}

@@ -928,7 +928,8 @@ public static class GitAPI
             }
             cur.graphColIndex = colIndex;
             int childColIndex = colIndex;
-            foreach (Commit child in cur.children)
+            IEnumerable<Commit> reverseChildren = cur.children;
+            foreach (Commit child in reverseChildren.Reverse())
             {
                 bool alreadyVisited = populateCommitGraphData(child, childColIndex);
                 if (alreadyVisited)
@@ -939,7 +940,7 @@ public static class GitAPI
                 {
                     childColIndex++;
                 }
-                Tuple<int,int> outRowColPair = new(child.graphRowIndex,child.graphColIndex);
+                Tuple<int, int> outRowColPair = new(child.graphRowIndex, child.graphColIndex);
                 cur.graphOutRowColPairs.Add(outRowColPair);
             }
             // cur has been visited for the first time
@@ -969,7 +970,7 @@ public static class GitAPI
                 Dictionary<string, Commit> shortHashToCommitDict = new Dictionary<string, Commit>();
                 List<Commit> commits = new List<Commit>();
                 string delim = " | ";
-                string com = baseCom + $"git log --oneline --pretty=format:\"%H{delim}%h{delim}%T{delim}%P\"";
+                string com = baseCom + $"git log --all --oneline --pretty=format:\"%H{delim}%h{delim}%T{delim}%P\"";
                 ShellComRes comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
@@ -987,11 +988,14 @@ public static class GitAPI
                     commit.longCommitHash = cols[0];
                     commit.shortCommitHash = cols[1];
                     commit.longTreeHash = cols[2];
+
+                    commit.comRes = sline;
+
                     if (cols.Length > 3)
                     {
                         foreach (string parentHash in cols[3].Split(" "))
                         {
-                            commit.parentHashes.Add(parentHash);
+                            commit.parentHashes.Add(parentHash.Trim());
                         }
                     }
                     longHashToCommitDict[commit.longCommitHash] = commit;
@@ -1008,7 +1012,7 @@ public static class GitAPI
                 }
 
                 // committer name
-                com = baseCom + $"git log --oneline --pretty=format:\"%cn\"";
+                com = baseCom + $"git log --all --oneline --pretty=format:\"%cn\"";
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
@@ -1024,7 +1028,7 @@ public static class GitAPI
                 }
 
                 // committer date
-                com = baseCom + $"git log --oneline --pretty=format:\"%cd\"";
+                com = baseCom + $"git log --all --oneline --pretty=format:\"%cd\"";
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
@@ -1048,7 +1052,7 @@ public static class GitAPI
                 }
 
                 // subject
-                com = baseCom + $"git log --oneline --pretty=format:\"%s\"";
+                com = baseCom + $"git log --all --oneline --pretty=format:\"%s\"";
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
@@ -1082,6 +1086,7 @@ public static class GitAPI
                 {
                     c.graphRowIndex = commitGraphRowIndex;
                     commitGraphRowIndex--;
+                    //Debug.WriteLine("TEST COMMIT");
                 }
                 // populating graph col properties of commits
                 if (commits.Count > 0)
@@ -1092,8 +1097,9 @@ public static class GitAPI
                 // printing graph
                 foreach (Commit c in commits)
                 {
-                    string leftOffset = string.Concat(Enumerable.Repeat(" ", c.graphColIndex));
-                    Debug.WriteLine(leftOffset  + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count})" + c.subject);
+                    string leftOffset = string.Concat(Enumerable.Repeat("  ", c.graphColIndex));
+                    Debug.WriteLine(leftOffset + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count} parentHashes={c.parentHashes.Count})" + c.subject);
+                    //Debug.WriteLine(leftOffset  + $"* (graphRowIndex={c.graphRowIndex} childCount={c.children.Count} parentHashes={c.parentHashes.Count} comRes={c.comRes})" + c.subject);
                 }
 
                 List<string> graphLines = new();
