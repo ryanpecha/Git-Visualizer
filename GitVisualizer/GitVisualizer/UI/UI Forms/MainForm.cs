@@ -79,6 +79,13 @@ namespace GitVisualizer.UI.UI_Forms
             ShowControlInMainPanel(mergingControl);
         }
 
+        public void UpdateAppTitle()
+        {
+            RepositoryLocal liveRepo = GitAPI.liveRepository;
+            if (liveRepo == null) { return; }
+            TopLevelControl.Text = "GitVisualizer - " + liveRepo.title + " (" + liveRepo.dirPath + ")";
+        }
+
         /// <summary>
         /// Clears current main panel control and swaps it for given User Control view
         /// </summary>
@@ -88,17 +95,6 @@ namespace GitVisualizer.UI.UI_Forms
             mainPanel.Controls.Clear();
             mainPanel.Controls.Add(control);
             control.Dock = DockStyle.Fill;
-        }
-
-        /// <summary>
-        /// Re opens the main window after it has been hidden
-        /// </summary>
-        public void ReOpenWindow()
-        {
-            Debug.WriteLine("REOPEN");
-            this.Show();
-            this.SetVisibleCore(true);
-            this.MaximizeBox = true;
         }
 
         private void revokeAccessButton_Click(object sender, EventArgs e)

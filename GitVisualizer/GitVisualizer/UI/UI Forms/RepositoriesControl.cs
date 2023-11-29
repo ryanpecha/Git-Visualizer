@@ -46,6 +46,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             Debug.WriteLine("UpdateGridCallback()");
             //AddReposToTable();
+
             Invoke(AddReposToTable);
         }
 
@@ -54,6 +55,8 @@ namespace GitVisualizer.UI.UI_Forms
         /// </summary>
         public void AddReposToTable()
         {
+            Program.MainForm.UpdateAppTitle();
+
             Debug.WriteLine("AddReposToTable()");
             allRepos = GitAPI.Getters.getAllRepositories();
 
@@ -141,7 +144,7 @@ namespace GitVisualizer.UI.UI_Forms
             GitAPI.Actions.LocalActions.setLiveRepository(selectedRepo.Item1);
             activeRepositoryTextLabel.Text = selectedRepo.Item1.title;
             activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
-            TopLevelControl.Text = "GitVisualizer - " + selectedRepo.Item1.title + " (" + selectedRepo.Item1.dirPath + ")";
+            Program.MainForm.UpdateAppTitle();
         }
 
         private void OnOpenOnGithubComButton(object sender, EventArgs e)

@@ -78,7 +78,8 @@ namespace GitVisualizer.UI.UI_Forms
             branchesGridView.Rows.Clear();
             commitHistory = GitAPI.Getters.getCommitsAndBranches();
 
-            
+            Program.MainForm.UpdateAppTitle();
+
             foreach (Commit commit in commitHistory.Item2)
             {
                 List<Branch> branches = commit.branches;

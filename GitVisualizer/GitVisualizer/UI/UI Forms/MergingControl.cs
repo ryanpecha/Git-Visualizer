@@ -38,8 +38,11 @@ namespace GitVisualizer.UI.UI_Forms
 
         private void UpdateLiveReposAndBranch()
         {
+
+
             if (GitAPI.liveRepository == null) { return; }
 
+            Program.MainForm.UpdateAppTitle();
             activeRepositoryTextLabel.Text = GitAPI.liveRepository.title;
             activeRepositoryTextLabel.ForeColor = MainForm.AppTheme.TextBright;
 
