@@ -1083,7 +1083,7 @@ public static class GitAPI
                 List<Branch> allBranches = new List<Branch>();
                 // getting commits
                 // list local branchs : *(live or not) | name | short hash | most recent commit msg
-                com = baseCom + $"git branch -vv";
+                com = baseCom + $"git branch -vva";
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
