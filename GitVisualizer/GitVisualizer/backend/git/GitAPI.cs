@@ -382,8 +382,10 @@ public static class GitAPI
             public readonly static string description_untrackDirectory = "";
             public static void untrackDirectory(LocalTrackedDir trackedDir, Action? callback)
             {
+                Debug.WriteLine($"UNTRACKING {trackedDir.path}");
                 if (GVSettings.data.trackedLocalDirs.Contains(trackedDir)) {
-                        GVSettings.data.trackedLocalDirs.Remove(trackedDir);
+                    Debug.WriteLine($"UNTRACKING CONTAINS {trackedDir.path}");
+                    GVSettings.data.trackedLocalDirs.Remove(trackedDir);
                 }
                 GVSettings.saveSettings();
                 Scanning.scanForLocalRepos(callback);
