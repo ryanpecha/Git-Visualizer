@@ -379,6 +379,7 @@
             diffFile2Group.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             diffFile2Group.Location = new Point(0, 0);
             diffFile2Group.Name = "diffFile2Group";
+            diffFile2Group.Padding = new Padding(6);
             diffFile2Group.Size = new Size(440, 425);
             diffFile2Group.TabIndex = 1;
             diffFile2Group.TabStop = false;
@@ -389,9 +390,9 @@
             newDiffListBox.Dock = DockStyle.Fill;
             newDiffListBox.FormattingEnabled = true;
             newDiffListBox.ItemHeight = 21;
-            newDiffListBox.Location = new Point(3, 25);
+            newDiffListBox.Location = new Point(6, 28);
             newDiffListBox.Name = "newDiffListBox";
-            newDiffListBox.Size = new Size(434, 397);
+            newDiffListBox.Size = new Size(428, 391);
             newDiffListBox.TabIndex = 1;
             // 
             // diffControlPanel

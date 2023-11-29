@@ -169,6 +169,8 @@ namespace GitVisualizer.UI.UI_Forms
 
                 oldDiffListBox.DataSource = oldDiffs;
                 newDiffListBox.DataSource = newDiffs;
+                diffFile1Group.Text = "Old Changes - " + stagedChanges[e.RowIndex].Item1;
+                diffFile2Group.Text = "New Changes - " + stagedChanges[e.RowIndex].Item1;
             }
         }
 
@@ -185,6 +187,8 @@ namespace GitVisualizer.UI.UI_Forms
 
             oldDiffListBox.DataSource = oldDiffs;
             newDiffListBox.DataSource = newDiffs;
+            diffFile1Group.Text = "Old Changes - " + stagedChanges[e.RowIndex].Item1;
+            diffFile2Group.Text = "New Changes - " + stagedChanges[e.RowIndex].Item1;
         }
     }
 }
