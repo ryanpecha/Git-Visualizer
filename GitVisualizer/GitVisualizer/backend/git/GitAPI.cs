@@ -430,7 +430,7 @@ public static class GitAPI
                 if (liveRepository != null)
                 {
                     string com = $"cd '{liveRepository.dirPath}'; ";
-                    com += $"git add {fpath}";
+                    com += $"git add '{fpath}'";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
                     Debug.WriteLine($"stageChange successful={result.success} fpath=${fpath} dirpath={liveRepository.dirPath} errmsg={result.errmsg}");
