@@ -138,7 +138,7 @@ public static class GitAPI
 
 
         //
-        public static async void scanForAllReposAsync(Action? callback)
+        public static async void scanForAllRepos(Action? callback)
         {
             Debug.WriteLine("scanAllAsync()");
             // loading local repositories
@@ -171,7 +171,8 @@ public static class GitAPI
         public static class RemoteActions
         {
 
-            public static void untrackRemoteRepos(Action callback) {
+            public static void untrackRemoteRepos(Action callback)
+            {
                 remoteRepositories.Clear();
                 callback();
             }
@@ -188,23 +189,52 @@ public static class GitAPI
             {
                 string cloneURL = await github.CreateRepo(localRepo.title);
 
-                cloneURL = github.CreateAuthenticatedGit(cloneURL);
-                Scanning.scanForAllReposAsync(callback);
+                RepositoryLocal? curLiveRepo = liveRepository;
+                LocalActions.setLiveRepository(localRepo);
 
+                Tuple<string?, string?> curShorthashAndBranch = Getters.getLiveCommitShortHashAndBranch();
 
+                string? curShortHash = curShorthashAndBranch.Item1;
+                string? curBranchName = curShorthashAndBranch.Item2;
 
-                //string remoteURL = localRepo.getRemoteURL();
-                //string remoteURL = localRepo.getRemoteURL();
+                Debug.WriteLine($"createRemoteRepository IN PROGRESS cloneURL={cloneURL} curShortHash={curShortHash} curBranchName={curBranchName}");
 
                 if (cloneURL != null)
                 {
                     string com = $"cd '{localRepo.dirPath}'; ";
-                    com += $"git remote add origin {cloneURL}; ";
-                    // TODO
-                    string mainBranchTitle = "";
-                    //com += $"git push --set-upstream origin {mainBranchTitle}";
+                    com += $"git remote add origin https://{cloneURL}.git; ";
+                    if (curBranchName != null)
+                    {
+                        com += $"git branch -M {curBranchName}; ";
+                        com += $"git push -u origin {curBranchName}; ";
+                    }
+                    else if (curShortHash != null)
+                    {
+                        com += $"git branch -M main; ";
+                        com += $"git push -u origin main; ";
+                    }
                     ShellComRes comResult = Shell.exec(com);
                 }
+
+                remoteBackedLocalRepositories.Clear();
+                localRepositories.Clear();
+                remoteRepositories.Clear();
+
+                Scanning.scanForAllRepos(callback);
+
+                if (curLiveRepo != null)
+                {
+                    foreach (KeyValuePair<string, RepositoryLocal> localrepoPair in localRepositories)
+                    {
+                        string repoPath = localrepoPair.Key;
+                        if (repoPath == curLiveRepo.dirPath)
+                        {
+                            LocalActions.setLiveRepository(localrepoPair.Value);
+                        }
+                    }
+                }
+
+                callback();
             }
 
 
@@ -392,7 +422,8 @@ public static class GitAPI
             public static void untrackDirectory(LocalTrackedDir trackedDir, Action? callback)
             {
                 Debug.WriteLine($"UNTRACKING {trackedDir.path}");
-                if (GVSettings.data.trackedLocalDirs.Contains(trackedDir)) {
+                if (GVSettings.data.trackedLocalDirs.Contains(trackedDir))
+                {
                     Debug.WriteLine($"UNTRACKING CONTAINS {trackedDir.path}");
                     GVSettings.data.trackedLocalDirs.Remove(trackedDir);
                 }
@@ -576,8 +607,62 @@ public static class GitAPI
     /// <summary> Git Data Getters </summary>
     public static class Getters
     {
+
+        public static Tuple<string, string> getFileDiff(string fpath)
+        {
+            // assumes valid fpath
+            if (liveRepository == null)
+            {
+                return new("", "");
+            }
+            string com = $"cd '{liveRepository.dirPath}'; ";
+            com += $"git diff '{fpath}'; ";
+            ShellComRes result = Shell.exec(com);
+            if (result.psObjects == null)
+            {
+                return new("", "");
+            }
+            List<string> diffLines = result.psObjects.Select(s => s.ToString()).ToList();
+            string diffOld = "";
+            string diffNew = "";
+            // stripping command output header
+            foreach (String line in diffLines)
+            {
+                if (line[0].Equals("@")){
+                    break;
+                }
+                diffLines.RemoveAt(0);
+            }
+            // building new and old
+            foreach (string line in diffLines)
+            {
+                if (line[0].Equals("-"))
+                {
+                    diffNew += "\n";
+                    diffOld += line;
+                }
+                else if (line[0].Equals("+"))
+                {
+                    diffNew += line;
+                    diffOld += "\n";
+                }
+                else if (line[0].Equals("@"))
+                {
+                    //diffNew += line;
+                    //diffOld += line;
+                }
+                else
+                {
+                    diffNew += line;
+                    diffOld += line;
+                }
+            }
+            return new(diffNew,diffOld);
+        }
+
         public static List<Tuple<string, string>> getStagedFiles()
         {
+            // list<tuple<action,fpath>>
             if (liveRepository != null)
             {
                 string com = $"cd '{liveRepository.dirPath}'; ";
@@ -608,6 +693,7 @@ public static class GitAPI
 
         public static List<Tuple<string, string>> getUnStagedFiles()
         {
+            // list<tuple<action,fpath>>
             if (liveRepository != null)
             {
                 string com = $"cd '{liveRepository.dirPath}'; ";
@@ -731,6 +817,10 @@ public static class GitAPI
                 {
                     return new(null, null);
                 }
+                if (result.psObjects.Count == 0)
+                {
+                    return new(null, null);
+                }
                 string shortHash = result.psObjects[0].ToString().Trim();
                 Debug.WriteLine($"CURRENT COMMIT SHORT HASH {shortHash}");
 
@@ -803,7 +893,7 @@ public static class GitAPI
         }
 
 
-        public static Tuple<List<Branch>, List<Commit>> getCommitsAndBranches()
+        public static Tuple<List<Branch>, List<Commit>, List<string>> getCommitsAndBranches()
         {
             Tuple<string?, string?> liveCommitShortHashAndBranchName = getLiveCommitShortHashAndBranch();
             string? liveCommitShortHash = liveCommitShortHashAndBranchName.Item1;
@@ -830,9 +920,7 @@ public static class GitAPI
                 ShellComRes comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    List<Branch> tb = new List<Branch>();
-                    List<Commit> tc = new List<Commit>();
-                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                    return new(new(), new(), new());
                 }
 
                 // longCommitHash, shortCommitHash, longTreeHash, parentHashes
@@ -871,9 +959,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    List<Branch> tb = new List<Branch>();
-                    List<Commit> tc = new List<Commit>();
-                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                    return new(new(), new(), new());
                 }
                 int i = 0;
                 foreach (PSObject pso in comResult.psObjects)
@@ -889,9 +975,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    List<Branch> tb = new List<Branch>();
-                    List<Commit> tc = new List<Commit>();
-                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                    return new(new(), new(), new());
                 }
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
@@ -915,9 +999,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    List<Branch> tb = new List<Branch>();
-                    List<Commit> tc = new List<Commit>();
-                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                    return new(new(), new(), new());
                 }
                 i = 0;
                 foreach (PSObject pso in comResult.psObjects)
@@ -946,10 +1028,10 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    List<Branch> tb = new List<Branch>();
-                    List<Commit> tc = new List<Commit>();
-                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                    return new(new(), new(), new());
                 }
+                List<string> graphLines = comResult.psObjects.Select(s => s.ToString()).ToList();
+                /*
                 i = 0; // commit index
                 foreach (PSObject pso in comResult.psObjects)
                 {
@@ -967,6 +1049,7 @@ public static class GitAPI
                     }
                     //Debug.WriteLine(pso.ToString());
                 }
+                */
 
                 // sorting commits by date
                 //List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
@@ -981,9 +1064,7 @@ public static class GitAPI
                 comResult = Shell.exec(com);
                 if (comResult.psObjects == null)
                 {
-                    List<Branch> tb = new List<Branch>();
-                    List<Commit> tc = new List<Commit>();
-                    return new Tuple<List<Branch>, List<Commit>>(tb, tc);
+                    return new(new(), new(), new());
                 }
                 foreach (PSObject pso in comResult.psObjects)
                 {
@@ -1014,12 +1095,10 @@ public static class GitAPI
                 setCommitsAheadAndBehind();
 
                 // branches-commits tuples
-                return new Tuple<List<Branch>, List<Commit>>(allBranches, sortedCommits);
+                return new Tuple<List<Branch>, List<Commit>, List<string>>(allBranches, sortedCommits, graphLines);
             }
 
-            List<Branch> b = new List<Branch>();
-            List<Commit> c = new List<Commit>();
-            return new Tuple<List<Branch>, List<Commit>>(b, c);
+            return new(new(), new(), new());
         }
     }
 }

@@ -430,7 +430,7 @@ public class Github
                 }
                 string title = titleToken.ToString();
                 string cloneURL = cloneUrlHTTPSToken.ToString().Substring(6);
-                string webURL = cloneURL.Substring(0,cloneURL.Length - 4);
+                string webURL = cloneURL.Substring(0, cloneURL.Length - 4);
                 webURL = $"https://{webURL}";
                 RepositoryRemote remote = new RepositoryRemote(title, cloneURL, webURL);
                 Debug.WriteLine($"Scanned Remote Repo : {remote.title}");
@@ -501,7 +501,8 @@ public class Github
 
         Debug.WriteLine("Removing User token");
         bool deleteCredentialSuccess = DeleteStoredCredential();
-        if (!deleteCredentialSuccess) {
+        if (!deleteCredentialSuccess)
+        {
             Console.WriteLine("WARNING : failed to delete local credentials");
         }
 
@@ -564,9 +565,13 @@ public class Github
 
         CommonAuthenticatedHelper();
 
+        string jsonReqStr = "{\"name\":\"" + repoName + "\",\"private\":true}";
+        Debug.WriteLine("CREATE REMOTE REPO REQ : "  + jsonReqStr);
+
         using StringContent jsonContent =
             new(
-                System.Text.Json.JsonSerializer.Serialize(new { name = repoName, }),
+                //System.Text.Json.JsonSerializer.Serialize(new { name = repoName, }),
+                jsonReqStr,
                 Encoding.UTF8,
                 API_JSON_TYPE
             );
@@ -585,7 +590,7 @@ public class Github
             {
                 return null;
             }
-            return cloneUrlToken.ToString().Substring(8);
+            return cloneUrlToken.ToString().Substring(8,cloneUrlToken.ToString().Length - 12);
         }
 
         Debug.WriteLine($"CreateRepo(): Repo {repoName} creation failed.");
