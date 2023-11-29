@@ -433,7 +433,7 @@ public static class GitAPI
                     com += $"git add {fpath}";
                     ShellComRes result = Shell.exec(com);
                     // TODO check for command success
-                    Debug.WriteLine($"stageChange successful={result.success} fpath=${fpath} dirpath={liveRepository.dirPath}");
+                    Debug.WriteLine($"stageChange successful={result.success} fpath=${fpath} dirpath={liveRepository.dirPath} errmsg={result.errmsg}");
                     if (result.psObjects != null)
                     {
                         foreach (PSObject pso in result.psObjects)
@@ -760,6 +760,7 @@ public static class GitAPI
                     commitsBehind = null;
                     return;
                 }
+
             }
             else
             {
