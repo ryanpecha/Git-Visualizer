@@ -31,9 +31,16 @@ namespace GitVisualizer.UI.UI_Forms
             Color.Orange];
 
         private Tuple<List<Branch>, List<Commit>, List<string>> commitHistory = null;
+
+        private List<Commit> commitsList = new();
+        private List<string> commitGraph = new();
+
+
         //private Tuple<List<Branch>, List<Commit>> commitHistory = null;
         Commit selectedCommit = null;
-        private int currentDepth = 0;
+        
+        
+        private int currentGraphIndex = 0;
 
 
         public BranchesControl()
@@ -73,6 +80,21 @@ namespace GitVisualizer.UI.UI_Forms
             // Update view by getting branch info
             branchesGridView.Rows.Clear();
             commitHistory = GitAPI.Getters.getCommitsAndBranches();
+
+            commitsList = commitHistory.Item2;
+
+            for (int i = 0; i < commitHistory.Item3.Count -1; i++)
+            {
+                string graphline = commitHistory.Item3[i];
+                if (!graphline.Contains('*')){
+                    continue;
+                }
+                if (!commitHistory.Item3[i+1].Contains('*'))
+                {
+                    graphline += "&" + commitHistory.Item3[i + 1];
+                }
+                commitGraph.Add(graphline);
+            }
             foreach (Commit commit in commitHistory.Item2)
             {
                 List<Branch> branches = commit.branches;
@@ -81,6 +103,7 @@ namespace GitVisualizer.UI.UI_Forms
                 int index = branchesGridView.Rows.Add(null, branchList, commit.shortCommitHash, commit.committerName, commit.committerDate, commit.subject);
                 branchesGridView.Rows[index].Cells[0].ToolTipText = commit.longCommitHash;
             }
+
             branchComboBox.DataSource = commitHistory.Item1;
             if (commitHistory.Item1.Count > 0)
             {
@@ -154,65 +177,99 @@ namespace GitVisualizer.UI.UI_Forms
         {
             // Ignore header row and any columns besides Graph column
             if (e.ColumnIndex > 0 || e.RowIndex == -1) { return; }
-            
-            Commit commit = commitHistory.Item2[e.RowIndex];
-            List<string> graph = commitHistory.Item3;
-            string curGraphLine = graph[e.RowIndex];
+            int lineXOffset = 6;
 
-            int curOffset = 1;
+            Commit commit = commitsList[e.RowIndex];
+            string curGraphLine = commitGraph[e.RowIndex];
+            //string curMergeLine = string.Empty;
+            //if (curGraphLine.Contains('&'))
+            //{
+            //    curMergeLine = curGraphLine.Split('&')[1];
+            //    curGraphLine = curGraphLine.Split('&')[0];
+            //}
+
+
+            int cellHeight = branchesGridView.RowTemplate.Height;
 
             SmoothingMode prevSmoothing = e.Graphics.SmoothingMode;
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-            Debug.WriteLine(curGraphLine);
+            e.PaintBackground(e.CellBounds, true);
+
+            int curOffset = 1;
             foreach (char symbol in curGraphLine)
             {
+                
                 int colorOffset = curOffset % branchNodeColors.Count;
                 Pen pen = new Pen(branchNodeColors[colorOffset], 3);
                 int xOffset = curOffset * pixelsPerBranchNode;
 
-                if (symbol == ' ') { 
-                     curOffset++;
+                if (symbol == ' ') {
                 }
                 else if (symbol == '|')
                 {
-                    int x = e.CellBounds.X + (xOffset / 2);
-                    int y = e.CellBounds.Y + ((e.CellBounds.Height / 2) - (branchNodeRadius / 2));
-                    e.PaintBackground(e.CellBounds, true);
-                    
+                    int x = e.CellBounds.X + (xOffset/2);
+                    int offsetY = (cellHeight / 2);
+                    e.Graphics.DrawLine(pen, x + lineXOffset, e.CellBounds.Y + (offsetY * 2), x + lineXOffset, e.CellBounds.Y);
 
-
-                    e.Graphics.DrawEllipse(pen, x, y, branchNodeRadius, branchNodeRadius);
-                    if (commit == GitAPI.liveCommit)
-                    {
-                        e.Graphics.FillEllipse(pen.Brush, x, y, branchNodeRadius, branchNodeRadius);
-                    }
-
-                    e.Graphics.SmoothingMode = prevSmoothing;
-                    // Handle event and return to continue drawing
-
-                    e.Handled = true;
                 }
                 else if (symbol == '*')
                 {
                     int x = e.CellBounds.X + (xOffset / 2);
                     int y = e.CellBounds.Y + ((e.CellBounds.Height / 2) - (branchNodeRadius / 2));
-                    e.PaintBackground(e.CellBounds, true);
 
                     e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-                    e.Graphics.DrawEllipse(pen, x, y, branchNodeRadius, branchNodeRadius);
+                    e.Graphics.FillEllipse(pen.Brush, x, y, branchNodeRadius, branchNodeRadius);
                     if (commit == GitAPI.liveCommit)
                     {
-                        e.Graphics.FillEllipse(pen.Brush, x, y, branchNodeRadius, branchNodeRadius);
+                        pen.Color = Color.Black;
+                        e.Graphics.FillEllipse(pen.Brush, x + 3, y + 3, branchNodeRadius/2, branchNodeRadius/2);
                     }
-
-                    
-                    // Handle event and return to continue drawing
-   
-                    
                 }
+                else if (symbol == '&')
+                {
+                    break;
+                }
+                curOffset++;
+
             }
+
+            //if (curMergeLine != string.Empty)
+            //{
+            //    curOffset = 1;
+            //    foreach (char symbol in curMergeLine)
+            //    {
+            //        int colorOffset = curOffset % branchNodeColors.Count;
+                    
+
+            //        int xOffset = curOffset * pixelsPerBranchNode;
+            //        if (symbol == '|')
+            //        {
+            //            Pen pen = new Pen(branchNodeColors[colorOffset], 3);
+            //            int x = e.CellBounds.X + (xOffset / 2);
+            //            int offsetY = (cellHeight / 2);
+            //            e.Graphics.DrawLine(pen, x + lineXOffset, e.CellBounds.Y + offsetY, x+ lineXOffset, e.CellBounds.Y);
+            //        }
+            //        //else if (symbol == '/')
+            //        //{
+            //        //    Pen pen = new Pen(branchNodeColors[colorOffset-1], 3);
+            //        //    int x = e.CellBounds.X + (xOffset / 2);
+            //        //    int offsetY = (cellHeight / 2);
+            //        //    e.Graphics.DrawLine(pen, x - lineXOffset, e.CellBounds.Y + offsetY, x + lineXOffset, e.CellBounds.Y);
+            //        //}
+            //        //else if (symbol == '\\')
+            //        //{
+            //        //    Pen pen = new Pen(branchNodeColors[colorOffset-1], 3);
+            //        //    int x = e.CellBounds.X + (xOffset / 2);
+            //        //    int offsetY = (cellHeight / 2);
+            //        //    e.Graphics.DrawLine(pen, x + lineXOffset, e.CellBounds.Y + offsetY, x - lineXOffset, e.CellBounds.Y);
+            //        //}
+
+            //        curOffset++;
+            //    }
+            //}
+
 
             e.Graphics.SmoothingMode = prevSmoothing;
             e.Handled = true;

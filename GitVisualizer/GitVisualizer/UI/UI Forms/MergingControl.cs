@@ -170,7 +170,7 @@ namespace GitVisualizer.UI.UI_Forms
                 {
                     diffGridView.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Aquamarine;
                 }
-                
+
                 if (diff.Item1.StartsWith("+"))
                 {
                     diffGridView.Rows[rowIndex].Cells[0].Style.BackColor = Color.DarkOliveGreen;
