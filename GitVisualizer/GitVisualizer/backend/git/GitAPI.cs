@@ -608,14 +608,14 @@ public static class GitAPI
     public static class Getters
     {
 
-        public static Tuple<List<string>, List<string>> getFileDiff(string fpath, bool isStaged)
+        public static List<Tuple<string,string>> getFileDiff(string fpath, bool isStaged)
         {
             Debug.WriteLine("getFileDiff : " + fpath);
             // assumes valid fpath
             if (liveRepository == null)
             {
                 Debug.WriteLine("getFileDiff : liveRepository IS NULL");
-                return new(new(), new());
+                return new();
             }
             string stagedFlag = isStaged ? "--staged" : "";
             string com = $"cd '{liveRepository.dirPath}'; ";
@@ -624,12 +624,13 @@ public static class GitAPI
             if (result.psObjects == null)
             {
                 Debug.WriteLine("getFileDiff : PS OBJECTS IS NULL");
-                return new(new(), new());
+                return new();
             }
             Debug.WriteLine("getFileDiff : converting diff lines to string list");
             List<string> diffLines = result.psObjects.Select(s => s.ToString()).ToList();
-            List<string> diffOld = new();
-            List<string> diffNew = new();
+            //List<string> diffOld = new();
+            //List<string> diffNew = new();
+            List<Tuple<string,string>> diff = new();
 
             foreach (string line in diffLines) {
                 Debug.WriteLine("DIFF LINE : " + line);
@@ -655,21 +656,30 @@ public static class GitAPI
             {
                 if (line[0].Equals('-'))
                 {
+                    diff.Add(new("\n#",line));
+                    /*
                     diffNew.Add("\n#");
                     diffOld.Add(line);
+                    */
                 }
                 else if (line[0].Equals('+'))
                 {
+                    diff.Add(new(line,"\n#"));
+                    /*
                     diffNew.Add(line);
                     diffOld.Add("\n#");
+                    */
                 }
                 else
                 {
+                    diff.Add(new(line,line));
+                    /*
                     diffNew.Add(line);
                     diffOld.Add(line);
+                    */
                 }
             }
-            return new(diffNew,diffOld);
+            return diff;
         }
 
         public static List<Tuple<string, string>> getStagedFiles()
@@ -1034,7 +1044,6 @@ public static class GitAPI
                         parentCommit.children.Add(commit);
                     }
                 }
-
                 // temp graph
                 com = baseCom + $"git log --graph --oneline";
                 comResult = Shell.exec(com);
@@ -1043,6 +1052,26 @@ public static class GitAPI
                     return new(new(), new(), new());
                 }
                 List<string> graphLines = comResult.psObjects.Select(s => s.ToString()).ToList();
+
+                /*
+                i = 0; // commit index
+                foreach (PSObject pso in comResult.psObjects)
+                {
+                    string line = pso.ToString().Trim();
+                    // commit
+                    if (line.Contains("*"))
+                    {
+                        Commit commit = commits[i];
+                        i++;
+                    }
+                    // branching/connecting commits
+                    else
+                    {
+
+                    }
+                    //Debug.WriteLine(pso.ToString());
+                }
+                */
 
                 // sorting commits by date
                 //List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
