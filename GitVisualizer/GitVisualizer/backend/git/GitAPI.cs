@@ -608,23 +608,34 @@ public static class GitAPI
     public static class Getters
     {
 
-        public static Tuple<List<string>, List<string>> getFileDiff(string fpath)
+        public static Tuple<List<string>, List<string>> getFileDiff(string fpath, bool isStaged)
         {
+            Debug.WriteLine("getFileDiff : " + fpath);
             // assumes valid fpath
             if (liveRepository == null)
             {
+                Debug.WriteLine("getFileDiff : liveRepository IS NULL");
                 return new(new(), new());
             }
+            string stagedFlag = isStaged ? "--staged" : "";
             string com = $"cd '{liveRepository.dirPath}'; ";
-            com += $"git diff '{fpath}'; ";
+            com += $"git diff {stagedFlag} '{fpath}'; ";
             ShellComRes result = Shell.exec(com);
             if (result.psObjects == null)
             {
+                Debug.WriteLine("getFileDiff : PS OBJECTS IS NULL");
                 return new(new(), new());
             }
+            Debug.WriteLine("getFileDiff : converting diff lines to string list");
             List<string> diffLines = result.psObjects.Select(s => s.ToString()).ToList();
             List<string> diffOld = new();
             List<string> diffNew = new();
+
+            foreach (string line in diffLines) {
+                Debug.WriteLine("DIFF LINE : " + line);
+            }
+
+            Debug.WriteLine("getFileDiff : removing diff header");
             int i = 0;
             // stripping command output header
             foreach (string line in diffLines)
@@ -635,7 +646,9 @@ public static class GitAPI
                 i++;
             }
             for (int j = 0; j < i; j++) {
+                string line = diffLines[0];
                 diffLines.RemoveAt(0);
+                Debug.WriteLine("DIFF REMOVING HEADER LINE : " + line);
             }
             // building new and old
             foreach (string line in diffLines)
