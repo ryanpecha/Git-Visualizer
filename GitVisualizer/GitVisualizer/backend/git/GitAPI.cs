@@ -380,14 +380,10 @@ public static class GitAPI
             }
 
             public readonly static string description_untrackDirectory = "";
-            public static void untrackDirectory(string dirPath, Action? callback)
+            public static void untrackDirectory(LocalTrackedDir trackedDir, Action? callback)
             {
-                foreach (LocalTrackedDir trackedDir in GVSettings.data.trackedLocalDirs)
-                {
-                    if (trackedDir.path == dirPath)
-                    {
+                if (GVSettings.data.trackedLocalDirs.Contains(trackedDir)) {
                         GVSettings.data.trackedLocalDirs.Remove(trackedDir);
-                    }
                 }
                 GVSettings.saveSettings();
                 Scanning.scanForLocalRepos(callback);
@@ -406,10 +402,11 @@ public static class GitAPI
             }
 
             public readonly static string description_getTrackedDirs = "";
-            public static List<string> getTrackedDirs()
+            public static List<LocalTrackedDir> getTrackedDirs()
             {
-                List<string> trackedDirs = GVSettings.data.trackedLocalDirs.Select(o => o.path).ToList();
-                return trackedDirs;
+                return GVSettings.data.trackedLocalDirs;
+                //List<string> trackedDirs = GVSettings.data.trackedLocalDirs.Select(o => o.path).ToList();
+                //return trackedDirs;
             }
 
             public readonly static string description_createLocalRepository = "";

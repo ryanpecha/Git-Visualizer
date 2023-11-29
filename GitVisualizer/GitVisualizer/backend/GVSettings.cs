@@ -86,4 +86,10 @@ public class LocalTrackedDir
         this.path = path;
         this.recursive = recursive;
     }
+
+    public override string ToString()
+    {
+        string recursiveIndicator = recursive ? "Recursive" : "Not Recursive";
+        return path + $" [{recursiveIndicator}]";
+    }
 }
