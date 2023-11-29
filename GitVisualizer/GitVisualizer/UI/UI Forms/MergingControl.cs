@@ -43,6 +43,7 @@ namespace GitVisualizer.UI.UI_Forms
             {
                 checkedOutBranchTextLabel.Text = "Branch: " + GitAPI.liveBranch.title;
             }
+
             else if (GitAPI.liveCommit != null)
             {
                 checkedOutBranchTextLabel.Text = "Commit: " + GitAPI.liveCommit.shortCommitHash;

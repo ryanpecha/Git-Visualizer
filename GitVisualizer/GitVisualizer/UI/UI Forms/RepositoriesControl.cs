@@ -70,6 +70,7 @@ namespace GitVisualizer.UI.UI_Forms
             repositoriesGridView.Columns[0].HeaderCell.Value = "Local Repositories";
             repositoriesGridView.Columns[1].HeaderCell.Value = "Remote Repositories";
 
+            localRepoComboBox.DataSource = GitAPI.Actions.LocalActions.getTrackedDirs();
         }
 
         private void repositoriesGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -150,10 +151,15 @@ namespace GitVisualizer.UI.UI_Forms
 
         private void OnCreateNewRemoteRepoButton(object sender, EventArgs e)
         {
-
             GitAPI.Actions.RemoteActions.createRemoteRepository(selectedRepo.Item1, UpdateGridCallback);
         }
 
 
+        private void OnUntrackReposButton(object sender, EventArgs e)
+        {
+            LocalTrackedDir tracked = localRepoComboBox.SelectedItem as LocalTrackedDir;
+            if (tracked == null) { return; }
+            GitAPI.Actions.LocalActions.untrackDirectory(tracked, UpdateGridCallback);
+        }
     }
 }
