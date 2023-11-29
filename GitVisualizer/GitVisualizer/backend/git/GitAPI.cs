@@ -940,8 +940,12 @@ public static class GitAPI
                 {
                     childColIndex++;
                 }
+                
                 Tuple<int, int> outRowColPair = new(cur.graphRowIndex, cur.graphColIndex);
                 child.graphOutRowColPairs.Add(outRowColPair);
+                
+                Tuple<int, int> inRowColPair = new(child.graphRowIndex, child.graphColIndex);
+                cur.graphInRowColPairs.Add(inRowColPair);
             }
             // cur has been visited for the first time
             return false;

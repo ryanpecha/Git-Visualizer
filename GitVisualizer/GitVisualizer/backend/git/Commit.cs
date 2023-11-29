@@ -6,8 +6,11 @@ public class Commit
     public int graphRowIndex; // row 0 at bottom; 
     public int graphColIndex = -1; // col 0 is leftmost;
     
-    // pointers to child coords above <row,col>
+    // pointers to parent coords below <row,col>
     public List<Tuple<int,int>> graphOutRowColPairs = new();
+
+    // pointers to child coords above <row,col>
+    public List<Tuple<int,int>> graphInRowColPairs = new();
 
     public RepositoryLocal localRepository {get; set;}
     public List<Branch> branches {get; set;} = new();
