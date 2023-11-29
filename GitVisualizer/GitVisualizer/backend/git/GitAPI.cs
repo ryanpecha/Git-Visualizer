@@ -656,7 +656,7 @@ public static class GitAPI
             {
                 if (line[0].Equals('-'))
                 {
-                    diff.Add(new("\n#",line));
+                    diff.Add(new("#\n",line));
                     /*
                     diffNew.Add("\n#");
                     diffOld.Add(line);
@@ -664,7 +664,7 @@ public static class GitAPI
                 }
                 else if (line[0].Equals('+'))
                 {
-                    diff.Add(new(line,"\n#"));
+                    diff.Add(new(line,"#\n"));
                     /*
                     diffNew.Add(line);
                     diffOld.Add("\n#");
