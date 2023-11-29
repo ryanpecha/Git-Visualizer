@@ -625,12 +625,16 @@ public static class GitAPI
             List<string> diffLines = result.psObjects.Select(s => s.ToString()).ToList();
             List<string> diffOld = new();
             List<string> diffNew = new();
+            int i = 0;
             // stripping command output header
             foreach (string line in diffLines)
             {
                 if (line[0].Equals("@")){
                     break;
                 }
+                i++;
+            }
+            for (int j = 0; j < i; j++) {
                 diffLines.RemoveAt(0);
             }
             // building new and old
