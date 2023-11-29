@@ -71,8 +71,15 @@ namespace GitVisualizer.UI.UI_Forms
                 unstagedChangesDataGridView.Rows[index].Cells[0].ToolTipText = change.Item2;
             }
 
-            if (GitAPI.commitsBehind != null) { incomingCountTextLabel.Text = GitAPI.commitsBehind.ToString(); }
-            if (GitAPI.commitsAhead != null) { outgoingCountTextLabel.Text = GitAPI.commitsAhead.ToString(); }
+            if (GitAPI.commitsBehind != null)
+            {
+                incomingCountTextLabel.Text = GitAPI.commitsBehind.ToString();
+            }
+            if (GitAPI.commitsAhead != null)
+            {
+
+                outgoingCountTextLabel.Text = GitAPI.commitsAhead.ToString();
+            }
 
         }
         private void MergingControl_Load(object sender, EventArgs e)
@@ -145,6 +152,7 @@ namespace GitVisualizer.UI.UI_Forms
         {
             GitAPI.Actions.RemoteActions.sync();
             UpdateGridViews();
+
         }
     }
 }

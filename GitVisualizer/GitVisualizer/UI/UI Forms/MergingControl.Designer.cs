@@ -35,6 +35,7 @@
             checkedOutBranchLabel = new Label();
             panel1 = new Panel();
             flowLayoutPanel1 = new FlowLayoutPanel();
+            commitSyncLabel = new Label();
             commitMessageTextBox = new TextBox();
             syncButton = new Button();
             outgoingCountLabel = new Label();
@@ -98,7 +99,7 @@
             commitChangesButton.Enabled = false;
             commitChangesButton.FlatStyle = FlatStyle.Flat;
             commitChangesButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            commitChangesButton.Location = new Point(15, 66);
+            commitChangesButton.Location = new Point(15, 87);
             commitChangesButton.Name = "commitChangesButton";
             commitChangesButton.Size = new Size(181, 28);
             commitChangesButton.TabIndex = 16;
@@ -136,6 +137,7 @@
             checkedOutBranchTextLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
             checkedOutBranchTextLabel.Location = new Point(3, 21);
             checkedOutBranchTextLabel.Name = "checkedOutBranchTextLabel";
+            checkedOutBranchTextLabel.Padding = new Padding(12, 0, 0, 0);
             checkedOutBranchTextLabel.Size = new Size(267, 77);
             checkedOutBranchTextLabel.TabIndex = 4;
             // 
@@ -146,7 +148,8 @@
             checkedOutBranchLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             checkedOutBranchLabel.Location = new Point(0, 0);
             checkedOutBranchLabel.Name = "checkedOutBranchLabel";
-            checkedOutBranchLabel.Size = new Size(172, 21);
+            checkedOutBranchLabel.Padding = new Padding(12, 0, 0, 0);
+            checkedOutBranchLabel.Size = new Size(184, 21);
             checkedOutBranchLabel.TabIndex = 3;
             checkedOutBranchLabel.Text = "Checked Out to Branch:";
             checkedOutBranchLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -162,6 +165,7 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.Controls.Add(commitSyncLabel);
             flowLayoutPanel1.Controls.Add(commitMessageTextBox);
             flowLayoutPanel1.Controls.Add(commitChangesButton);
             flowLayoutPanel1.Controls.Add(syncButton);
@@ -176,10 +180,19 @@
             flowLayoutPanel1.Size = new Size(278, 187);
             flowLayoutPanel1.TabIndex = 18;
             // 
+            // commitSyncLabel
+            // 
+            commitSyncLabel.AutoSize = true;
+            commitSyncLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            commitSyncLabel.Location = new Point(15, 12);
+            commitSyncLabel.Name = "commitSyncLabel";
+            commitSyncLabel.Size = new Size(133, 21);
+            commitSyncLabel.TabIndex = 25;
+            commitSyncLabel.Text = "Commit and Sync";
+            // 
             // commitMessageTextBox
             // 
-            commitMessageTextBox.Dock = DockStyle.Top;
-            commitMessageTextBox.Location = new Point(15, 15);
+            commitMessageTextBox.Location = new Point(15, 36);
             commitMessageTextBox.MaxLength = 150;
             commitMessageTextBox.Multiline = true;
             commitMessageTextBox.Name = "commitMessageTextBox";
@@ -192,7 +205,7 @@
             // 
             syncButton.FlatStyle = FlatStyle.Flat;
             syncButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            syncButton.Location = new Point(202, 66);
+            syncButton.Location = new Point(202, 87);
             syncButton.Name = "syncButton";
             syncButton.Size = new Size(56, 28);
             syncButton.TabIndex = 17;
@@ -204,7 +217,7 @@
             // 
             outgoingCountLabel.Dock = DockStyle.Top;
             outgoingCountLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            outgoingCountLabel.Location = new Point(15, 97);
+            outgoingCountLabel.Location = new Point(15, 118);
             outgoingCountLabel.Name = "outgoingCountLabel";
             outgoingCountLabel.Padding = new Padding(8, 4, 0, 0);
             outgoingCountLabel.Size = new Size(80, 34);
@@ -216,7 +229,7 @@
             outgoingCountTextLabel.Dock = DockStyle.Top;
             flowLayoutPanel1.SetFlowBreak(outgoingCountTextLabel, true);
             outgoingCountTextLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            outgoingCountTextLabel.Location = new Point(101, 97);
+            outgoingCountTextLabel.Location = new Point(101, 118);
             outgoingCountTextLabel.Name = "outgoingCountTextLabel";
             outgoingCountTextLabel.Padding = new Padding(0, 4, 0, 0);
             outgoingCountTextLabel.Size = new Size(48, 34);
@@ -227,7 +240,7 @@
             // 
             incomingCountLabel.Dock = DockStyle.Top;
             incomingCountLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            incomingCountLabel.Location = new Point(15, 131);
+            incomingCountLabel.Location = new Point(15, 152);
             incomingCountLabel.Name = "incomingCountLabel";
             incomingCountLabel.Padding = new Padding(8, 0, 0, 0);
             incomingCountLabel.Size = new Size(80, 34);
@@ -238,7 +251,7 @@
             // 
             incomingCountTextLabel.Dock = DockStyle.Top;
             incomingCountTextLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            incomingCountTextLabel.Location = new Point(101, 131);
+            incomingCountTextLabel.Location = new Point(101, 152);
             incomingCountTextLabel.Name = "incomingCountTextLabel";
             incomingCountTextLabel.Size = new Size(48, 34);
             incomingCountTextLabel.TabIndex = 24;
@@ -259,6 +272,7 @@
             activeRepositoryTextLabel.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
             activeRepositoryTextLabel.Location = new Point(3, 21);
             activeRepositoryTextLabel.Name = "activeRepositoryTextLabel";
+            activeRepositoryTextLabel.Padding = new Padding(12, 0, 0, 0);
             activeRepositoryTextLabel.Size = new Size(267, 77);
             activeRepositoryTextLabel.TabIndex = 4;
             activeRepositoryTextLabel.Text = "Select a Local Repo to Set Workspace";
@@ -270,7 +284,8 @@
             activeRepoLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             activeRepoLabel.Location = new Point(0, 0);
             activeRepoLabel.Name = "activeRepoLabel";
-            activeRepoLabel.Size = new Size(134, 21);
+            activeRepoLabel.Padding = new Padding(12, 0, 0, 0);
+            activeRepoLabel.Size = new Size(146, 21);
             activeRepoLabel.TabIndex = 3;
             activeRepoLabel.Text = "Active Repository:";
             activeRepoLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -365,6 +380,7 @@
             // buttonSplitContainer
             // 
             buttonSplitContainer.Dock = DockStyle.Top;
+            buttonSplitContainer.IsSplitterFixed = true;
             buttonSplitContainer.Location = new Point(0, 0);
             buttonSplitContainer.Margin = new Padding(8);
             buttonSplitContainer.Name = "buttonSplitContainer";
@@ -657,6 +673,12 @@
             stageChangesSplitContainer.ForeColor = theme.TextNormal;
 
 
+            activeRepoLabel.ForeColor = theme.TextNormal;
+            checkedOutBranchLabel.ForeColor = theme.TextNormal;
+            incomingCountLabel.ForeColor = theme.TextNormal;
+            outgoingCountLabel.ForeColor = theme.TextNormal;
+            commitSyncLabel.ForeColor = theme.TextNormal;
+
             diffFile1Group.ForeColor = theme.TextHeader;
             diffFile2Group.ForeColor = theme.TextHeader;
 
@@ -706,5 +728,6 @@
         private Label outgoingCountTextLabel;
         private Label incomingCountLabel;
         private Label incomingCountTextLabel;
+        private Label commitSyncLabel;
     }
 }
