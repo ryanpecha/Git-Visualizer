@@ -42,7 +42,7 @@ namespace GitVisualizer.UI.UI_Forms
 
 
 
-        private void UpdateGridCallback()
+        public void UpdateGridCallback()
         {
             Debug.WriteLine("UpdateGridCallback()");
             //AddReposToTable();

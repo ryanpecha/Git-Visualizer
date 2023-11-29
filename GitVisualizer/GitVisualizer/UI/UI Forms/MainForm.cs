@@ -104,6 +104,7 @@ namespace GitVisualizer.UI.UI_Forms
         private void revokeAccessButton_Click(object sender, EventArgs e)
         {
             Program.Github.DeleteToken();
+            GitAPI.Actions.RemoteActions.untrackRemoteRepos(repositoriesControl.UpdateGridCallback);
         }
 
     }

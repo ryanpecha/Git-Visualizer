@@ -434,6 +434,13 @@
             BackColor = theme.AppBackground;
             ForeColor = theme.TextSoft;
 
+
+            IEnumerable<Control> groupBoxes = this.Controls.OfType<GroupBox>().Where(x => x is GroupBox);
+            foreach (GroupBox group in groupBoxes)
+            {
+                
+            }
+
             /// Apply themes to all buttons
             IEnumerable<Control> buttons = this.Controls.OfType<Control>().Where(x => x is Button);
             foreach (Button button in buttons)
@@ -441,6 +448,8 @@
                 button.BackColor = theme.ElementBackground;
                 button.ForeColor = theme.TextSelectable;
             }
+
+
 
 
 
