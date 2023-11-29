@@ -655,13 +655,13 @@ public static class GitAPI
             {
                 if (line[0].Equals('-'))
                 {
-                    diffNew.Add("\n");
+                    diffNew.Add("\n#");
                     diffOld.Add(line);
                 }
                 else if (line[0].Equals('+'))
                 {
                     diffNew.Add(line);
-                    diffOld.Add("\n");
+                    diffOld.Add("\n#");
                 }
                 else
                 {
@@ -1043,26 +1043,6 @@ public static class GitAPI
                     return new(new(), new(), new());
                 }
                 List<string> graphLines = comResult.psObjects.Select(s => s.ToString()).ToList();
-
-                /*
-                i = 0; // commit index
-                foreach (PSObject pso in comResult.psObjects)
-                {
-                    string line = pso.ToString().Trim();
-                    // commit
-                    if (line.Contains("*"))
-                    {
-                        Commit commit = commits[i];
-                        i++;
-                    }
-                    // branching/connecting commits
-                    else
-                    {
-
-                    }
-                    //Debug.WriteLine(pso.ToString());
-                }
-                */
 
                 // sorting commits by date
                 //List<Commit> sortedCommits = commits.OrderBy(o => o.committerDate).ToList();
