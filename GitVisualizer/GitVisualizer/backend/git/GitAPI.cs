@@ -35,8 +35,8 @@ public static class GitAPI
     // url -> list<localRepo>
     private static Dictionary<string, HashSet<RepositoryLocal>> remoteBackedLocalRepositories;
 
-    public static int? commitsAhead { get; private set; } = null;
-    public static int? commitsBehind { get; private set; } = null;
+    public static int? commitsAhead { get; private set; } = 0;
+    public static int? commitsBehind { get; private set; } = 0;
 
     /// <summary> GitAPI initialization </summary>
     static GitAPI()

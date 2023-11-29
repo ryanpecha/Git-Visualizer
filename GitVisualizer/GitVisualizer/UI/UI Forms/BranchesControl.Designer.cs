@@ -39,6 +39,11 @@
             branchesGridView.ColumnHeadersDefaultCellStyle.SelectionBackColor = branchesGridView.DefaultCellStyle.BackColor;
 
 
+            activeRepoLabel.ForeColor = theme.TextNormal;
+            branchCheckoutLabel.ForeColor = theme.TextNormal;
+            checkedOutBranchLabel.ForeColor = theme.TextNormal;
+
+
             commitCommandPanel.BackColor = theme.ElementBackground;
             commitCommandPanel.ForeColor = theme.TextSelectable;
 
@@ -69,8 +74,8 @@
             checkedOutBranchTextLabel = new Label();
             checkedOutBranchLabel = new Label();
             commonBranchesButtonsPanel = new Panel();
-            branchCheckoutGroupBox = new GroupBox();
             flowLayoutPanel2 = new FlowLayoutPanel();
+            branchCheckoutLabel = new Label();
             branchComboBox = new ComboBox();
             activeRepoPanel = new Panel();
             activeRepositoryTextLabel = new Label();
@@ -92,7 +97,6 @@
             branchesControlPanel.SuspendLayout();
             checkedOutBranchPanel.SuspendLayout();
             commonBranchesButtonsPanel.SuspendLayout();
-            branchCheckoutGroupBox.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             activeRepoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).BeginInit();
@@ -133,7 +137,7 @@
             checkoutBranchButton.Dock = DockStyle.Top;
             checkoutBranchButton.FlatStyle = FlatStyle.Flat;
             checkoutBranchButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkoutBranchButton.Location = new Point(7, 38);
+            checkoutBranchButton.Location = new Point(7, 55);
             checkoutBranchButton.Name = "checkoutBranchButton";
             checkoutBranchButton.Size = new Size(240, 38);
             checkoutBranchButton.TabIndex = 7;
@@ -146,7 +150,7 @@
             deleteBranchButton.Dock = DockStyle.Top;
             deleteBranchButton.FlatStyle = FlatStyle.Flat;
             deleteBranchButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            deleteBranchButton.Location = new Point(7, 82);
+            deleteBranchButton.Location = new Point(7, 99);
             deleteBranchButton.Name = "deleteBranchButton";
             deleteBranchButton.Size = new Size(240, 38);
             deleteBranchButton.TabIndex = 11;
@@ -200,46 +204,44 @@
             // 
             // commonBranchesButtonsPanel
             // 
-            commonBranchesButtonsPanel.Controls.Add(branchCheckoutGroupBox);
+            commonBranchesButtonsPanel.Controls.Add(flowLayoutPanel2);
             commonBranchesButtonsPanel.Dock = DockStyle.Bottom;
-            commonBranchesButtonsPanel.Location = new Point(0, 492);
+            commonBranchesButtonsPanel.Location = new Point(0, 500);
             commonBranchesButtonsPanel.Name = "commonBranchesButtonsPanel";
             commonBranchesButtonsPanel.Padding = new Padding(8);
-            commonBranchesButtonsPanel.Size = new Size(278, 181);
+            commonBranchesButtonsPanel.Size = new Size(278, 173);
             commonBranchesButtonsPanel.TabIndex = 8;
-            // 
-            // branchCheckoutGroupBox
-            // 
-            branchCheckoutGroupBox.Controls.Add(flowLayoutPanel2);
-            branchCheckoutGroupBox.Dock = DockStyle.Top;
-            branchCheckoutGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            branchCheckoutGroupBox.Location = new Point(8, 8);
-            branchCheckoutGroupBox.Name = "branchCheckoutGroupBox";
-            branchCheckoutGroupBox.Size = new Size(262, 154);
-            branchCheckoutGroupBox.TabIndex = 10;
-            branchCheckoutGroupBox.TabStop = false;
-            branchCheckoutGroupBox.Text = "Branch Checkout";
             // 
             // flowLayoutPanel2
             // 
+            flowLayoutPanel2.Controls.Add(branchCheckoutLabel);
             flowLayoutPanel2.Controls.Add(branchComboBox);
             flowLayoutPanel2.Controls.Add(checkoutBranchButton);
             flowLayoutPanel2.Controls.Add(deleteBranchButton);
-            flowLayoutPanel2.Dock = DockStyle.Top;
-            flowLayoutPanel2.Location = new Point(3, 21);
+            flowLayoutPanel2.Location = new Point(10, 12);
             flowLayoutPanel2.Margin = new Padding(4);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(4);
-            flowLayoutPanel2.Size = new Size(256, 125);
+            flowLayoutPanel2.Size = new Size(256, 150);
             flowLayoutPanel2.TabIndex = 0;
+            // 
+            // branchCheckoutLabel
+            // 
+            branchCheckoutLabel.AutoSize = true;
+            branchCheckoutLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            branchCheckoutLabel.Location = new Point(7, 4);
+            branchCheckoutLabel.Name = "branchCheckoutLabel";
+            branchCheckoutLabel.Size = new Size(113, 19);
+            branchCheckoutLabel.TabIndex = 12;
+            branchCheckoutLabel.Text = "Branch Checkout";
             // 
             // branchComboBox
             // 
             branchComboBox.Dock = DockStyle.Top;
             branchComboBox.FormattingEnabled = true;
-            branchComboBox.Location = new Point(7, 7);
+            branchComboBox.Location = new Point(7, 26);
             branchComboBox.Name = "branchComboBox";
-            branchComboBox.Size = new Size(240, 25);
+            branchComboBox.Size = new Size(240, 23);
             branchComboBox.TabIndex = 10;
             branchComboBox.Text = "Branches";
             // 
@@ -435,8 +437,8 @@
             checkedOutBranchPanel.ResumeLayout(false);
             checkedOutBranchPanel.PerformLayout();
             commonBranchesButtonsPanel.ResumeLayout(false);
-            branchCheckoutGroupBox.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             activeRepoPanel.ResumeLayout(false);
             activeRepoPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)branchesGridView).EndInit();
@@ -474,7 +476,7 @@
         private Button createBranchFromCurrentButton;
         private Button createBranchFromSelectedButton;
         private ToolTip branchesTooltip;
-        private GroupBox branchCheckoutGroupBox;
         private FlowLayoutPanel flowLayoutPanel2;
+        private Label branchCheckoutLabel;
     }
 }

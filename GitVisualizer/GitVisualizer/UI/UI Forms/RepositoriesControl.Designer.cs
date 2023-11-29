@@ -37,12 +37,11 @@
             activeRepoLabel = new Label();
             titleLabel = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            localReposGroupBox = new GroupBox();
             flowLayoutPanel2 = new FlowLayoutPanel();
-            trackExistingReposButton = new Button();
+            localReposLabel = new Label();
             createNewLocalRepoButton = new Button();
-            trackingGroupBox = new GroupBox();
-            flowLayoutPanel3 = new FlowLayoutPanel();
+            trackExistingReposButton = new Button();
+            trackedReposLabel = new Label();
             localRepoComboBox = new ComboBox();
             untrackReposButton = new Button();
             reposButtonsMainPanel = new Panel();
@@ -58,10 +57,7 @@
             repositoriesControlPanel.SuspendLayout();
             activeRepoPanel.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            localReposGroupBox.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
-            trackingGroupBox.SuspendLayout();
-            flowLayoutPanel3.SuspendLayout();
             reposButtonsMainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)repositoriesButtonsSplitContainer).BeginInit();
             repositoriesButtonsSplitContainer.Panel1.SuspendLayout();
@@ -170,59 +166,47 @@
             // 
             // flowLayoutPanel1
             // 
-            flowLayoutPanel1.Controls.Add(localReposGroupBox);
-            flowLayoutPanel1.Controls.Add(trackingGroupBox);
+            flowLayoutPanel1.Controls.Add(flowLayoutPanel2);
             flowLayoutPanel1.Dock = DockStyle.Bottom;
-            flowLayoutPanel1.Location = new Point(0, 408);
+            flowLayoutPanel1.Location = new Point(0, 446);
             flowLayoutPanel1.Margin = new Padding(0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Padding = new Padding(8);
-            flowLayoutPanel1.Size = new Size(278, 265);
+            flowLayoutPanel1.Size = new Size(278, 227);
             flowLayoutPanel1.TabIndex = 7;
-            // 
-            // localReposGroupBox
-            // 
-            localReposGroupBox.Controls.Add(flowLayoutPanel2);
-            localReposGroupBox.Dock = DockStyle.Top;
-            localReposGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            localReposGroupBox.Location = new Point(11, 11);
-            localReposGroupBox.Name = "localReposGroupBox";
-            localReposGroupBox.Size = new Size(259, 120);
-            localReposGroupBox.TabIndex = 8;
-            localReposGroupBox.TabStop = false;
-            localReposGroupBox.Text = "Local Repos";
             // 
             // flowLayoutPanel2
             // 
-            flowLayoutPanel2.Controls.Add(trackExistingReposButton);
+            flowLayoutPanel2.Controls.Add(localReposLabel);
             flowLayoutPanel2.Controls.Add(createNewLocalRepoButton);
-            flowLayoutPanel2.Dock = DockStyle.Fill;
-            flowLayoutPanel2.Location = new Point(3, 21);
+            flowLayoutPanel2.Controls.Add(trackExistingReposButton);
+            flowLayoutPanel2.Controls.Add(trackedReposLabel);
+            flowLayoutPanel2.Controls.Add(localRepoComboBox);
+            flowLayoutPanel2.Controls.Add(untrackReposButton);
+            flowLayoutPanel2.Dock = DockStyle.Top;
+            flowLayoutPanel2.Location = new Point(11, 11);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Padding = new Padding(4);
-            flowLayoutPanel2.Size = new Size(253, 96);
+            flowLayoutPanel2.Size = new Size(253, 209);
             flowLayoutPanel2.TabIndex = 8;
             // 
-            // trackExistingReposButton
+            // localReposLabel
             // 
-            trackExistingReposButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            trackExistingReposButton.Dock = DockStyle.Top;
-            trackExistingReposButton.FlatStyle = FlatStyle.Flat;
-            trackExistingReposButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            trackExistingReposButton.Location = new Point(7, 7);
-            trackExistingReposButton.Name = "trackExistingReposButton";
-            trackExistingReposButton.Size = new Size(240, 36);
-            trackExistingReposButton.TabIndex = 7;
-            trackExistingReposButton.Text = "Track Existing Repos";
-            trackExistingReposButton.UseVisualStyleBackColor = true;
-            trackExistingReposButton.Click += OnTrackExistingReposButton;
+            localReposLabel.AutoSize = true;
+            localReposLabel.Dock = DockStyle.Top;
+            localReposLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            localReposLabel.Location = new Point(7, 4);
+            localReposLabel.Name = "localReposLabel";
+            localReposLabel.Size = new Size(81, 19);
+            localReposLabel.TabIndex = 8;
+            localReposLabel.Text = "Local Repos";
             // 
             // createNewLocalRepoButton
             // 
             createNewLocalRepoButton.Dock = DockStyle.Top;
             createNewLocalRepoButton.FlatStyle = FlatStyle.Flat;
             createNewLocalRepoButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            createNewLocalRepoButton.Location = new Point(7, 49);
+            createNewLocalRepoButton.Location = new Point(7, 26);
             createNewLocalRepoButton.Name = "createNewLocalRepoButton";
             createNewLocalRepoButton.Size = new Size(240, 38);
             createNewLocalRepoButton.TabIndex = 6;
@@ -230,36 +214,38 @@
             createNewLocalRepoButton.UseVisualStyleBackColor = true;
             createNewLocalRepoButton.Click += OnCreateNewLocalRepoButton;
             // 
-            // trackingGroupBox
+            // trackExistingReposButton
             // 
-            trackingGroupBox.Controls.Add(flowLayoutPanel3);
-            trackingGroupBox.Dock = DockStyle.Top;
-            trackingGroupBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            trackingGroupBox.Location = new Point(11, 137);
-            trackingGroupBox.Name = "trackingGroupBox";
-            trackingGroupBox.Size = new Size(259, 109);
-            trackingGroupBox.TabIndex = 9;
-            trackingGroupBox.TabStop = false;
-            trackingGroupBox.Text = "Tracked Repos";
+            trackExistingReposButton.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            trackExistingReposButton.Dock = DockStyle.Top;
+            trackExistingReposButton.FlatStyle = FlatStyle.Flat;
+            trackExistingReposButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            trackExistingReposButton.Location = new Point(7, 70);
+            trackExistingReposButton.Name = "trackExistingReposButton";
+            trackExistingReposButton.Size = new Size(240, 36);
+            trackExistingReposButton.TabIndex = 7;
+            trackExistingReposButton.Text = "Track Existing Repos";
+            trackExistingReposButton.UseVisualStyleBackColor = true;
+            trackExistingReposButton.Click += OnTrackExistingReposButton;
             // 
-            // flowLayoutPanel3
+            // trackedReposLabel
             // 
-            flowLayoutPanel3.Controls.Add(localRepoComboBox);
-            flowLayoutPanel3.Controls.Add(untrackReposButton);
-            flowLayoutPanel3.Dock = DockStyle.Fill;
-            flowLayoutPanel3.Location = new Point(3, 21);
-            flowLayoutPanel3.Name = "flowLayoutPanel3";
-            flowLayoutPanel3.Padding = new Padding(4);
-            flowLayoutPanel3.Size = new Size(253, 85);
-            flowLayoutPanel3.TabIndex = 8;
+            trackedReposLabel.AutoSize = true;
+            trackedReposLabel.Dock = DockStyle.Top;
+            trackedReposLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            trackedReposLabel.Location = new Point(7, 109);
+            trackedReposLabel.Name = "trackedReposLabel";
+            trackedReposLabel.Size = new Size(96, 19);
+            trackedReposLabel.TabIndex = 9;
+            trackedReposLabel.Text = "Tracked Repos";
             // 
             // localRepoComboBox
             // 
             localRepoComboBox.Dock = DockStyle.Top;
             localRepoComboBox.FormattingEnabled = true;
-            localRepoComboBox.Location = new Point(7, 7);
+            localRepoComboBox.Location = new Point(7, 131);
             localRepoComboBox.Name = "localRepoComboBox";
-            localRepoComboBox.Size = new Size(240, 25);
+            localRepoComboBox.Size = new Size(240, 23);
             localRepoComboBox.TabIndex = 7;
             localRepoComboBox.Text = "Local Repo...";
             // 
@@ -268,7 +254,7 @@
             untrackReposButton.Dock = DockStyle.Top;
             untrackReposButton.FlatStyle = FlatStyle.Flat;
             untrackReposButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            untrackReposButton.Location = new Point(7, 38);
+            untrackReposButton.Location = new Point(7, 160);
             untrackReposButton.Name = "untrackReposButton";
             untrackReposButton.Size = new Size(240, 38);
             untrackReposButton.TabIndex = 6;
@@ -414,10 +400,8 @@
             activeRepoPanel.ResumeLayout(false);
             activeRepoPanel.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
-            localReposGroupBox.ResumeLayout(false);
             flowLayoutPanel2.ResumeLayout(false);
-            trackingGroupBox.ResumeLayout(false);
-            flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel2.PerformLayout();
             reposButtonsMainPanel.ResumeLayout(false);
             repositoriesButtonsSplitContainer.Panel1.ResumeLayout(false);
             repositoriesButtonsSplitContainer.Panel2.ResumeLayout(false);
@@ -435,11 +419,7 @@
             ForeColor = theme.TextSoft;
 
 
-            IEnumerable<Control> groupBoxes = this.Controls.OfType<GroupBox>().Where(x => x is GroupBox);
-            foreach (GroupBox group in groupBoxes)
-            {
-                
-            }
+
 
             /// Apply themes to all buttons
             IEnumerable<Control> buttons = this.Controls.OfType<Control>().Where(x => x is Button);
@@ -450,7 +430,9 @@
             }
 
 
-
+            activeRepoLabel.ForeColor = theme.TextNormal;
+            localReposLabel.ForeColor = theme.TextNormal;
+            trackedReposLabel.ForeColor = theme.TextNormal;
 
 
             repositoriesGridView.BackgroundColor = theme.ElementBackground;
@@ -496,13 +478,12 @@
         private DataGridViewTextBoxColumn localReposColumn;
         private DataGridViewTextBoxColumn remoteReposColumn;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button createNewLocalRepoButton;
-        private Button trackExistingReposButton;
-        private GroupBox localReposGroupBox;
-        private GroupBox trackingGroupBox;
         private Button untrackReposButton;
         private ComboBox localRepoComboBox;
         private FlowLayoutPanel flowLayoutPanel2;
-        private FlowLayoutPanel flowLayoutPanel3;
+        private Button trackExistingReposButton;
+        private Button createNewLocalRepoButton;
+        private Label localReposLabel;
+        private Label trackedReposLabel;
     }
 }

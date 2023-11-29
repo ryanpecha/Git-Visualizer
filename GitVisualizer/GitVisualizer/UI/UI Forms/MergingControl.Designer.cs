@@ -657,6 +657,11 @@
             stageChangesSplitContainer.ForeColor = theme.TextNormal;
 
 
+            activeRepoLabel.ForeColor = theme.TextNormal;
+            checkedOutBranchLabel.ForeColor = theme.TextNormal;
+            incomingCountLabel.ForeColor = theme.TextNormal;
+            outgoingCountLabel.ForeColor = theme.TextNormal;
+
             diffFile1Group.ForeColor = theme.TextHeader;
             diffFile2Group.ForeColor = theme.TextHeader;
 
