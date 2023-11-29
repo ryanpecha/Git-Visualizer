@@ -626,7 +626,7 @@ public static class GitAPI
             List<string> diffOld = new();
             List<string> diffNew = new();
             // stripping command output header
-            foreach (String line in diffLines)
+            foreach (string line in diffLines)
             {
                 if (line[0].Equals("@")){
                     break;
