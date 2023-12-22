@@ -11,13 +11,12 @@ namespace GitVisualizer
         ///  The main entry point for the application.
         /// </summary>
         ///
-        private static readonly Github _github = new();
-        private static readonly MainForm _mainForm = new();
-
         /// <summary>
         /// Github API instance used for handling Github.com requests and communications with Github server.
         /// </summary>
         public static Github Github => _github;
+    
+        // sample changes
 
         /// <summary>
         /// Instance for Main WindowsForm Form, where the main app window exists
