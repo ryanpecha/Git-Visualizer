@@ -15,13 +15,13 @@ namespace GitVisualizer
         {
             InitializeComponent();
             ApplyColorTheme(MainForm.AppTheme);
-            this.FormClosing += new FormClosingEventHandler(LoadMainAppFormLocal); // Open main window when closing this one, skipping Auth
+            FormClosing += new FormClosingEventHandler(LoadMainAppFormLocal); // Open main window when closing this one, skipping Auth
             Debug.Write("Setup Form opened\n");
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            rememberMeCheckbox.Checked = GVSettings.data.rememberGitHubLogin;
         }
 
         /// <summary>
@@ -31,6 +31,7 @@ namespace GitVisualizer
         {
             githubLoginButton.Select();
         }
+
         /// <summary>
         /// Event handler that highlights the Local Workspace button to signify no login is required for user's desired use case
         /// </summary>
@@ -47,53 +48,60 @@ namespace GitVisualizer
         private void LoadMainAppFormRemote(object sender, EventArgs e)
         {
             GetPermissionGithub();
-            OpenExternalWebsite(Github.deviceLoginCodeURL);
+            OpenExternalWebsite(Github.API_DEVICE_LOGIN_CODE_URL);
 
             //this.Hide();
         }
 
         /// <summary>
-        /// Requests Github App for permission, and shows user code on window. Waits until user authorizes OAuth app, 
+        /// Requests Github App for permission, and shows user code on window. Waits until user authorizes OAuth app,
         /// then on success closes window to open main app
         /// </summary>
         private async void GetPermissionGithub()
         {
             authorizationPanel.Visible = true;
-            await Program.Github.GivePermission();
-            ShowUserCode(Github.userCode);
-
-
-            if (Github.userCode != null)
+            string? userCode = await Program.Github.GivePermission();
+            if (userCode != null)
             {
+                ShowUserCode(Github.userCode);
                 Debug.Write(Github.userCode);
                 await Program.Github.WaitForAuthorization();
             }
-
-            this.Hide();
+            Hide();
         }
 
         private void ShowUserCode(string userCode)
         {
-            userCodeLabel.Text = userCode;
+            userCodeLabel.Text = "****-****";
             userCodeLabel.Visible = true;
+            string clipboardCode = string.Join("\r", userCode);
+            Clipboard.SetText(clipboardCode);
+        }
+
+        private void ShowCodeCheckboxChanged(object sender, EventArgs e)
+        {
+            if (showCodeCheckBox.Checked)
+            {
+                userCodeLabel.Text = Github.userCode;
+            }
+            else
+            {
+                userCodeLabel.Text = "****-****";
+            }
         }
 
         private void OpenExternalWebsite(string siteURL)
         {
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = siteURL,
-                UseShellExecute = true
-            });
+            Process.Start(new ProcessStartInfo { FileName = siteURL, UseShellExecute = true });
         }
+
         /// <summary>
         /// Loads main page routed from local repository button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void LoadMainAppFormLocal(object sender, EventArgs e)
+        private void LoadMainAppFormLocal(object? sender, EventArgs e)
         {
-
             this.Hide();
         }
 
@@ -105,26 +113,26 @@ namespace GitVisualizer
         private void RememberMeCheckboxChanged(object sender, EventArgs e)
         {
             bool toRemember = rememberMeCheckbox.Checked;
-            Program.Github.SetRememberUserAccessBool(toRemember);
-            Debug.WriteLine("Remember user? " + Program.Github.RememberUserAccess);
+            GVSettings.data.rememberGitHubLogin = toRemember;
+            GVSettings.saveSettings();
+            Debug.WriteLine("Remember user? " + GVSettings.data.rememberGitHubLogin);
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
+        private void button1_Click(object sender, EventArgs e) { }
 
-        }
+        private void label5_Click(object sender, EventArgs e) { }
 
-        private void label5_Click(object sender, EventArgs e)
-        {
+        private void userCodeLabelHeader_Click(object sender, EventArgs e) { }
 
-        }
+        private void rememberMeLabel_Click(object sender, EventArgs e) { }
 
-        private void userCodeLabelHeader_Click(object sender, EventArgs e)
-        {
+        private void label3_Click(object sender, EventArgs e) { }
 
-        }
+        private void radioButton3_CheckedChanged(object sender, EventArgs e) { }
 
-        private void rememberMeLabel_Click(object sender, EventArgs e)
+        private void rememberMeLabel_Click_1(object sender, EventArgs e) { }
+
+        private void userCodeLabel_Click(object sender, EventArgs e)
         {
 
         }

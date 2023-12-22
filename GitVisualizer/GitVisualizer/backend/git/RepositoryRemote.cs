@@ -2,12 +2,21 @@
 
 public class RepositoryRemote : Repository
 {
-    public string cloneUrlSSH { get; private set; }
-    public string cloneUrlHTTPS { get; private set; }
+    //public RepositoryLocal? localRepository { get; private set; }
 
-    public RepositoryRemote(string title, string cloneUrlSSH, string cloneUrlHTTPS) : base(title)
+    public string cloneURL { get; private set; }
+    public string webURL { get; private set; }
+
+    public RepositoryRemote(string title, string cloneURL, string webURL) : base(title)
     {
-        this.cloneUrlSSH = cloneUrlSSH;
-        this.cloneUrlHTTPS = cloneUrlHTTPS;
+        this.cloneURL = cloneURL;
+        this.webURL = webURL;
     }
+
+    /*
+    public void setLocalRepo(RepositoryLocal localRepository)
+    {
+        this.localRepository = localRepository;
+    }
+    */
 }

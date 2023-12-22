@@ -15,12 +15,13 @@ public static class Shell
     }
 
     /// <summary> synchronously executes the given command returns the result struct </summary>
-    public static ShellComRes exec(Command command)
+    public static ShellComRes exec(string command)
     {
         // TODO async shell command queue
         try
         {
-            iShell.Commands.AddCommand(command);
+            iShell.Commands.Clear();
+            iShell.AddScript(command);
             Collection<PSObject> psObjects = iShell.Invoke();
             bool success = !iShell.HadErrors;
             string? errmsg = null;
