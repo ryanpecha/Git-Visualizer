@@ -1,12 +1,5 @@
 # Git Visualizer
 
-## Developers
-
-* Kyle Walker
-* Ryan Pecha
-* Patrick Comden
-* Nam Do
-
 ## User Dependencies
 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
