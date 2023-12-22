@@ -1,4 +1,4 @@
-# CSC436 - Git Visualizer
+# Git Visualizer
 
 ## Developers
 
