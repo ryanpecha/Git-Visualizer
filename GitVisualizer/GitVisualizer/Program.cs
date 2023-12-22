@@ -1,7 +1,6 @@
 using GitVisualizer.UI.UI_Forms;
 using SkiaSharp;
 using System.Diagnostics;
-using GithubSpace;
 
 namespace GitVisualizer
 {

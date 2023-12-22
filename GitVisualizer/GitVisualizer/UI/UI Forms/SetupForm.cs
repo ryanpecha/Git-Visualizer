@@ -2,8 +2,6 @@ using GitVisualizer.UI;
 using GitVisualizer.UI.UI_Forms;
 using System.Diagnostics;
 
-using GithubSpace;
-
 namespace GitVisualizer
 {
     /// <summary>

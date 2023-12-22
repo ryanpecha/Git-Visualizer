@@ -9,8 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using GithubSpace;
-
 namespace GitVisualizer.UI.UI_Forms
 {
     public partial class RepositoriesControl : UserControl
